@@ -104,6 +104,25 @@ public:
             }
         }
     }
+
+    Matrix operator*(Matrix m)
+    {
+        Matrix result = Matrix(m.GetSize());
+
+        for (int r = 0; r < m_Size; ++r)
+        {
+            for (int c = 0; c < m_Size; ++c)
+            {
+                int result = 0;
+                for (int i = 0; i < m_Size; ++i)
+                {
+                    result += value[r][i] * m.value[i][c];
+                }
+
+                value[r][c] = result;
+            }
+        }
+    }
 };
 
 int main()
@@ -141,6 +160,7 @@ int main()
         case 's':
             break;
         case 'q':
+            exit(1);
             break;
         default:
             cout << "명령어를 다시 입력해주세요" << endl;
