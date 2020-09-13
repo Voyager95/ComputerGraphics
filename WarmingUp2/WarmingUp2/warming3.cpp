@@ -39,11 +39,11 @@ public:
     bool CollisionCheck(Rectangle s)
     {
         bool yCollision = false;
-        if (downLeft.y <= s.topRight.y || topRight.y >= s.downLeft.y)
+        if (downLeft.y <= s.topRight.y && topRight.y >= s.downLeft.y)
             yCollision = true;
 
         bool xCollision = false;
-        if (downLeft.x <= s.topRight.x || topRight.x >= s.downLeft.x)
+        if (downLeft.x <= s.topRight.x && topRight.x >= s.downLeft.x)
             xCollision = true;
 
         if (yCollision == true && xCollision == true)
@@ -54,7 +54,7 @@ public:
     
 };
 
-void RectangleRandomPosition(Rectangle target,Rectangle area, int minSize, int maxSize)
+void RectangleRandomPosition(Rectangle& target,Rectangle area, int minSize, int maxSize)
 {
     // 시드값을 얻기 위한 random_device 생성.
     random_device rd;
@@ -96,7 +96,7 @@ void RectangleRandomPosition(Rectangle target,Rectangle area, int minSize, int m
 /// <param name="area">제한 범위 입니다</param>
 /// <param name="unit">움직임 단위 입니다</param>
 /// <param name="direction"> 상:0 하:1 좌:2 우:3 </param>
-void MoveRectangle(Rectangle target, Rectangle area, int unit, int direction)
+void MoveRectangle(Rectangle& target, Rectangle area, int unit, int direction)
 {
     switch (direction)
     {
@@ -156,8 +156,11 @@ int main()
     Rectangle area;
     area.downLeft.x = 0;
     area.downLeft.y = 0;
-    area.topRight.x = 0;
-    area.topRight.y = 0;
+    area.topRight.x = 500;
+    area.topRight.y = 500;
+
+    // 움직임 단위
+    int moveUnit = 10;
 
     // 사각형의 사이즈 정하기
     int minSizeX = 30;
@@ -166,8 +169,61 @@ int main()
     // 랜덤한 위치로 바꾸기
     RectangleRandomPosition(a,area, minSizeX, maxSizeY);
     RectangleRandomPosition(b, area, minSizeX, maxSizeY);
+
     while (true)
     {
+        cout << "Shape 1:";
+        a.Show();
+        cout << "Shape 2:";
+        b.Show();
+
+        cout << "커맨드를 입력하세요 (WSAD)" << endl;
         
+        
+        char c;
+        while (true)
+        {
+            c = getchar();
+            if (c != '\n')
+                break;
+        }
+
+        if (islower(c) != 0)
+            c = toupper(c);
+
+        switch (c)
+        {
+        case 'W':
+            cout << "상으로 이동합니다." << endl;
+            MoveRectangle(b, area, moveUnit, 0);
+
+            if (b.CollisionCheck(a) == true)
+                cout << "충돌합니다" << endl;
+            break;
+        case 'S':
+            cout << "하로 이동합니다." << endl;
+            MoveRectangle(b, area, moveUnit, 1);
+
+            if (b.CollisionCheck(a) == true)
+                cout << "충돌합니다" << endl;
+            break;
+        case 'A':
+            cout << "좌로 이동합니다." << endl;
+            MoveRectangle(b, area, moveUnit, 2);
+
+            if (b.CollisionCheck(a) == true)
+                cout << "충돌합니다" << endl;
+            break;
+        case 'D':
+            cout << "우로 이동합니다." << endl;
+            MoveRectangle(b, area, moveUnit, 3);
+
+            if (b.CollisionCheck(a) == true)
+                cout << "충돌합니다" << endl;
+            break;
+        default:
+            cout << "올바르지 않은 입력입니다" << "endl";
+            break;
+        }
     }
 }
