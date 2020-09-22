@@ -3,8 +3,6 @@
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
 #include <random>
-#define WINSIZEX 500
-#define WINSIZEY 500
 
 // 타입 정의
 
@@ -47,19 +45,33 @@ GLvoid Reshape(int w, int h);
 GLvoid Keyboard(unsigned char key, int x, int y);
 GLvoid Mouse(int button, int state, int x, int y);
 
+float RandomDelta();
+
 // 전역 변수
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_real_distribution<> colorDis(0.0f, 1.0f);
+std::uniform_int_distribution<> dirDis(0,1);
+std::uniform_real_distribution<> deltaSizeDis(0.1, 0.2);
 
-Colorf rectColor(1.0f,0.0f, 0.0f, 0.0f);
-Colorf bgColor(1.0f, 0.0f, 1.0f, 0.0f);
+Colorf rectColor(1.0f, 0.0f, 0.0f, 0.0f);
+Colorf bgColor(0.1f, 0.1f, 0.1f, 0.0f);
 
 
-// 사각형 크기
+// 윈도우 크기
+float winSizeX = 500;
+float winSizeY = 500;
 
-float rectW = 0.4;
-float rectH = 0.4;
+// 사각형 정보
+float rectPosX = 0;
+float rectPosY = 0;
+float rectSize = 0.1;
+float rectDeltaX = RandomDelta();
+float rectDeltaY = RandomDelta();
+bool rectMove = false;
+
+// 타이머
+unsigned int timerCycle = 100;
 
 /// <summary>
 /// 윈도우 출력하고 콜백함수 설정 
@@ -72,7 +84,7 @@ void main(int argc, char** argv)
 	glutInit(&argc, argv);											// glut 초기화
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);					// 디스플레이 모드 설정
 	glutInitWindowPosition(100, 100);								// 윈도우의 위치 지정
-	glutInitWindowSize(WINSIZEX, WINSIZEY);									// 윈도우의 크기 지정
+	glutInitWindowSize(winSizeX, winSizeY);							// 윈도우의 크기 지정
 	glutCreateWindow("Example1");									// 윈도우 생성(윈도우 이름)
 
 	//--- GLEW 초기화하기
@@ -85,7 +97,7 @@ void main(int argc, char** argv)
 	}
 	else
 		std::cout << "GLEW Initialized\n";
-	glutTimerFunc(100, Timer, 1);
+	glutTimerFunc(timerCycle, Timer, 1);
 	glutDisplayFunc(drawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
 	glutKeyboardFunc(Keyboard);
 	glutMouseFunc(Mouse);
@@ -100,20 +112,11 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		receivedKey = toupper(receivedKey);
 
 	switch (receivedKey) {
-	case 'R':														// 배경색을 빨강색으로 설정
-		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-		break;
-	case 'G':
-		glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
-		break;
-	case 'B':
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+	case 'S':														// 배경색을 빨강색으로 설정
+		rectMove = false;
 		break;
 	case 'A':
-		glClearColor(colorDis(gen), colorDis(gen), colorDis(gen), 1.0f);
-		break;
-	case 'W':
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		rectMove = true;
 		break;
 	default:
 		break;
@@ -126,29 +129,21 @@ GLvoid Mouse(int button, int state, int x, int y)
 {
 	std::cout << x << " , " << y << std::endl;
 
-	float xCoordinate = x - (WINSIZEX / 2);
-	float yCoordinate = -(y - (WINSIZEY / 2));
+	float xCoordinate = x - (winSizeX / 2);
+	float yCoordinate = -(y - (winSizeY / 2));
 
-	float normalizedX = xCoordinate / (WINSIZEX /2) ;
-	float normalizedY = yCoordinate / (WINSIZEY/ 2) ;
-
-	std::cout << "X: " << xCoordinate << "Y: " << yCoordinate << std::endl;
-	std::cout << "X: " << normalizedX << "Y: " << normalizedY  << std::endl;
+	float normalizedX = xCoordinate / (winSizeX / 2);
+	float normalizedY = yCoordinate / (winSizeY / 2);
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		if (-rectH * 0.5 < normalizedY && normalizedY < rectH * 0.5 && -rectW * 0.5 < normalizedX && normalizedX < rectW * 0.5)
-		{
-			rectColor.Set(colorDis(gen), colorDis(gen), colorDis(gen), 1.0f);
-			std::cout << "내부 변경" << std::endl;
-		}
-		else
-		{
-			bgColor.Set(colorDis(gen), colorDis(gen), colorDis(gen), 1.0f);
-			std::cout << "외부 변경" << std::endl;
-		}
+		rectPosX = normalizedX;
+		rectPosY = normalizedY;
+		rectColor.Set(colorDis(gen), colorDis(gen), colorDis(gen), 1.0f);
+		rectDeltaX = RandomDelta();
+		rectDeltaY = RandomDelta();
 
-		glutPostRedisplay();	
+		glutPostRedisplay();
 	}
 }
 
@@ -158,14 +153,15 @@ GLvoid Mouse(int button, int state, int x, int y)
 /// <returns></returns>
 GLvoid drawScene()
 {
+	std::cout << "다시 그림" << std::endl;
 
 	glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 	glClear(GL_COLOR_BUFFER_BIT);									// 설정된 색으로 전체를 칠하기
 	// 그리기 부분 구현
-	
+
 	glColor3f(rectColor.r, rectColor.g, rectColor.b);
-	glRectf( -rectW * 0.5,-rectH*0.5 , rectW * 0.5, rectH * 0.5);
-	
+	glRectf( rectPosX - rectSize, rectPosY + rectSize, rectPosX + rectSize, rectPosY - rectSize);
+
 
 	glutSwapBuffers(); // 화면에 출력하기
 }
@@ -178,12 +174,45 @@ GLvoid drawScene()
 /// <returns></returns>
 GLvoid Reshape(int w, int h)
 {
+	winSizeX = w;
+	winSizeY = h;
+
 	glViewport(0, 0, w, h);
 }
 
 GLvoid Timer(int value)
 {
 
+	if (rectMove == true)
+	{
+		float dx = rectDeltaX * (timerCycle * 0.001);
+		float dy = rectDeltaY * (timerCycle * 0.001);
+		if (rectPosX + dx > 1 || rectPosX + dx < -1)
+		{
+			dx *= -1;
+			rectDeltaX *= -1;
+		}
+		if (rectPosY + dy > 1 || rectPosY + dy < -1)
+		{
+			dy *= -1;
+			rectDeltaY *= -1;
+		}
 
-	glutTimerFunc(500, Timer, 1);
+		rectPosX += dx;
+		rectPosY += dy;
+
+		glutPostRedisplay();
+	}
+
+	glutTimerFunc(100, Timer, 1);
+}
+
+float RandomDelta()
+{
+	if (dirDis(gen) == 0)
+	{
+		return deltaSizeDis(gen);
+	}
+	else
+		return -deltaSizeDis(gen);
 }
