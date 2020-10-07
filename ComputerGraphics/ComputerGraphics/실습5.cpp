@@ -42,6 +42,7 @@ std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_real_distribution<> colorDis(0.0f, 1.0f);
 std::uniform_real_distribution<> triPosDis(-1.0f, 1.0f);
+std::uniform_real_distribution<> deltaDis(-1.0f, 1.0f);
 
 float winSizeX = 800;
 float winSizeY = 800;
@@ -54,8 +55,10 @@ float triSize = 0.1f;
 
 int targetTriIndex = 0;
 
+array<GLfloat[2], TRINUM> triCenter;
 array<GLfloat[3][3], TRINUM> triPos;
 array<GLfloat[3][3], TRINUM> triColor;
+array<GLfloat[2], TRINUM> triDelta;
 
 GLuint vao, vbo[2];
 
@@ -72,6 +75,12 @@ void ChangeTriangle(int index, float x, float y)
 	GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
 	memcpy(triPos[index], newTriPos, sizeof(newTriPos));
 	memcpy(triColor[index], newColor, sizeof(newColor));
+}
+
+void ChangeTrianglePos(int index, float x, float y)
+{
+	GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} , { +triSize + x, -triSize + y ,0}, { x, triSize + y ,0} };
+	memcpy(triPos[index], newTriPos, sizeof(newTriPos));
 }
 
 void ChangeTriangleColor(int index)
@@ -94,7 +103,14 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	//--- 삼각형 초기화
 	for (int i = 0; i < triPos.size(); ++i)
 	{
-		ChangeTriangle(i, triPosDis(gen), triPosDis(gen));
+		GLfloat x = triPosDis(gen);
+		GLfloat y = triPosDis(gen);
+
+		triCenter[i][0] = x;
+		triCenter[i][1] = y;
+		triDelta[i][0] = deltaDis(gen);
+		triDelta[i][1] = deltaDis(gen);
+		ChangeTriangle(i,x,y);
 	}
 
 	//--- GLEW 초기화하기
@@ -129,10 +145,12 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 			isFill = true;
 			glPolygonMode(GL_FRONT, GL_FILL);
 		}
+		break;
 	case 'C':
 		for (int i = 0; i < TRINUM; ++i)
 		{
 			ChangeTriangleColor(i);
+			InitBuffer();
 		}
 		break;
 	case 'M':
@@ -152,27 +170,32 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 
 GLvoid Timer(int value)
 {
+	if (moveTri == true)
+	{
+		for (int i = 0; i < TRINUM; ++i)
+		{
+			
+			float dx = triDelta[i][0] * (timerCycle * 0.001);
+			float dy = triDelta[i][1] * (timerCycle * 0.001);
+			if (triCenter[i][0] + triSize + dx > 1 || triCenter[i][0] - triSize + dx < -1)
+			{
+				dx *= -1;
+				triDelta[i][0] *= -1;
+			}
+			if (triCenter[i][1] + triSize + dy > 1 || triCenter[i][1] - triSize + dy < -1)
+			{
+				dy *= -1;
+				triDelta[i][1] *= -1;
+			}
 
-	//if (moveTri == true)
-	//{
-	//	float dx = rectDeltaX * (timerCycle * 0.001);
-	//	float dy = rectDeltaY * (timerCycle * 0.001);
-	//	if (rectPosX + dx > 1 || rectPosX + dx < -1)
-	//	{
-	//		dx *= -1;
-	//		rectDeltaX *= -1;
-	//	}
-	//	if (rectPosY + dy > 1 || rectPosY + dy < -1)
-	//	{
-	//		dy *= -1;
-	//		rectDeltaY *= -1;
-	//	}
+			triCenter[i][0] += dx;
+			triCenter[i][1] += dy;
+			ChangeTrianglePos(i, triCenter[i][0], triCenter[i][1]);
+			InitBuffer();
+		}
 
-	//	rectPosX += dx;
-	//	rectPosY += dy;
-
-	//	glutPostRedisplay();
-	//}
+		glutPostRedisplay();
+	}
 
 	glutTimerFunc(100, Timer, 1);
 }
