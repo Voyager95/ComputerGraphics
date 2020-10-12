@@ -9,7 +9,7 @@
 #include <memory>
 #include <cmath>
 
-#define SHAPENUM 10
+#define SHAPENUM 4
 #define PI 3.14159265
 using namespace std;
 
@@ -22,10 +22,15 @@ void make_fragmentShader();
 void InitBuffer();
 void InitShader();
 GLvoid Timer(int value);
+GLvoid Keyboard(unsigned char key, int x, int y);
 char* filetobuf(const char* file);
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid Mouse(int button, int state, int x, int y);
+
+random_device rd;
+mt19937 gen(rd());
+uniform_real_distribution<> colorDis(0.0f, 1.0f);
 
 GLchar* vertexsource, * fragmentsource; // 소스코드 저장 변수
 GLuint vertexshader, fragmentshader; // 세이더 객체
@@ -34,20 +39,20 @@ array<GLuint, SHAPENUM> s_programs; // 세이더 프로그램
 array<GLuint, SHAPENUM> vao;
 array<GLuint[2], SHAPENUM> vbo;
 
-array< vector< array<GLfloat,3 >>, SHAPENUM > shapeStartPos;
+array< vector< array<GLfloat, 3 >>, SHAPENUM > shapeStartPos;
 array<vector<array<GLfloat, 3>>, SHAPENUM> shapeColor;
-array<bool, 10> shapeAnim;
-array<array<GLfloat, 3>, SHAPENUM> shapeOrigin;
-array<GLfloat, SHAPENUM> shapeRadius;
-array<GLfloat, SHAPENUM> shapeAngle;
-array<int, SHAPENUM> shapeTriNum = {0,};
+array<int, SHAPENUM> shapeTriNum = { 0, };
 
-int nextShapeIndex = 0;
+const float animDelta = 0.05f;
+bool anim = false;
+int scaleAnimCounter = 0;
+bool scaleAnimDirection = true; // True: 밖을 향함 / False: 안을 향함
+bool posAnim = false;
+int posAnimCounter = 0;
+bool posAnimDirectiection = false;
 
 float winSizeX = 800;
 float winSizeY = 800;
-GLfloat one[3];
-GLfloat two[3];
 
 /// <summary>
 /// 윈도우 출력하고 콜백함수 설정 
@@ -74,12 +79,40 @@ void main(int argc, char** argv)
 	else
 		std::cout << "GLEW Initialized\n";
 
+	//--- 삼각형 초기화하기
+	shapeStartPos[0].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeStartPos[0].push_back(array<GLfloat, 3> {-0.4, 0.4, 0});
+	shapeStartPos[0].push_back(array<GLfloat, 3> {0.4, 0.4, 0});
+	shapeStartPos[1].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeStartPos[1].push_back(array<GLfloat, 3> {0.4, 0.4, 0});
+	shapeStartPos[1].push_back(array<GLfloat, 3> {0.4, -0.4, 0});
+	shapeStartPos[2].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeStartPos[2].push_back(array<GLfloat, 3> {0.4, -0.4, 0});
+	shapeStartPos[2].push_back(array<GLfloat, 3> {-0.4, -0.4, 0});
+	shapeStartPos[3].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeStartPos[3].push_back(array<GLfloat, 3> {-0.4, -0.4, 0});
+	shapeStartPos[3].push_back(array<GLfloat, 3> {-0.4, 0.4, 0});
+
+	shapeColor[0].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeColor[0].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[0].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[1].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeColor[1].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[1].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[2].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeColor[2].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[2].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[3].push_back(array<GLfloat, 3> {0, 0, 0});
+	shapeColor[3].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	shapeColor[3].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+
 	InitShader();
 	InitBuffer();
 
 	glutDisplayFunc(drawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
 	glutReshapeFunc(Reshape);										// 다시 그리기 함수 지정
 	glutTimerFunc(timerCycle, Timer, 1);
+	glutKeyboardFunc(Keyboard);
 	glutMouseFunc(Mouse);
 	glutMainLoop();													// 이벤트 처리 시작 
 }
@@ -207,7 +240,7 @@ GLvoid drawScene()
 		// 사용할 VAO 불러오기
 		glBindVertexArray(vao[i]);
 		// 삼각형 그리기
-		glDrawArrays(GL_TRIANGLES, 0, shapeTriNum[i]*3);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	}
 
@@ -237,20 +270,7 @@ GLvoid Mouse(int button, int state, int x, int y)
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		shapeAnim[nextShapeIndex] = true;
-
-		shapeOrigin[nextShapeIndex][0] = normalizedX;
-		shapeOrigin[nextShapeIndex][1] = normalizedY;
-
-		shapeAngle[nextShapeIndex] = 5;
-		shapeRadius[nextShapeIndex] = 0.1f;
-
-		nextShapeIndex += 1;
-		nextShapeIndex %= 10;
-
-		InitBuffer();
-
-		glutPostRedisplay();
+		// 없음
 	}
 }
 
@@ -274,25 +294,94 @@ char* filetobuf(const char* file)
 
 GLvoid Timer(int value)
 {
-	for (int i = 0; i < SHAPENUM; ++i)
+	if (posAnim == true)
 	{
-		if (shapeAnim[i] == true)
+		posAnimCounter++;
+
+		if (posAnimDirectiection == true)
 		{
-			shapeTriNum[i] += 1;
-			shapeStartPos[i].push_back(shapeOrigin[i]);
-			
-			float x1 = shapeOrigin[i][0] + (cos(getRadian(shapeAngle[i]))* shapeRadius[i]);
-			float y1 = shapeOrigin[i][1] + (sin(getRadian(shapeAngle[i])) * shapeRadius[i]);
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[0][i][1] += animDelta;
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[2][i][1] -= animDelta;
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[1][i][0] += animDelta;
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[3][i][0] -= animDelta;
+			}
 
-			float x2 = shapeOrigin[i][0] + (cos(getRadian(shapeAngle[i] + 1)) * shapeRadius[i]);
-			float y2 = shapeOrigin[i][1] + (sin(getRadian(shapeAngle[i] + 1)) * shapeRadius[i]);
-			shapeStartPos[i].push_back(array<GLfloat, 3>{x1,y1,0});
-			shapeStartPos[i].push_back(array<GLfloat, 3>{x2,y2, 0});
+		}
+		else
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[0][i][1] -= animDelta;
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[2][i][1] += animDelta;
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[1][i][0] -= animDelta;
+			}
+			for (int i = 0; i < 3; ++i)
+			{
+				shapeStartPos[3][i][0] += animDelta;
+			}
+		}
 
-			shapeAngle[i] += 1;
-			shapeRadius[i] += 0.001;
+		if (posAnimCounter >= 0.6 / animDelta)
+		{
+			posAnimCounter = 0;
+			posAnimDirectiection = !posAnimDirectiection;
 		}
 	}
+	if (anim == true)
+	{
+		scaleAnimCounter++;
+
+		if (scaleAnimDirection == true)
+		{
+			
+			shapeStartPos[0][1][0] += animDelta;
+			shapeStartPos[0][2][0] -= animDelta;
+			shapeStartPos[2][1][0] -= animDelta;
+			shapeStartPos[2][2][0] += animDelta;
+			
+			shapeStartPos[1][1][1] -= animDelta;
+			shapeStartPos[1][2][1] += animDelta;
+			shapeStartPos[3][1][1] += animDelta;
+			shapeStartPos[3][2][1] -= animDelta;
+
+		}
+		else
+		{
+			shapeStartPos[0][1][0] -= animDelta;
+			shapeStartPos[0][2][0] += animDelta;
+			shapeStartPos[2][1][0] += animDelta;
+			shapeStartPos[2][2][0] -= animDelta;
+
+			shapeStartPos[1][1][1] += animDelta;
+			shapeStartPos[1][2][1] -= animDelta;
+			shapeStartPos[3][1][1] -= animDelta;
+			shapeStartPos[3][2][1] += animDelta;
+		}
+
+		if (scaleAnimCounter >= 0.4 / animDelta)
+		{
+			scaleAnimCounter = 0;
+			scaleAnimDirection = !scaleAnimDirection;
+		}
+	}
+
 
 	InitBuffer();
 
@@ -303,4 +392,24 @@ GLvoid Timer(int value)
 float getRadian(float angle)
 {
 	return angle * (PI / 180);
+}
+
+
+GLvoid Keyboard(unsigned char key, int x, int y)
+{
+	char receivedKey = key;
+	if (islower(receivedKey) != 0)
+		receivedKey = toupper(receivedKey);
+
+	switch (receivedKey) {
+	case 'T':														// 배경색을 빨강색으로 설정
+		posAnim = !posAnim;
+		break;
+	case 'S':
+		anim = !anim;
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();											//배경색이 바뀔때마다 출력 콜백함수를 호출하여 화면을 refresh 한다
 }
