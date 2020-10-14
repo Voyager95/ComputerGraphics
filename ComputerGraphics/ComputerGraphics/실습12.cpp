@@ -1,58 +1,57 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
-#include <gl/glew.h> // 필요한 헤더파일 include
+#include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
+#include <gl/glm/glm.hpp>
+#include <gl/glm/ext.hpp>
+#include <gl/glm/gtc/matrix_transform.hpp>
 #include <array>
 #include <random>
 #include <memory>
 #include <cmath>
 
-#define SHAPENUM 4
-#define PI 3.14159265
-using namespace std;
 
-// 타이머
-unsigned int timerCycle = 100;
+//--- 전역 변수
+#define SHAPENUM 2
+const unsigned int TIMER_CYCLE= 100;
+unsigned int WINSIZE_X = 800;
+unsigned int WINSIZE_Y = 800;
 
-float getRadian(float angle);
-void make_vertexShader();
-void make_fragmentShader();
+//--- 함수 정의
+void ReadObj(FILE* objFile, glm::vec4* &vertex, glm::vec4* &face);
+void MakeVertexShader();
+void MakeFragmentShader();
 void InitBuffer();
 void InitShader();
 GLvoid Timer(int value);
 GLvoid Keyboard(unsigned char key, int x, int y);
-char* filetobuf(const char* file);
-GLvoid drawScene(GLvoid);
+GLvoid DrawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid Mouse(int button, int state, int x, int y);
+GLvoid MouseMotion(int x, int y);
+char* Filetobuf(const char* file);
 
-random_device rd;
-mt19937 gen(rd());
-uniform_real_distribution<> colorDis(0.0f, 1.0f);
+// 랜덤
+std::random_device rd;
+std::mt19937 gen(rd());
 
+// 랜더링
 GLchar* vertexsource, * fragmentsource; // 소스코드 저장 변수
 GLuint vertexshader, fragmentshader; // 세이더 객체
-array<GLuint, SHAPENUM> s_programs; // 세이더 프로그램
+std::array<GLuint, SHAPENUM> s_programs; // 세이더 프로그램
 
-array<GLuint, SHAPENUM> vao;
-array<GLuint[2], SHAPENUM> vbo;
+std::array<GLuint, SHAPENUM> vao;
+std::array<GLuint[2], SHAPENUM> vbo;
+std::array<GLuint*, SHAPENUM> ebo;
 
-array< vector< array<GLfloat, 3 >>, SHAPENUM > shapeStartPos;
-array<vector<array<GLfloat, 3>>, SHAPENUM> shapeColor;
-array<int, SHAPENUM> shapeTriNum = { 0, };
+std::array< std::vector< std::array<GLfloat, 3 >>, SHAPENUM > shapeStartPos;
+std::array<std::vector<int>, SHAPENUM> shapetri;
+std::array<std::vector<std::array<GLfloat, 3>>, SHAPENUM> shapeColor;
+std::array<int, SHAPENUM> shapeTriNum = { 0, };
 
-const float animDelta = 0.05f;
-bool anim = false;
-int scaleAnimCounter = 0;
-bool scaleAnimDirection = true; // True: 밖을 향함 / False: 안을 향함
-bool posAnim = false;
-int posAnimCounter = 0;
-bool posAnimDirectiection = true;
 
-float winSizeX = 800;
-float winSizeY = 800;
 
 /// <summary>
 /// 윈도우 출력하고 콜백함수 설정 
@@ -65,8 +64,8 @@ void main(int argc, char** argv)
 	glutInit(&argc, argv);											// glut 초기화
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);					// 디스플레이 모드 설정
 	glutInitWindowPosition(100, 100);								// 윈도우의 위치 지정
-	glutInitWindowSize(winSizeX, winSizeY);									// 윈도우의 크기 지정
-	glutCreateWindow("Example1");									// 윈도우 생성(윈도우 이름)
+	glutInitWindowSize(WINSIZE_X, WINSIZE_Y);									// 윈도우의 크기 지정
+	glutCreateWindow("Example");									// 윈도우 생성(윈도우 이름)
 
 	//--- GLEW 초기화하기
 	glewExperimental = GL_TRUE;
@@ -79,47 +78,32 @@ void main(int argc, char** argv)
 	else
 		std::cout << "GLEW Initialized\n";
 
-	//--- 삼각형 초기화하기
-	shapeStartPos[0].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeStartPos[0].push_back(array<GLfloat, 3> {-0.4, 0.4, 0});
-	shapeStartPos[0].push_back(array<GLfloat, 3> {0.4, 0.4, 0});
-	shapeStartPos[1].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeStartPos[1].push_back(array<GLfloat, 3> {0.4, 0.4, 0});
-	shapeStartPos[1].push_back(array<GLfloat, 3> {0.4, -0.4, 0});
-	shapeStartPos[2].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeStartPos[2].push_back(array<GLfloat, 3> {0.4, -0.4, 0});
-	shapeStartPos[2].push_back(array<GLfloat, 3> {-0.4, -0.4, 0});
-	shapeStartPos[3].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeStartPos[3].push_back(array<GLfloat, 3> {-0.4, -0.4, 0});
-	shapeStartPos[3].push_back(array<GLfloat, 3> {-0.4, 0.4, 0});
+	FILE* cube = fopen("Cube.obj", "r");
+	glm::vec4* cubeVertex = nullptr;
+	glm::vec4* cubeFace = nullptr;
+	ReadObj(cube, cubeVertex, cubeFace);
 
-	shapeColor[0].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeColor[0].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[0].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[1].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeColor[1].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[1].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[2].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeColor[2].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[2].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[3].push_back(array<GLfloat, 3> {0, 0, 0});
-	shapeColor[3].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
-	shapeColor[3].push_back(array<GLfloat, 3> {(float)colorDis(gen), (float)colorDis(gen), (float)colorDis(gen)});
+	for (int i = 0; i < 3; i++)
+	{
+		std::cout << (cubeVertex + i)->x << (cubeVertex + i)->y << (cubeVertex + i)->z << std::endl;
+	}
+
 
 	InitShader();
 	InitBuffer();
 
-	glutDisplayFunc(drawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
+	glutDisplayFunc(DrawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
 	glutReshapeFunc(Reshape);										// 다시 그리기 함수 지정
-	glutTimerFunc(timerCycle, Timer, 1);
+	glutTimerFunc(TIMER_CYCLE, Timer, 1);
+	glutMotionFunc(MouseMotion);
 	glutKeyboardFunc(Keyboard);
 	glutMouseFunc(Mouse);
 	glutMainLoop();													// 이벤트 처리 시작 
 }
 
-void make_vertexShader()
+void MakeVertexShader()
 {
-	vertexsource = filetobuf("vertex.glsl");
+	vertexsource = Filetobuf("vertex.glsl");
 	//--- 버텍스 세이더 객체 만들기
 	vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	//--- 세이더 코드를 세이더 객체에 넣기
@@ -133,14 +117,14 @@ void make_vertexShader()
 	if (!result)
 	{
 		glGetShaderInfoLog(vertexshader, 512, NULL, errorLog);
-		cerr << "ERROR: vertex shader 컴파일 실패\n" << errorLog << endl;
+		std::cerr << "ERROR: vertex shader 컴파일 실패\n" << errorLog << std::endl;
 		//return false;
 	}
 }
 
-void make_fragmentShader()
+void MakeFragmentShader()
 {
-	fragmentsource = filetobuf("fragment.glsl");
+	fragmentsource = Filetobuf("fragment.glsl");
 	//--- 프래그먼트 세이더 객체 만들기
 	fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	//--- 세이더 코드를 세이더 객체에 넣기
@@ -154,7 +138,7 @@ void make_fragmentShader()
 	if (!result)
 	{
 		glGetShaderInfoLog(fragmentshader, 512, NULL, errorLog);
-		cerr << "ERROR: fragment shader 컴파일 실패\n" << errorLog << endl;
+		std::cerr << "ERROR: fragment shader 컴파일 실패\n" << errorLog << std::endl;
 		//return false;
 	}
 }
@@ -166,7 +150,7 @@ void InitBuffer()
 		glGenVertexArrays(1, &vao[i]); //--- VAO 를 지정하고 할당하기
 		glBindVertexArray(vao[i]); //--- VAO를 바인드하기
 		glGenBuffers(2, vbo[i]); //--- 2개의 VBO를 지정하고 할당하기
-
+		glGenBuffers(2, &ebo[i][0]); //--- 2개의 EBO를 지정하고 할당하기
 		//--- 1번째 VBO를 활성화하여 바인드하고, 버텍스 속성 (좌표값)을 저장
 		glBindBuffer(GL_ARRAY_BUFFER, vbo[i][0]);
 		// 변수 triShape 에서 버텍스 데이터 값을 버퍼에 복사한다.
@@ -175,6 +159,11 @@ void InitBuffer()
 		{
 			glBufferData(GL_ARRAY_BUFFER, shapeStartPos[i].size() * sizeof(GLfloat) * 3, &shapeStartPos[i][0], GL_STATIC_DRAW);
 		}
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i][0]);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(),)
+
+
 		// 좌표값을 attribute 인덱스 0번에 명시한다: 버텍스 당 3* float
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		// attribute 인덱스 0번을 사용가능하게 함
@@ -197,8 +186,8 @@ void InitBuffer()
 
 void InitShader()
 {
-	make_vertexShader();
-	make_fragmentShader();
+	MakeVertexShader();
+	MakeFragmentShader();
 	//-- shader Program
 	for (int i = 0; i < SHAPENUM; ++i)
 	{
@@ -225,7 +214,7 @@ void InitShader()
 /// 그리기 콜백 함수 
 /// </summary>
 /// <returns></returns>
-GLvoid drawScene()
+GLvoid DrawScene()
 {
 	//--- 변경된 배경색 설정
 	glClearColor(0.5, 0.5, 0.5, 1.0f);
@@ -258,23 +247,37 @@ GLvoid Reshape(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
+GLvoid MouseMotion(int x, int y)
+{
+	//std::cout << x << " , " << y << std::endl;
+
+	float xCoordinate = x - (WINSIZE_X / 2);
+	float yCoordinate = -(y - (WINSIZE_X / 2));
+
+	float normalizedX = xCoordinate / (WINSIZE_X / 2);
+	float normalizedY = yCoordinate / (WINSIZE_X / 2);
+}
+
 GLvoid Mouse(int button, int state, int x, int y)
 {
-	std::cout << x << " , " << y << std::endl;
+	//std::cout << x << " , " << y << std::endl;
 
-	float xCoordinate = x - (winSizeX / 2);
-	float yCoordinate = -(y - (winSizeY / 2));
+	float xCoordinate = x - (WINSIZE_X / 2);
+	float yCoordinate = -(y - (WINSIZE_Y / 2));
 
-	float normalizedX = xCoordinate / (winSizeX / 2);
-	float normalizedY = yCoordinate / (winSizeY / 2);
+	float normalizedX = xCoordinate / (WINSIZE_X / 2);
+	float normalizedY = yCoordinate / (WINSIZE_Y / 2);
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		// 없음
+	}
+
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
 	}
 }
 
-char* filetobuf(const char* file)
+char* Filetobuf(const char* file)
 {
 	FILE* fptr;
 	long length;
@@ -294,104 +297,6 @@ char* filetobuf(const char* file)
 
 GLvoid Timer(int value)
 {
-	if (posAnim == true)
-	{
-		posAnimCounter++;
-
-		if (posAnimDirectiection == true)
-		{
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[0][i][1] += animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[2][i][1] -= animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[1][i][0] += animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[3][i][0] -= animDelta;
-			}
-
-		}
-		else
-		{
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[0][i][1] -= animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[2][i][1] += animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[1][i][0] -= animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[3][i][0] += animDelta;
-			}
-		}
-
-		if (posAnimCounter >= 0.6 / animDelta)
-		{
-			posAnimCounter = 0;
-			posAnimDirectiection = !posAnimDirectiection;
-		}
-	}
-	if (anim == true)
-	{
-		scaleAnimCounter++;
-
-		if (scaleAnimDirection == true)
-		{
-			
-			shapeStartPos[0][1][0] += animDelta;
-			shapeStartPos[0][2][0] -= animDelta;
-			shapeStartPos[2][1][0] -= animDelta;
-			shapeStartPos[2][2][0] += animDelta;
-			
-			shapeStartPos[1][1][1] -= animDelta;
-			shapeStartPos[1][2][1] += animDelta;
-			shapeStartPos[3][1][1] += animDelta;
-			shapeStartPos[3][2][1] -= animDelta;
-
-		}
-		else
-		{
-			shapeStartPos[0][1][0] -= animDelta;
-			shapeStartPos[0][2][0] += animDelta;
-			shapeStartPos[2][1][0] += animDelta;
-			shapeStartPos[2][2][0] -= animDelta;
-
-			shapeStartPos[1][1][1] += animDelta;
-			shapeStartPos[1][2][1] -= animDelta;
-			shapeStartPos[3][1][1] -= animDelta;
-			shapeStartPos[3][2][1] += animDelta;
-		}
-
-		if (scaleAnimCounter >= 0.4 / animDelta)
-		{
-			scaleAnimCounter = 0;
-			scaleAnimDirection = !scaleAnimDirection;
-		}
-	}
-
-
-	InitBuffer();
-
-	glutPostRedisplay();
-	glutTimerFunc(20, Timer, 1);
-}
-
-float getRadian(float angle)
-{
-	return angle * (PI / 180);
 }
 
 
@@ -402,14 +307,55 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		receivedKey = toupper(receivedKey);
 
 	switch (receivedKey) {
-	case 'T':														// 배경색을 빨강색으로 설정
-		posAnim = !posAnim;
+	case 'T':														
 		break;
 	case 'S':
-		anim = !anim;
 		break;
 	default:
 		break;
 	}
-	glutPostRedisplay();											//배경색이 바뀔때마다 출력 콜백함수를 호출하여 화면을 refresh 한다
+	glutPostRedisplay();											
+}
+
+void ReadObj(FILE* objFile, glm::vec4* &vertex, glm::vec4* &face)
+{
+	//--- 1. 전체 버텍스 개수 및 삼각형 개수 세기
+	char count[100];
+	int vertexNum = 0;
+	int faceNum = 0;
+	while (!feof(objFile)) {
+		fscanf(objFile, "%s", count);
+		if (count[0] == 'v' && count[1] == '\0')
+			vertexNum += 1;
+		else if (count[0] == 'f' && count[1] == '\0')
+			faceNum += 1;
+		memset(count, '\0', sizeof(count)); // 배열 초기화
+	}
+	//--- 2. 메모리 할당
+	if (vertex != nullptr)
+		delete(vertex);
+	if (face != nullptr)
+		delete(face);
+	int vertIndex = 0;
+	int faceIndex = 0;
+	vertex = new glm::vec4[vertexNum]; //(glm::vec4*)malloc(sizeof(glm::vec4) * vertexNum);
+	face = new glm::vec4[faceNum]; //(glm::vec4*)malloc(sizeof(glm::vec4) * faceNum);
+
+	//--- 3. 할당된 메모리에 각 버텍스, 페이스 정보 입력
+	char bind[100];
+	rewind(objFile);
+	while (!feof(objFile)) {
+		fscanf(objFile, "%s", bind);
+		if (bind[0] == 'v' && bind[1] == '\0') {
+			fscanf(objFile, "%f %f %f",
+				&vertex[vertIndex].x, &vertex[vertIndex].y,
+				&vertex[vertIndex].z);
+			vertIndex++;
+		}
+		else if (bind[0] == 'f' && bind[1] == '\0') {
+			fscanf(objFile, "%f %f %f",
+				&face[faceIndex].x, &face[faceIndex].y, &face[faceIndex].z);
+			faceIndex++;
+		}
+	}
 }

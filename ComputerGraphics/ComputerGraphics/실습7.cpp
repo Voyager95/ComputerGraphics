@@ -49,7 +49,7 @@ float winSizeY = 800;
 
 GLchar* vertexsource, * fragmentsource; // 소스코드 저장 변수
 GLuint vertexshader, fragmentshader; // 세이더 객체
-array<GLuint, 4> s_programs; // 세이더 프로그램
+array<GLuint, TRINUM> s_programs; // 세이더 프로그램
 
 float triSize = 0.1f;
 
@@ -59,6 +59,7 @@ array<GLfloat[2], TRINUM> triCenter;
 array<GLfloat[3][3], TRINUM> triPos;
 array<GLfloat[3][3], TRINUM> triColor;
 array<GLfloat[2], TRINUM> triDelta;
+array<GLint, TRINUM> triDirection;
 
 GLuint vao, vbo[2];
 
@@ -69,23 +70,75 @@ bool moveTri = false;
 // 타이머
 unsigned int timerCycle = 100;
 
-void ChangeTriangle(int index, float x, float y)
-{
-	GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} , { +triSize + x, -triSize + y ,0}, { x, triSize + y ,0} };
-	GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
-	memcpy(triPos[index], newTriPos, sizeof(newTriPos));
-	memcpy(triColor[index], newColor, sizeof(newColor));
+void ChangeTriangle(int index, float x, float y, int direction)
+{	
+	switch (direction)
+	{
+	case 0:
+	{
+		GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} , { +triSize + x, -triSize + y ,0}, { x, triSize * 2 + y ,0} };
+		//GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+		memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+		//memcpy(triColor[index], newColor, sizeof(newColor));
+	}
+		break;
+	case 1:
+	{
+		GLfloat newTriPos[3][3] = { { -triSize * 2 + x, y ,0} , { +triSize + x, -triSize + y ,0}, { x + triSize, triSize + y ,0} };
+		//GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+		memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+		//memcpy(triColor[index], newColor, sizeof(newColor));
+	}
+		break;
+	case 2:
+	{
+		GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} , { 2 * triSize + x, y ,0} ,{ -triSize + x, triSize + y ,0}};
+		//GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+		memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+		//memcpy(triColor[index], newColor, sizeof(newColor));
+	}
+		break;
+	}
 }
 
 void ChangeTrianglePos(int index, float x, float y)
 {
-	GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} , { +triSize + x, -triSize + y ,0}, { x, triSize + y ,0} };
-	memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+	int direction = triDirection[index];
+	switch (direction)
+	{
+	case 0:
+	{
+		GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} , { +triSize + x, -triSize + y ,0}, { x, triSize * 2 + y ,0} };
+		//GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+		memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+		//memcpy(triColor[index], newColor, sizeof(newColor));
+	}
+	break;
+	case 1:
+	{
+		GLfloat newTriPos[3][3] = { { -triSize * 2 + x, y ,0} , { +triSize + x, -triSize + y ,0}, { x + triSize, triSize + y ,0} };
+		//GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+		memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+		//memcpy(triColor[index], newColor, sizeof(newColor));
+	}
+	break;
+	case 2:
+	{
+		GLfloat newTriPos[3][3] = { { -triSize + x, -triSize + y ,0} ,{ 2 * triSize + x, y ,0}, { -triSize + x, triSize + y ,0} };
+		//GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+		memcpy(triPos[index], newTriPos, sizeof(newTriPos));
+		//memcpy(triColor[index], newColor, sizeof(newColor));
+	}
+	break;
+	}
 }
 
 void ChangeTriangleColor(int index)
 {
-	GLfloat newColor[3][3] = { {colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)},{colorDis(gen),colorDis(gen),colorDis(gen)} };
+	GLfloat color0 = colorDis(gen);
+	GLfloat color1 = colorDis(gen);
+	GLfloat color2 = colorDis(gen);
+	GLfloat newColor[3][3] = { {color0,color1,color2},{color0,color0,color2},{color0,color1,color2} };
 	memcpy(triColor[index], newColor, sizeof(newColor));
 }
 
@@ -110,7 +163,8 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 		triCenter[i][1] = y;
 		triDelta[i][0] = deltaDis(gen);
 		triDelta[i][1] = deltaDis(gen);
-		ChangeTriangle(i, x, y);
+		triDirection[i] = 0;
+		ChangeTriangle(i, x, y, triDirection[i]);
 	}
 
 	//--- GLEW 초기화하기
@@ -174,6 +228,7 @@ GLvoid Timer(int value)
 	{
 		for (int i = 0; i < TRINUM; ++i)
 		{
+			bool isCol = false;
 
 			float dx = triDelta[i][0] * (timerCycle * 0.001);
 			float dy = triDelta[i][1] * (timerCycle * 0.001);
@@ -181,11 +236,20 @@ GLvoid Timer(int value)
 			{
 				dx *= -1;
 				triDelta[i][0] *= -1;
+				isCol = true;
 			}
 			if (triCenter[i][1] + triSize + dy > 1 || triCenter[i][1] - triSize + dy < -1)
 			{
 				dy *= -1;
 				triDelta[i][1] *= -1;
+				isCol = true;
+			}
+
+			if (isCol == true)
+			{
+				triDirection[i] += 1;
+				triDirection[i] %= 3;
+				ChangeTriangle(i, triCenter[i][0], triCenter[i][1], triDirection[i]);
 			}
 
 			triCenter[i][0] += dx;
@@ -212,7 +276,7 @@ GLvoid Mouse(int button, int state, int x, int y)
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		ChangeTriangle(targetTriIndex, normalizedX, normalizedY);
+		ChangeTriangle(targetTriIndex, normalizedX, normalizedY, 0);
 
 		InitBuffer();
 

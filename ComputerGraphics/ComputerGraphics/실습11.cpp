@@ -27,7 +27,7 @@ char* filetobuf(const char* file);
 GLvoid drawScene(GLvoid);
 GLvoid Reshape(int w, int h);
 GLvoid Mouse(int button, int state, int x, int y);
-
+GLvoid MouseMotion(int x, int y);
 random_device rd;
 mt19937 gen(rd());
 uniform_real_distribution<> colorDis(0.0f, 1.0f);
@@ -49,10 +49,15 @@ int scaleAnimCounter = 0;
 bool scaleAnimDirection = true; // True: 밖을 향함 / False: 안을 향함
 bool posAnim = false;
 int posAnimCounter = 0;
-bool posAnimDirectiection = true;
+bool posAnimDirectiection = false;
 
 float winSizeX = 800;
 float winSizeY = 800;
+
+
+vector<array<int, 2>> selectedVertices;
+bool leftMouseButtonDown = false;
+float selectDistance = 0.1;
 
 /// <summary>
 /// 윈도우 출력하고 콜백함수 설정 
@@ -112,6 +117,7 @@ void main(int argc, char** argv)
 	glutDisplayFunc(drawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
 	glutReshapeFunc(Reshape);										// 다시 그리기 함수 지정
 	glutTimerFunc(timerCycle, Timer, 1);
+	glutMotionFunc(MouseMotion);
 	glutKeyboardFunc(Keyboard);
 	glutMouseFunc(Mouse);
 	glutMainLoop();													// 이벤트 처리 시작 
@@ -258,9 +264,42 @@ GLvoid Reshape(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
+GLvoid MouseMotion(int x, int y)
+{
+	//std::cout << x << " , " << y << std::endl;
+
+	float xCoordinate = x - (winSizeX / 2);
+	float yCoordinate = -(y - (winSizeY / 2));
+
+	float normalizedX = xCoordinate / (winSizeX / 2);
+	float normalizedY = yCoordinate / (winSizeY / 2);
+
+	if (leftMouseButtonDown == true && selectedVertices.size() > 0)
+	{
+		cout << selectedVertices.size() << endl;
+
+		for (int i = 0; i < 3; ++i)
+		{
+			cout << shapeStartPos[0][i][0] << ", " << shapeStartPos[0][i][1] << ", " << shapeStartPos[0][i][2] << " / ";
+		}
+		cout << endl;
+
+		for (int i = 0; i < selectedVertices.size(); ++i)
+		{
+			shapeStartPos[selectedVertices[i][0]][selectedVertices[i][1]][0] = normalizedX;
+			shapeStartPos[selectedVertices[i][0]][selectedVertices[i][1]][1] = normalizedY;
+		}
+
+		InitBuffer();
+
+		glutPostRedisplay();
+		
+	}
+}
+
 GLvoid Mouse(int button, int state, int x, int y)
 {
-	std::cout << x << " , " << y << std::endl;
+	//std::cout << x << " , " << y << std::endl;
 
 	float xCoordinate = x - (winSizeX / 2);
 	float yCoordinate = -(y - (winSizeY / 2));
@@ -270,7 +309,22 @@ GLvoid Mouse(int button, int state, int x, int y)
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		// 없음
+		for (int i = 0; i < SHAPENUM; ++i)
+		{
+			for (int o = 0; o < shapeStartPos[i].size(); ++o)
+			{
+				float distance =  sqrt( (normalizedX - shapeStartPos[i][o][0]) * (normalizedX - shapeStartPos[i][o][0]) + (normalizedY - shapeStartPos[i][o][1]) * (normalizedY - shapeStartPos[i][o][1]));
+				if (selectDistance > distance)
+					selectedVertices.push_back(array<int, 2>{i, o});
+			}
+		}
+		leftMouseButtonDown = true;
+	}
+
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		leftMouseButtonDown = false;
+		selectedVertices.clear();
 	}
 }
 
@@ -294,99 +348,6 @@ char* filetobuf(const char* file)
 
 GLvoid Timer(int value)
 {
-	if (posAnim == true)
-	{
-		posAnimCounter++;
-
-		if (posAnimDirectiection == true)
-		{
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[0][i][1] += animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[2][i][1] -= animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[1][i][0] += animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[3][i][0] -= animDelta;
-			}
-
-		}
-		else
-		{
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[0][i][1] -= animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[2][i][1] += animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[1][i][0] -= animDelta;
-			}
-			for (int i = 0; i < 3; ++i)
-			{
-				shapeStartPos[3][i][0] += animDelta;
-			}
-		}
-
-		if (posAnimCounter >= 0.6 / animDelta)
-		{
-			posAnimCounter = 0;
-			posAnimDirectiection = !posAnimDirectiection;
-		}
-	}
-	if (anim == true)
-	{
-		scaleAnimCounter++;
-
-		if (scaleAnimDirection == true)
-		{
-			
-			shapeStartPos[0][1][0] += animDelta;
-			shapeStartPos[0][2][0] -= animDelta;
-			shapeStartPos[2][1][0] -= animDelta;
-			shapeStartPos[2][2][0] += animDelta;
-			
-			shapeStartPos[1][1][1] -= animDelta;
-			shapeStartPos[1][2][1] += animDelta;
-			shapeStartPos[3][1][1] += animDelta;
-			shapeStartPos[3][2][1] -= animDelta;
-
-		}
-		else
-		{
-			shapeStartPos[0][1][0] -= animDelta;
-			shapeStartPos[0][2][0] += animDelta;
-			shapeStartPos[2][1][0] += animDelta;
-			shapeStartPos[2][2][0] -= animDelta;
-
-			shapeStartPos[1][1][1] += animDelta;
-			shapeStartPos[1][2][1] -= animDelta;
-			shapeStartPos[3][1][1] -= animDelta;
-			shapeStartPos[3][2][1] += animDelta;
-		}
-
-		if (scaleAnimCounter >= 0.4 / animDelta)
-		{
-			scaleAnimCounter = 0;
-			scaleAnimDirection = !scaleAnimDirection;
-		}
-	}
-
-
-	InitBuffer();
-
-	glutPostRedisplay();
-	glutTimerFunc(20, Timer, 1);
 }
 
 float getRadian(float angle)

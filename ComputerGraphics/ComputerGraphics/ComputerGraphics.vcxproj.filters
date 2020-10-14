@@ -16,46 +16,62 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{5c3d8e0c-5a9c-42ba-813c-f5e47c937a05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="실습 파일">
+      <UniqueIdentifier>{482ad53d-721c-4c3f-93fe-3588a78adb72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="기본 코드">
+      <UniqueIdentifier>{ca4513d5-74d9-4bf3-8dcd-0c47aa1c5189}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicCode.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="실습1.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습2.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습3.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderBasicCode.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습4.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습5.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습6.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습7.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습9.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>실습 파일</Filter>
     </ClCompile>
     <ClCompile Include="실습10.cpp">
+      <Filter>실습 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="실습11.cpp">
+      <Filter>실습 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="실습12.cpp">
+      <Filter>실습 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Utility.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
+    <ClCompile Include="BasicCode.cpp">
+      <Filter>기본 코드</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderBasicCode.cpp">
+      <Filter>기본 코드</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Renderer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl">
@@ -64,5 +80,19 @@
     <None Include="vertex.glsl">
       <Filter>Shader</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Object.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalUtility.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Renderer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
