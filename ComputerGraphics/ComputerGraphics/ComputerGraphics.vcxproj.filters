@@ -22,6 +22,30 @@
     <Filter Include="기본 코드">
       <UniqueIdentifier>{ca4513d5-74d9-4bf3-8dcd-0c47aa1c5189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{14e1c5c7-32dd-4462-ab43-153f3ba7e582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicComponentSourceFile">
+      <UniqueIdentifier>{9f88816d-dec2-437b-8655-fa169bc08d91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicComponentHeaderFile">
+      <UniqueIdentifier>{5524a8c5-d877-475e-921c-aeef38b00172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SystemSourceFile">
+      <UniqueIdentifier>{056a8970-c4e7-4fc6-ac05-750b5598be27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SystemHeaderFile">
+      <UniqueIdentifier>{8797449b-5dcc-414a-96b8-021ff965fb06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClassHeaderFile">
+      <UniqueIdentifier>{531fe3d7-08b8-4ca7-9699-2a5e379dc610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClassSourceFile">
+      <UniqueIdentifier>{2fd56ecf-d79c-405e-8f37-fcc34a0df468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{e91c66c6-307a-4412-b625-107b2ff1df6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="실습1.cpp">
@@ -57,20 +81,53 @@
     <ClCompile Include="실습12.cpp">
       <Filter>실습 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="BasicCode.cpp">
       <Filter>기본 코드</Filter>
     </ClCompile>
     <ClCompile Include="ShaderBasicCode.cpp">
       <Filter>기본 코드</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Framework.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Component_Renderer.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>SystemSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>SystemSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInstance.cpp">
+      <Filter>ClassSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelInstnce.cpp">
+      <Filter>ClassSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceSystem.cpp">
+      <Filter>SystemSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSystem.cpp">
+      <Filter>SystemSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>ClassSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="실습16.h">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>ClassSourceFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,17 +139,47 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Object.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalUtility.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Renderer.h">
+      <Filter>BasicComponentHeaderFile</Filter>
     </ClInclude>
-    <ClInclude Include="Component_Renderer.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="ResourceSystem.h">
+      <Filter>SystemHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>SystemHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>BasicComponentHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInstance.h">
+      <Filter>ClassHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelInstnce.h">
+      <Filter>ClassHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>BasicComponentHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>SystemHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSystem.h">
+      <Filter>SystemHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>ClassHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>BasicComponentHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>ClassHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>PCH</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

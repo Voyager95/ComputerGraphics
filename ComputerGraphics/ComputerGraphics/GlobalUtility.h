@@ -4,7 +4,7 @@
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
 #include <random>
-#include <stdio.h>
+#include <cstdio>
 #include <gl/glm/glm.hpp>
 #include <gl/glm/ext.hpp>
 #include <gl/glm/gtc/matrix_transform.hpp>
@@ -13,31 +13,25 @@
 
 #pragma region Struct
 
-struct Transform
-{
-public:
-	glm::vec3 position;
-	glm::vec3 rotation;
-	glm::vec3 scale;
-
-	Transform()
-	{
-		position.x = 0;
-		position.y = 0;
-		position.z = 0;
-
-		rotation.x = 0;
-		rotation.y = 0;
-		rotation.z = 0;
-
-		scale.x = 0;
-		scale.y = 0;
-		scale.z = 0;
-	}
-
-};
-
 #pragma endregion
+
+static char* Filetobuf(const char* file)
+{
+	FILE* fptr;
+	long length;
+	char* buf;
+	fptr = fopen(file, "rb"); // Open file for reading
+	if (!fptr) // Return NULL on failure
+		return NULL;
+	fseek(fptr, 0, SEEK_END); // Seek to the end of the file
+	length = ftell(fptr); // Find out how many bytes into the file we are
+	buf = (char*)malloc(length + 1); // Allocate a buffer for the entire length of the file and a null terminator
+	fseek(fptr, 0, SEEK_SET); // Go back to the beginning of the file
+	fread(buf, length, 1, fptr); // Read the contents of the file in to the buffer
+	fclose(fptr); // Close the file
+	buf[length] = 0; // Null terminator
+	return buf; // Return the buffer
+}
 
 
 static void ReadObj(FILE* objFile)

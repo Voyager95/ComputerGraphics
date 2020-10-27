@@ -2,14 +2,22 @@
 #include <gl/glm/glm.hpp>
 #include <gl/glm/ext.hpp>
 #include <gl/glm/gtc/matrix_transform.hpp>
+#include <string>
+#include <list>
+#include <memory>
 #include "GlobalUtility.h"
 
-class Object
+class Component;
+class Transform;
+
+class Object : std::enable_shared_from_this<Object>
 {
 public:
-	Transform* transform;
-	
+	std::string tag;
 private:
-	void Draw();
+	std::list<std::shared_ptr<Component>> m_Components;
+	std::shared_ptr<Transform> m_Transform;
+public:
+	Object();
 };
 
