@@ -11,5 +11,7 @@
 #include <gl/glm/ext.hpp>
 #include <gl/glm/gtc/matrix_transform.hpp>
 #include <array>
+#include <algorithm>
 #include <random>
 #include <cmath>
+#include "GlobalUtility.h"

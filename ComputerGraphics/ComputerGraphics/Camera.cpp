@@ -1,5 +1,6 @@
-#include "Camera.h"
 #include "stdafx.h"
+#include "Camera.h"
+
 Camera::Camera(std::shared_ptr<Object> object) : Component(object)
 {
 	

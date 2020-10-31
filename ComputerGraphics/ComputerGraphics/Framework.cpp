@@ -3,13 +3,17 @@
 #include "ResourceSystem.h"
 #include "SceneSystem.h"
 
+
+#include "Scene.h"
+#include "Object.h"
+#include "Renderer.h"
+
 //--- 전역 변수
 const unsigned int TIMER_CYCLE = 100;
 unsigned int WINSIZE_X = 800;
 unsigned int WINSIZE_Y = 800;
 
 //--- 함수 정의
-GLvoid Timer(int value);											// 타이머 이벤트 함수
 GLvoid Keyboard(unsigned char key, int x, int y);					// 키보드 이벤트 함수
 GLvoid DrawScene(GLvoid);											// 출력 이벤트 함수 
 GLvoid Reshape(int w, int h);										// 창 변경 이벤트 함수
@@ -28,16 +32,27 @@ void main(int argc, char** argv)
 	//--- System 생성
 	RenderSystem::GetInstance();									// 렌더 시스템 생성
 	ResourceSystem::GetInstance();									// 리소스 시스템 생성
-	SceneSystem::GetInstance();										// 씬 시스템 생성
+	SceneSystem& ss = SceneSystem::GetInstance();					// 씬 시스템 생성
+
+		//--- 초기 씬 시작
+	std::shared_ptr<Scene> exercise16 = std::make_shared<Scene>();
+
+	std::shared_ptr<Object> cube = std::make_shared<Object>();
+	auto cubeRenderer = std::make_shared<Renderer>(cube);
+	cubeRenderer->SetSharedModel("Cube.obj");
+	cube->AddComponent(cubeRenderer);
+	exercise16->AddObject(cube);
+
+
+	ss.StartScene(exercise16);
 
 	//--- 이벤트 함수 등록
 	glutDisplayFunc(DrawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
 	glutReshapeFunc(Reshape);										// 다시 그리기 함수 지정
-	glutTimerFunc(TIMER_CYCLE, Timer, 1);							// 타이머
 	glutMotionFunc(MouseMotion);
 	glutKeyboardFunc(Keyboard);										// 마우스 입력
 	glutMouseFunc(Mouse);											// 마우스 클릭
-	glutMainLoop();													// 이벤트 처리 시작 
+	glutMainLoop();													// 이벤트 처리 시작
 }
 
 
@@ -111,15 +126,6 @@ GLvoid Mouse(int button, int state, int x, int y)
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
 	}
-}
-
-/// <summary>
-/// 타이머
-/// </summary>
-/// <param name="value"></param>
-/// <returns></returns>
-GLvoid Timer(int value)
-{
 }
 
 /// <summary>

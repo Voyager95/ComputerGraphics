@@ -1,5 +1,7 @@
-#include "Renderer.h"
 #include "stdafx.h"
+#include "Renderer.h"
+#include "ResourceSystem.h"
+
 Renderer::Renderer(std::shared_ptr<Object> object) : Component(object)
 {
 	//--- 변수 초기화
@@ -29,6 +31,18 @@ void Renderer::SetTargetShader(ShaderType type)
 	//--- 상태 검사
 	CheckState();
 	
+}
+
+void Renderer::SetSharedModel(std::string key)
+{
+	ResourceSystem& ss = ResourceSystem::GetInstance();
+	
+	m_Model = ss.GetModelInstance(key);
+}
+
+void Renderer::SetOwnModel(std::shared_ptr<ModelInstance> model)
+{
+	m_Model = model;
 }
 
 void Renderer::OnEnable()

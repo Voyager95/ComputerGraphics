@@ -1,5 +1,6 @@
-#include "Transform.h"
 #include "stdafx.h"
+#include "Transform.h"
+
 Transform::Transform(std::shared_ptr<Object> object) : Component(object)
 {
 	position.x = 0;

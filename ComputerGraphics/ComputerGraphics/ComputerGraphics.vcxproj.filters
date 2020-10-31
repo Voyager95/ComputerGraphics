@@ -120,14 +120,17 @@
     <ClCompile Include="Scene.cpp">
       <Filter>ClassSourceFile</Filter>
     </ClCompile>
-    <ClCompile Include="실습16.h">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>BasicComponentSourceFile</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>ClassSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="실습16.h">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="실습16.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

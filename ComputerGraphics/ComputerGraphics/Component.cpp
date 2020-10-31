@@ -1,5 +1,6 @@
-#include "Component.h"
 #include "stdafx.h"
+#include "Component.h"
+
 Component::Component(std::shared_ptr<Object> object)
 {
 	//--- 자신이 속해있는 오브젝트를 
@@ -28,15 +29,15 @@ void Component::OnDisable()
 {
 }
 
-void Component::OnPreDraw()
-{
-}
-
-void Component::OnDraw()
+void Component::OnPreRender()
 {
 }
 
 void Component::OnUpdate()
+{
+}
+
+void Component::OnLateUpdate()
 {
 }
 

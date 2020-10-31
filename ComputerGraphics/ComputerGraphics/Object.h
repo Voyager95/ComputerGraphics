@@ -1,14 +1,9 @@
 #pragma once
-#include <gl/glm/glm.hpp>
-#include <gl/glm/ext.hpp>
-#include <gl/glm/gtc/matrix_transform.hpp>
-#include <string>
-#include <list>
-#include <memory>
-#include "GlobalUtility.h"
+#include "stdafx.h"
 
 class Component;
 class Transform;
+class Renderer;
 
 class Object : std::enable_shared_from_this<Object>
 {
@@ -19,5 +14,27 @@ private:
 	std::shared_ptr<Transform> m_Transform;
 public:
 	Object();
-};
 
+	//---Getter
+	std::list<std::shared_ptr<Component>> GetComponents() { return m_Components; }
+
+	template<class T>
+	std::shared_ptr<T> AddComponent();
+
+	void AddComponent(std::shared_ptr<Component> component);
+
+	/// <summary>
+	/// 컴포넌트들의 OnUpdate함수를 호출합니다.
+	/// </summary>
+	void OnUpdate();
+
+	/// <summary>
+	/// 컴포넌트들의 OnLateUpdate함수를 호출합니다.
+	/// </summary>
+	void OnLateUpdate();
+
+	/// <summary>
+	/// 컴포넌트들의 OnPreDraw함수를 호출합니다.
+	/// </summary>
+	void OnPreRender();
+};

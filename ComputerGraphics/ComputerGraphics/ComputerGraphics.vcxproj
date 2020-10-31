@@ -172,6 +172,7 @@
     <ClCompile Include="실습12.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="실습16.cpp" />
     <ClCompile Include="실습16.h" />
     <ClCompile Include="실습2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
