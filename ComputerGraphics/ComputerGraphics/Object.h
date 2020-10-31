@@ -8,14 +8,19 @@ class Renderer;
 class Object : std::enable_shared_from_this<Object>
 {
 public:
+	std::string name;
 	std::string tag;
 private:
 	std::list<std::shared_ptr<Component>> m_Components;
 	std::shared_ptr<Transform> m_Transform;
 public:
+
+	//-- Constructor
 	Object();
+	Object(std::string name);
 
 	//---Getter
+	std::shared_ptr<Transform> GetTransform() { return m_Transform; }
 	std::list<std::shared_ptr<Component>> GetComponents() { return m_Components; }
 
 	template<class T>

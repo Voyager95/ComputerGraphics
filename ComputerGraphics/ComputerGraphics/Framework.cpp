@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Object.h"
 #include "Renderer.h"
+#include "Transform.h"
 
 //--- 전역 변수
 const unsigned int TIMER_CYCLE = 100;
@@ -37,9 +38,14 @@ void main(int argc, char** argv)
 		//--- 초기 씬 시작
 	std::shared_ptr<Scene> exercise16 = std::make_shared<Scene>();
 
-	std::shared_ptr<Object> cube = std::make_shared<Object>();
+	std::shared_ptr<Object> cube = std::make_shared<Object>("Cube");
+
+	auto t =  cube->GetTransform();
+	std::cout << t->GetObjectW()->name << std::endl;
+
 	auto cubeRenderer = std::make_shared<Renderer>(cube);
 	cubeRenderer->SetSharedModel("Cube.obj");
+
 	cube->AddComponent(cubeRenderer);
 	exercise16->AddObject(cube);
 

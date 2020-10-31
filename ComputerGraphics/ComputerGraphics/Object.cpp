@@ -8,8 +8,14 @@
 Object::Object()
 {
 	//--- 기본 트랜스폼을 추가합니다.
-	m_Transform = std::make_shared<Transform>(shared_from_this());
+	//auto thisObject = shared_from_this();
+	m_Transform = std::make_shared<Transform>(std::shared_ptr<Object>(this));
 	m_Components.emplace_back(m_Transform);
+}
+
+Object::Object(std::string name) : Object()
+{
+	this->name = name;
 }
 
 template<class T>
