@@ -16,6 +16,8 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 	glAttachShader(m_Program, fregmentShader);
 	glLinkProgram(m_Program); // 이제 이 프로그램은 실행이 가.능.한 프로그램이 된 것입니다. 
 
+	glUseProgram(m_Program);
+
 	//--- 쉐이더 제거
 	glDeleteShader(vertexShader);
 	glDeleteShader(fregmentShader);
@@ -31,11 +33,15 @@ void ShaderInstance::Render()
 	{
 		auto renderer = rendererPtr->get();
 
+		auto model = renderer->GetModel();
+
+		auto vao = model->vao;
+
 		//-- vao 바인딩
-		glBindVertexArray(renderer->GetModel()->vao);
+		glBindVertexArray(vao);
 
 		// 삼각형 그리기
-		glDrawElements(GL_TRIANGLES, 6, GL_INT,0);
+		glDrawElements(GL_TRIANGLES, model->triesPos.size() * 3, GL_UNSIGNED_INT,0);
 	}
 }
 

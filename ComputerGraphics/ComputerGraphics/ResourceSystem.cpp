@@ -10,9 +10,43 @@ ResourceSystem::ResourceSystem()
 {
 }
 
-std::shared_ptr<ModelInstance> ResourceSystem::GetModelInstance(std::string key)
+std::shared_ptr<ModelInstance> ResourceSystem::GetSharedModelInstance(std::string key)
 {
-	return std::shared_ptr<ModelInstance>();
+	//-- 해당 모델이 존재하지 않는 경우
+	if (m_Models.find(key) == m_Models.end())
+	{
+		//- key를 통해 새롭게 ModelInstance를 생성합니다.
+		auto modelInstance = ReadObj(key);
+
+		// 모델을 찾을 수 없는 경우
+		if (modelInstance == nullptr)
+		{
+			return nullptr;
+		}
+		// 모델을 찾은 경우
+		else
+		{
+			AddModelInstance(key, modelInstance);
+			return modelInstance;
+		}
+	}
+	//-- 해당 모델이 존재하는 경우
+	else
+	{
+		return m_Models[key];
+	}
+}
+
+// *복사생성자로 복사해야하는데 아직모르겠음 ㅠㅠ
+std::shared_ptr<ModelInstance> ResourceSystem::GetCopiedModelInstance(std::string key)
+{
+	auto sharedModel = GetSharedModelInstance(key);
+
+	//ModelInstance d(sharedModel);
+
+	//auto copiedModel = std::make_shared<ModelInstance>(sharedModel);
+
+	return sharedModel;
 }
 
 void ResourceSystem::AddModelInstance(std::string key,std::shared_ptr<ModelInstance> model)
@@ -38,7 +72,7 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
 	auto instance = std::make_shared<ModelInstance>();
 
 	//--- 1. 전체 버텍스 개수 및 삼각형 개수 세기
-	char count[100];
+	char count[128];
 	int vertexNum = 0;
 	int faceNum = 0;
 	while (!feof(objFile)) {
@@ -49,14 +83,6 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
 			faceNum += 1;
 		memset(count, '\0', sizeof(count)); // 배열 초기화
 	}
-	//--- 2. 메모리 할당
-	if (instance->verticesPos != nullptr)
-		instance->verticesPos.reset();
-	if (instance->tries != nullptr)
-		instance->tries.reset();
-
-	instance->verticesPos = std::make_unique<std::vector<glm::vec4>>(); //new glm::vec4[vertexNum]; //(glm::vec4*)malloc(sizeof(glm::vec4) * vertexNum);
-	instance->tries = std::make_unique<std::vector<glm::ivec3>>(); // face = new glm::vec4[faceNum]; //(glm::vec4*)malloc(sizeof(glm::vec4) * faceNum);
 
 	//--- 3. 할당된 메모리에 각 버텍스, 페이스 정보 입력
 	char bind[100];
@@ -64,23 +90,31 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
 	while (!feof(objFile)) {
 		fscanf(objFile, "%s", bind);
 		if (bind[0] == 'v' && bind[1] == '\0') {
-			glm::vec4 vertex = glm::vec4(1);
+			glm::vec3 vertex = glm::vec3(1);
 			
 			fscanf(objFile, "%f %f %f",
-				vertex.x, vertex.y,
-				vertex.z);
+				&vertex.x, &vertex.y,
+				&vertex.z);
 
-			instance->verticesPos.get()->push_back(vertex);
+			std::cout << "("<<vertex.x <<", " <<vertex.y<< ", " << vertex.z << ")" << std::endl;
+
+			instance->verticesPos.push_back(vertex);
 		}
 		else if (bind[0] == 'f' && bind[1] == '\0') {
-			glm::ivec4 tri = glm::ivec4(1);
+			glm::ivec3 triesPos = glm::ivec3(1);
+			glm::ivec3 triesUV = glm::ivec3(1);
+			glm::ivec3 triesNormal = glm::ivec3(1);
 
-			fscanf(objFile, "%f %f %f",
-				tri.x, tri.y, tri.z);
+			fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d",
+				&triesPos.x, &triesUV.x, &triesNormal.x, &triesPos.y, &triesUV.y, &triesNormal.y, &triesPos.z, &triesUV.z, &triesNormal.z );
 
-			instance->tries.get()->push_back(tri);
+			std::cout << "(" << triesPos.x << ", " << triesPos.y << ", " << triesPos.z << ")" << std::endl;
+
+			instance->triesPos.push_back(triesPos);
 		}
 	}
 	fclose(objFile);
+
+	instance->UpdateBuffer();
 	return instance;
 }

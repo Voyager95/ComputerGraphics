@@ -17,13 +17,15 @@ public:
 
 private:
 
-    // 모델 설정
-    bool isSharedModel;
+    //--- 모델 설정
+    bool isSharedModel;             // 이 모델이 ResourceSystem으로부터 가지고온 공유 모델인지 확인합니다.
+    bool m_IsModelExist;              // 모델이 있는지 판단하는 플레그입니다.
     std::shared_ptr<ModelInstance> m_Model;
 
-    // 쉐이더 설정
-    ShaderType m_TargetShader;
+    //--- 쉐이더 설정    
     bool m_IsAssigned;              // 이 렌더러가 렌더시스템에 등록되어 있는지 판단하는 플레그 입니다.
+    ShaderType m_TargetShaderType;
+
 
 
 public:
@@ -33,6 +35,7 @@ public:
 
     //--- Getter
     std::shared_ptr<ModelInstance> GetModel() { return m_Model; }
+    bool GetIsModelExist() { return m_IsModelExist; }
 
     //--- Setter
     void SetTargetShader(ShaderType type);

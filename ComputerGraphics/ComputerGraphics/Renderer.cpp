@@ -5,12 +5,14 @@
 Renderer::Renderer(std::shared_ptr<Object> object) : Component(object)
 {
 	//--- 변수 초기화
-	m_TargetShader = VERTEX;
+	m_TargetShaderType = ShaderType::VERTEX;
 	m_IsAssigned = false;
+	m_IsModelExist = false;
 }
 
 Renderer::Renderer(std::shared_ptr<Object> object, std::string objPath) : Renderer(object)
 {
+	SetSharedModel(objPath);
 }
 
 void Renderer::SetTargetShader(ShaderType type)
@@ -20,13 +22,13 @@ void Renderer::SetTargetShader(ShaderType type)
 	//--- 현재 렌더 시스템에 추가되어 있다면 제거
 	if (m_IsAssigned == true)
 	{
-		rs.SubRenderer(m_TargetShader, shared_from_this());
+		rs.SubRenderer(m_TargetShaderType, shared_from_this());
 		m_IsAssigned = false;
 	}
 	
 
 	//--- 쉐이더 변경
-	m_TargetShader = type;
+	m_TargetShaderType = type;
 
 	//--- 상태 검사
 	CheckState();
@@ -37,12 +39,27 @@ void Renderer::SetSharedModel(std::string key)
 {
 	ResourceSystem& ss = ResourceSystem::GetInstance();
 	
-	m_Model = ss.GetModelInstance(key);
+	auto model = ss.GetSharedModelInstance(key);
+
+	if (model == nullptr)
+	{
+		m_Model = nullptr;
+		m_IsModelExist = false;
+	}
+	else
+	{
+		m_Model = model;
+		m_IsModelExist = true;
+	}
+
+	CheckState();
 }
 
 void Renderer::SetOwnModel(std::shared_ptr<ModelInstance> model)
 {
 	m_Model = model;
+	m_IsModelExist = true;
+	CheckState();
 }
 
 void Renderer::OnEnable()
@@ -59,7 +76,12 @@ void Renderer::CheckState()
 {
 	//--- 렌더를 해야할지 판단합니다. *현재는 enable된 상태라면 ShaderInstance에 등록합니다.
 	bool isRender = true;
+
+	//--- 조건들 확인
 	if (GetEnable() == false)
+		isRender = false;
+
+	if (GetIsModelExist() == false)
 		isRender = false;
 
 	//--- 렌더시스템에 등록 또는 해제 합니다.
@@ -72,7 +94,7 @@ void Renderer::CheckState()
 		else
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
-			rs.AddRenderer(m_TargetShader, shared_from_this());
+			rs.AddRenderer(m_TargetShaderType, shared_from_this());
 		}
 	}
 	else
@@ -80,7 +102,7 @@ void Renderer::CheckState()
 		if (m_IsAssigned)
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
-			rs.SubRenderer(m_TargetShader, shared_from_this());
+			rs.SubRenderer(m_TargetShaderType, shared_from_this());
 		}
 		else
 		{

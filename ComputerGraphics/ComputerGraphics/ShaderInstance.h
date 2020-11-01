@@ -23,7 +23,7 @@ public:
 
 	//--- Getter
 	GLuint GetProgram() { return m_Program; };
-	std::list<std::shared_ptr<Renderer>>& GetRenderer() { return m_TargetRenderer; };
+	std::list<std::shared_ptr<Renderer>>& GetRenderer() {return m_TargetRenderer; };
 
 
 	void Render();

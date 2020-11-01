@@ -13,19 +13,24 @@ class ModelInstance
 {
 public:
     //--- Obj 데이터
-    std::unique_ptr<std::vector<glm::vec4>> verticesPos;
-    std::unique_ptr<std::vector<glm::vec4>> vecticesColor;
-    std::unique_ptr<std::vector<glm::ivec3>> tries;
+    std::vector<glm::vec3> verticesPos;        // 버텍스 위치
+    std::vector<glm::vec3> verticesColor;      // 버텍스 컬러
+    std::vector<glm::vec3> verticesNormal;     // 버텍스 노멀
+    std::vector<glm::vec3> verticesUV;         // 버텍스 UV
+
+    std::vector<glm::ivec3> triesPos;          // 삼각형 위치 인덱스
+    std::vector<glm::ivec3> triesColor;        // 삼각형 색상 인덱스
+    std::vector<glm::ivec3> triesNormal;       // 삼각형 노멀 인덱스
+    std::vector<glm::ivec3> triesUV;           // 삼각형 UV 인덱스
 
     //--- Buffer 참조 변수
-    GLuint vao;
+    GLuint vao, ebo;
     GLuint vbo_Pos;
     GLuint vbo_Color;    // 00: vertexPosition 01: vertexColor
-    GLuint evo_Pos;
-    GLuint evo_Color;    // 00: vertexPosition 01: vertexColor
 
+private:
     //--- 플레그
-    bool isBufferGen;   // 버퍼가 생성되었는지 판단합니다.
+    bool m_IsBufferGen;   // 버퍼가 생성되었는지 판단합니다.
 
 public:
     ModelInstance();

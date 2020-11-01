@@ -36,7 +36,7 @@ GLvoid MainLoop(int value)
 {
 	SceneSystem& ss = SceneSystem::GetInstance();
 	RenderSystem& rs = RenderSystem::GetInstance();
-	if (ss.LoopEnd() != false)
+	if (ss.LoopEnd() != true)
 	{
 		//--- Update문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
@@ -57,7 +57,7 @@ GLvoid MainLoop(int value)
 		}
 
 		//--- 렌더
-		rs.Render();
+		glutPostRedisplay();
 
 		//--- 메인루프 재귀 호출
 		glutTimerFunc(20, MainLoop, 1);

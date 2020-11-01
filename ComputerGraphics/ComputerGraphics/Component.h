@@ -1,6 +1,8 @@
 #pragma once
-#include <memory>
-#include "Object.h"
+#include "stdafx.h"
+
+class Object;
+
 class Component
 {
 private:

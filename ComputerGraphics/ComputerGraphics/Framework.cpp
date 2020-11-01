@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "ModelInstnce.h"
 
 //--- 전역 변수
 const unsigned int TIMER_CYCLE = 100;
@@ -32,10 +33,10 @@ void main(int argc, char** argv)
 
 	//--- System 생성
 	RenderSystem::GetInstance();									// 렌더 시스템 생성
-	ResourceSystem::GetInstance();									// 리소스 시스템 생성
+	ResourceSystem& rs = ResourceSystem::GetInstance();									// 리소스 시스템 생성
 	SceneSystem& ss = SceneSystem::GetInstance();					// 씬 시스템 생성
 
-		//--- 초기 씬 시작
+	//--- 초기 씬 시작
 	std::shared_ptr<Scene> exercise16 = std::make_shared<Scene>();
 
 	std::shared_ptr<Object> cube = std::make_shared<Object>("Cube");
@@ -44,9 +45,30 @@ void main(int argc, char** argv)
 	std::cout << t->GetObjectW()->name << std::endl;
 
 	auto cubeRenderer = std::make_shared<Renderer>(cube);
-	cubeRenderer->SetSharedModel("Cube.obj");
 
-	cube->AddComponent(cubeRenderer);
+	//auto model = rs.GetCopiedModelInstance("Cube.obj");
+	//for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
+	//{
+	//	*i *= -0.1;
+	//}
+	//model->UpdateBuffer();
+
+	auto model = std::make_shared<ModelInstance>();
+	model->verticesPos.push_back(glm::vec3(-0.1, -0.1, 0));	
+	model->verticesPos.push_back(glm::vec3(0, 0.1, 0));
+	model->verticesPos.push_back(glm::vec3(0.1, -0.1, 0));
+
+	model->verticesColor.push_back(glm::vec3(1, 0, 0));
+	model->verticesColor.push_back(glm::vec3(0, 1, 0));
+	model->verticesColor.push_back(glm::vec3(0, 0, 1));
+
+	model->triesPos.push_back(glm::ivec3(0, 1, 2));
+	model->triesColor.push_back(glm::ivec3(2, 1, 0));
+
+	model->UpdateBuffer();
+
+	cubeRenderer->SetOwnModel(model);
+
 	exercise16->AddObject(cube);
 
 
@@ -67,16 +89,10 @@ void main(int argc, char** argv)
 /// </summary>
 /// <returns></returns>
 GLvoid DrawScene()
-{
+{	
 	//--- 렌더시스템으로 그립니다.
 	RenderSystem& renderSys = RenderSystem::GetInstance();
 	renderSys.Render();
-
-	//--- 변경된 배경색 설정
-	glClearColor(0.5, 0.5, 0.5, 1.0f);
-	//glClearColor(1.0, 1.0, 1.0, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// 렌더링 파이프라인에 세이더 불러오기
 }
 
 /// <summary>

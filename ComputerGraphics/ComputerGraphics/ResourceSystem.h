@@ -33,13 +33,21 @@ public:
 	ResourceSystem();
 
 	//--- Model
-	std::shared_ptr<ModelInstance> GetModelInstance(std::string key);
 
 	/// <summary>
-	/// 특정패스에 있는 오브젝트를 찾고 
+	/// 해당 키에 맞는 모델인스턴스를 반환합니다.
+	/// 로드되어있는 모델이 없는 경우에 해당 키를 path로 하여 obj파일을 찾아 모델인스턴스를 생성하여 반환합니다.
+	/// </summary>
+	/// <param name="key">모델인스턴스의 키</param>
+	/// <returns>키에 해당하는 모델인스턴스를 반환합니다. *해당인스턴스를 반환할 수 없을 때, Null값을 반한</returns>
+	std::shared_ptr<ModelInstance> GetSharedModelInstance(std::string key);
+
+	/// <summary>
+	/// 복사 하여 반환해줍니다
 	/// </summary>
 	/// <param name="key"></param>
-	void AddModelInstance(std::string path);
+	/// <returns></returns>
+	std::shared_ptr<ModelInstance> GetCopiedModelInstance(std::string key);
 
 	/// <summary>
 	/// 특정 모델인스턴스를 추가합니다.
