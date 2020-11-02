@@ -105,12 +105,14 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
 			glm::ivec3 triesUV = glm::ivec3(1);
 			glm::ivec3 triesNormal = glm::ivec3(1);
 
-			fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d",
+			int result = fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d",
 				&triesPos.x, &triesUV.x, &triesNormal.x, &triesPos.y, &triesUV.y, &triesNormal.y, &triesPos.z, &triesUV.z, &triesNormal.z );
-
-			std::cout << "(" << triesPos.x << ", " << triesPos.y << ", " << triesPos.z << ")" << std::endl;
-
-			instance->triesPos.push_back(triesPos);
+			
+			if (result > 0)
+			{
+				std::cout << "(" << triesPos.x << ", " << triesPos.y << ", " << triesPos.z << ")" << std::endl;
+				instance->triesPos.push_back(triesPos);
+			}
 		}
 	}
 	fclose(objFile);

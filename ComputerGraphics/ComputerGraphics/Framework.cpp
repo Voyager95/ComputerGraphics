@@ -46,26 +46,26 @@ void main(int argc, char** argv)
 
 	auto cubeRenderer = std::make_shared<Renderer>(cube);
 
-	//auto model = rs.GetCopiedModelInstance("Cube.obj");
-	//for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
-	//{
-	//	*i *= -0.1;
-	//}
-	//model->UpdateBuffer();
-
-	auto model = std::make_shared<ModelInstance>();
-	model->verticesPos.push_back(glm::vec3(-0.1, -0.1, 0));	
-	model->verticesPos.push_back(glm::vec3(0, 0.1, 0));
-	model->verticesPos.push_back(glm::vec3(0.1, -0.1, 0));
-
-	model->verticesColor.push_back(glm::vec3(1, 0, 0));
-	model->verticesColor.push_back(glm::vec3(0, 1, 0));
-	model->verticesColor.push_back(glm::vec3(0, 0, 1));
-
-	model->triesPos.push_back(glm::ivec3(0, 1, 2));
-	model->triesColor.push_back(glm::ivec3(2, 1, 0));
-
+	auto model = rs.GetCopiedModelInstance("Cube.obj");
+	for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
+	{
+		*i *= 0.2;
+	}
 	model->UpdateBuffer();
+
+	//auto model = std::make_shared<ModelInstance>();
+	//model->verticesPos.push_back(glm::vec3(-0.1, -0.1, 0));	
+	//model->verticesPos.push_back(glm::vec3(0, 0.1, 0));
+	//model->verticesPos.push_back(glm::vec3(0.1, -0.1, 0));
+
+	//model->verticesColor.push_back(glm::vec3(1, 0, 0));
+	//model->verticesColor.push_back(glm::vec3(0, 1, 0));
+	//model->verticesColor.push_back(glm::vec3(0, 0, 1));
+
+	//model->triesPos.push_back(glm::ivec3(0, 1, 2));
+	//model->triesColor.push_back(glm::ivec3(2, 1, 0));
+
+	//model->UpdateBuffer();
 
 	cubeRenderer->SetOwnModel(model);
 
