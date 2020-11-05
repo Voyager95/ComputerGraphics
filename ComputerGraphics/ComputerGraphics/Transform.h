@@ -16,6 +16,10 @@ public:
 
 	glm::mat4x4 posMat;
 
+	//--- Constructor
 	Transform(std::shared_ptr<Object> object);
+
+	//--- Getter
+	glm::mat4x4 GetTransformMatrix();
 };
 

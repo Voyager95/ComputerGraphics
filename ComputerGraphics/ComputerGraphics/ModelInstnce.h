@@ -1,9 +1,5 @@
 #pragma once
-#include <memory>
-#include <array>
-#include <vector>
-#include <gl/glm/glm.hpp>
-#include <gl/glew.h>
+#include "stdafx.h"
 
 /// <summary>
 /// 모델정보를 가지고 있는 인스턴스입니다.
@@ -11,6 +7,9 @@
 /// </summary>
 class ModelInstance
 {
+public:
+
+
 public:
     //--- Obj 데이터
     std::vector<glm::vec3> verticesPos;        // 버텍스 위치
@@ -50,5 +49,10 @@ public:
     /// 버퍼를 최신화합니다.
     /// </summary>
     void UpdateBuffer();
+
+    /// <summary>
+    /// 각 버텍스에 렌덤한 색상을 부여합니다.
+    /// </summary>
+    void RandomColor();
 };
 

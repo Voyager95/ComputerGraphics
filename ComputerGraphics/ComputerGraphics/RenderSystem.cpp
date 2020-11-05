@@ -27,6 +27,8 @@ RenderSystem::RenderSystem()
 	else
 		std::cout << "GLEW Initialized\n";
 
+
+
 	//--- ½¦ÀÌ´õ »ý¼º
 	InitShader();
 }

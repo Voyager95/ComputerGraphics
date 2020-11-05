@@ -14,4 +14,11 @@
 #include <algorithm>
 #include <random>
 #include <cmath>
+#include <random>
+
 #include "GlobalUtility.h"
+
+//--- ·»´ý ÇÔ¼ö Á¤ÀÇ
+static std::random_device rd;
+static std::mt19937 gen(rd());
+static std::uniform_real_distribution<> colorDis(0.0f, 1.0f);

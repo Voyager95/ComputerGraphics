@@ -3,12 +3,7 @@
 #include "ResourceSystem.h"
 #include "SceneSystem.h"
 
-
-#include "Scene.h"
-#include "Object.h"
-#include "Renderer.h"
-#include "Transform.h"
-#include "ModelInstnce.h"
+#include "Exercise17.h"
 
 //--- 전역 변수
 const unsigned int TIMER_CYCLE = 100;
@@ -21,63 +16,28 @@ GLvoid DrawScene(GLvoid);											// 출력 이벤트 함수
 GLvoid Reshape(int w, int h);										// 창 변경 이벤트 함수
 GLvoid Mouse(int button, int state, int x, int y);					// 마우스 클릭 이벤트 함수
 GLvoid MouseMotion(int x, int y);									// 마우스 움직임 이벤트 함수
+GLvoid InitialLoop(int value);										// 처음으로 돌아가는 루프입니다.
 
 void main(int argc, char** argv)
 {
 	//--- 윈도우 생성하기
 	glutInit(&argc, argv);											// glut 초기화
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);					// 디스플레이 모드 설정
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);		// 디스플레이 모드 설정
+	glEnable(GL_DEPTH_TEST);
 	glutInitWindowPosition(100, 100);								// 윈도우의 위치 지정
 	glutInitWindowSize(WINSIZE_X, WINSIZE_Y);						// 윈도우의 크기 지정
 	glutCreateWindow("Example");									// 윈도우 생성(윈도우 이름)
 
 	//--- System 생성
 	RenderSystem::GetInstance();									// 렌더 시스템 생성
-	ResourceSystem& rs = ResourceSystem::GetInstance();									// 리소스 시스템 생성
-	SceneSystem& ss = SceneSystem::GetInstance();					// 씬 시스템 생성
-
-	//--- 초기 씬 시작
-	std::shared_ptr<Scene> exercise16 = std::make_shared<Scene>();
-
-	std::shared_ptr<Object> cube = std::make_shared<Object>("Cube");
-
-	auto t =  cube->GetTransform();
-	std::cout << t->GetObjectW()->name << std::endl;
-
-	auto cubeRenderer = std::make_shared<Renderer>(cube);
-
-	auto model = rs.GetCopiedModelInstance("Cube.obj");
-	for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
-	{
-		*i *= 0.2;
-	}
-	model->UpdateBuffer();
-
-	//auto model = std::make_shared<ModelInstance>();
-	//model->verticesPos.push_back(glm::vec3(-0.1, -0.1, 0));	
-	//model->verticesPos.push_back(glm::vec3(0, 0.1, 0));
-	//model->verticesPos.push_back(glm::vec3(0.1, -0.1, 0));
-
-	//model->verticesColor.push_back(glm::vec3(1, 0, 0));
-	//model->verticesColor.push_back(glm::vec3(0, 1, 0));
-	//model->verticesColor.push_back(glm::vec3(0, 0, 1));
-
-	//model->triesPos.push_back(glm::ivec3(0, 1, 2));
-	//model->triesColor.push_back(glm::ivec3(2, 1, 0));
-
-	//model->UpdateBuffer();
-
-	cubeRenderer->SetOwnModel(model);
-
-	exercise16->AddObject(cube);
-
-
-	ss.StartScene(exercise16);
+	ResourceSystem::GetInstance();									// 리소스 시스템 생성
+	SceneSystem::GetInstance();										// 씬 시스템 생성
 
 	//--- 이벤트 함수 등록
 	glutDisplayFunc(DrawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
 	glutReshapeFunc(Reshape);										// 다시 그리기 함수 지정
 	glutMotionFunc(MouseMotion);
+	glutTimerFunc(0, InitialLoop, 1);								// 처음
 	glutKeyboardFunc(Keyboard);										// 마우스 입력
 	glutMouseFunc(Mouse);											// 마우스 클릭
 	glutMainLoop();													// 이벤트 처리 시작
@@ -172,4 +132,13 @@ GLvoid Keyboard(unsigned char key, int x, int y)
 		break;
 	}
 	glutPostRedisplay();
+}
+
+GLvoid InitialLoop(int value)
+{
+	auto scene = std::make_shared< Exercise17>();
+
+	auto& ss = SceneSystem::GetInstance();
+
+	ss.StartScene(std::static_pointer_cast<Scene>(scene));
 }

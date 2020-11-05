@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Object.h"
 #include "Component.h"
+
 SceneSystem& SceneSystem::GetInstance()
 {
 	static SceneSystem instance;

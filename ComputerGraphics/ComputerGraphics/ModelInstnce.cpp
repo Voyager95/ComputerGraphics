@@ -1,5 +1,6 @@
-#include "ModelInstnce.h"
 #include "stdafx.h"
+#include "ModelInstnce.h"
+
 ModelInstance::ModelInstance()
 {	
 	//--- 버퍼 생성
@@ -73,4 +74,14 @@ void ModelInstance::UpdateBuffer()
 	//--- ebo_Pos를 활성화 하여 삼각형 정보를 바인드한다.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);		// GL_ELEMENT_ARRAY_BUFFER 버퍼 유형으로 바인딩
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, triesPos.size() * sizeof(glm::ivec3), &triesPos[0], GL_STATIC_DRAW);
+}
+
+void ModelInstance::RandomColor()
+{
+	verticesColor.clear();
+
+	for (int i = 0; i < verticesPos.size(); ++i)
+	{
+		verticesColor.push_back(glm::vec3(colorDis(gen), colorDis(gen), colorDis(gen)));
+	}
 }

@@ -1,6 +1,9 @@
-#include "ShaderInstance.h"
+#pragma once
 #include "stdafx.h"
+#include "ShaderInstance.h"
 #include "Renderer.h"
+#include "Object.h"
+#include "Transform.h"
 
 ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmentShaderPath)
 {
@@ -15,12 +18,14 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 	glAttachShader(m_Program, vertexShader);
 	glAttachShader(m_Program, fregmentShader);
 	glLinkProgram(m_Program); // 이제 이 프로그램은 실행이 가.능.한 프로그램이 된 것입니다. 
-
 	glUseProgram(m_Program);
 
 	//--- 쉐이더 제거
 	glDeleteShader(vertexShader);
 	glDeleteShader(fregmentShader);
+
+	//--- 쉐이더 Uniform변수 생성
+	m_TransformMat = glGetUniformLocation(GetProgram(), "transform");
 }
 
 void ShaderInstance::Render()
@@ -31,16 +36,17 @@ void ShaderInstance::Render()
 	//---이 쉐이더프로그램으로 그려야할 모든 렌더러들의 vao를 가지고와 그린다.
 	for (auto rendererPtr = GetRenderer().begin(); rendererPtr != GetRenderer().end(); ++rendererPtr)
 	{
-		auto renderer = rendererPtr->get();
-
-		auto model = renderer->GetModel();
-
-		auto vao = model->vao;
-
 		//-- vao 바인딩
+		auto renderer = rendererPtr->get();
+		auto model = renderer->GetModel();
+		auto vao = model->vao;
 		glBindVertexArray(vao);
 
-		// 삼각형 그리기
+		//-- Uniform변수 전달
+		auto transform = renderer->GetObjectW()->GetTransform();
+		glUniformMatrix4fv(m_TransformMat, 1, GL_FALSE, glm::value_ptr(transform->GetTransformMatrix()));
+
+		//-- 삼각형 그리기
 		glDrawElements(GL_TRIANGLES, model->triesPos.size() * 3, GL_UNSIGNED_INT,0);
 	}
 }
@@ -63,7 +69,7 @@ void ShaderInstance::AddRenderer(std::shared_ptr<Renderer> renderer)
 
 GLuint ShaderInstance::MakeVertexShader(std::string vertexShaderPath)
 {
-	char* vertexsource = Filetobuf(vertexShaderPath.c_str());
+	char* vertexsource = GlobalUtility::Filetobuf(vertexShaderPath.c_str());
 	//--- 버텍스 세이더 객체 만들기
 	GLuint vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	//--- 세이더 코드를 세이더 객체에 넣기
@@ -85,7 +91,7 @@ GLuint ShaderInstance::MakeVertexShader(std::string vertexShaderPath)
 
 GLuint ShaderInstance::MakeFragmentShader(std::string fregmentShaderPath)
 {
-	char* fragmentsource = Filetobuf(fregmentShaderPath.c_str());
+	char* fragmentsource = GlobalUtility::Filetobuf(fregmentShaderPath.c_str());
 	//--- 프래그먼트 세이더 객체 만들기
 	GLuint fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	//--- 세이더 코드를 세이더 객체에 넣기

@@ -146,7 +146,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Exercise17.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="GlobalUtility.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="ModelInstnce.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -172,8 +174,6 @@
     <ClCompile Include="실습12.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="실습16.cpp" />
-    <ClCompile Include="실습16.h" />
     <ClCompile Include="실습2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -199,10 +199,11 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Exercise17.h" />
+    <ClInclude Include="GlobalUtility.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ModelInstnce.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="GlobalUtility.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ResourceSystem.h" />

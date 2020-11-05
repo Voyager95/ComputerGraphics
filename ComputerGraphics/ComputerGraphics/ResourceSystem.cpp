@@ -1,5 +1,6 @@
-#include "ResourceSystem.h"
 #include "stdafx.h"
+#include "ResourceSystem.h"
+
 ResourceSystem& ResourceSystem::GetInstance()
 {
 	static ResourceSystem instance;
