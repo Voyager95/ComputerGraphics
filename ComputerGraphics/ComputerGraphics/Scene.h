@@ -6,11 +6,11 @@ class Object;
 class Scene
 {
 public:
-	std::vector<std::shared_ptr<Object>> objects;
-public:
+	std::list<std::shared_ptr<Object>> objects;
 	Scene();
 
 	void AddObject(std::shared_ptr<Object> object);
+	void SubObject(std::shared_ptr<Object> object);
 private:
 };
 

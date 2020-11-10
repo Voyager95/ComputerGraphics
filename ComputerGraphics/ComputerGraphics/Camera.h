@@ -5,7 +5,7 @@
 class Camera :
     public Component
 {
-public:
+private:
     static std::list<std::shared_ptr<Camera>> cameras;
     static std::shared_ptr<Camera> main;
 private:
@@ -13,7 +13,17 @@ private:
 public:
     Camera(std::shared_ptr<Object> object);
 
+    //--- Getter
+    int GetPriority() { return m_Priority; }
+
+    //--- Setter
+    void SetPriority(int value);
+
+    glm::mat4 GetViewMatrix();
+
     virtual void OnCreate();
     virtual void OnDestory();
+
+private:
 };
 

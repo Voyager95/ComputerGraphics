@@ -3,7 +3,7 @@
 
 class Object;
 
-class Component
+class Component : public std::enable_shared_from_this<Component>
 {
 private:
 	std::shared_ptr<Object> m_Object;
@@ -14,7 +14,7 @@ public:
 
 	//--- Getter
 	bool GetEnable() { return m_Enable; }
-	std::shared_ptr<Object> GetObject() { return m_Object; }
+	std::shared_ptr<Object> GetBelongingObject() { return m_Object; }
 
 	//--- Setter
 	void SetEnable(bool value) { m_Enable = value; if (value == true) OnEnable(); else OnDisable(); }

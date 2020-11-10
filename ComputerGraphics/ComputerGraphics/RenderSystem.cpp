@@ -27,10 +27,9 @@ RenderSystem::RenderSystem()
 	else
 		std::cout << "GLEW Initialized\n";
 
-
-
 	//--- 쉐이더 생성
 	InitShader();
+
 }
 
 void RenderSystem::Render()
@@ -41,6 +40,7 @@ void RenderSystem::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// 렌더링 파이프라인에 세이더 불러오기
 
+	//--- 메인카메라 렌더링
 	for (auto s = shaders.begin(); s != shaders.end(); ++s)
 	{
 		s->second->Render();

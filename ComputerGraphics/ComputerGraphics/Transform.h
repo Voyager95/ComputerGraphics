@@ -14,8 +14,6 @@ public:
 	glm::vec3 rotation;
 	glm::vec3 scale;
 
-	glm::mat4x4 posMat;
-
 	//--- Constructor
 	Transform(std::shared_ptr<Object> object);
 

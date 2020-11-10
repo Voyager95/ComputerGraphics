@@ -25,7 +25,8 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 	glDeleteShader(fregmentShader);
 
 	//--- 쉐이더 Uniform변수 생성
-	m_TransformMat = glGetUniformLocation(GetProgram(), "transform");
+	m_UniformTransformMat = glGetUniformLocation(GetProgram(), "transform");
+	m_UniformViewMat = glGetUniformLocation(GetProgram(), "view");
 }
 
 void ShaderInstance::Render()
@@ -43,8 +44,8 @@ void ShaderInstance::Render()
 		glBindVertexArray(vao);
 
 		//-- Uniform변수 전달
-		auto transform = renderer->GetObjectW()->GetTransform();
-		glUniformMatrix4fv(m_TransformMat, 1, GL_FALSE, glm::value_ptr(transform->GetTransformMatrix()));
+		auto transform = renderer->GetBelongingObject()->GetTransform();
+		glUniformMatrix4fv(m_UniformTransformMat, 1, GL_FALSE, glm::value_ptr(transform->GetTransformMatrix()));
 
 		//-- 삼각형 그리기
 		glDrawElements(GL_TRIANGLES, model->triesPos.size() * 3, GL_UNSIGNED_INT,0);

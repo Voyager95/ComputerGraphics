@@ -1,5 +1,7 @@
 #pragma once
 
+class Object;
+
 class GlobalUtility
 {
 public:
@@ -20,5 +22,12 @@ public:
 		buf[length] = 0; // Null terminator
 		return buf; // Return the buffer
 	}
+
+	/// <summary>
+	/// 오브젝트를 생성해 줍니다.
+	/// *Transform을 추가해서 줍니다.
+	/// </summary>
+	/// <returns>새로 생성된 오브젝트</returns>
+	static std::shared_ptr<Object> CreateObject();
 };
 

@@ -16,7 +16,8 @@ class ShaderInstance
 {
 private:
 	GLuint m_Program;												// 쉐이더 프로그램
-	GLuint m_TransformMat;											// Uniform 변수
+	GLuint m_UniformTransformMat;									// Uniform 변수
+	GLuint m_UniformViewMat;										// Uniform 변수
 	std::list<std::shared_ptr<Renderer>> m_TargetRenderer;			// 이 쉐이더를 사용하는 렌더러 입니다.
 
 public:

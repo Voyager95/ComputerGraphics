@@ -7,8 +7,6 @@ Component::Component(std::shared_ptr<Object> object)
 	//--- 자신이 속해있는 오브젝트를 넣습니다.
 	m_Object = object;
 
-	object->AddComponent(std::shared_ptr<Component>(this));
-
 	//--- 컴포넌트가 생성되면 최초로 OnCreate 함수를 호출합니다.
 	OnCreate();
 
@@ -18,6 +16,8 @@ Component::Component(std::shared_ptr<Object> object)
 
 Component::~Component()
 {
+	m_Object = nullptr;
+	
 }
 
 void Component::OnCreate()
