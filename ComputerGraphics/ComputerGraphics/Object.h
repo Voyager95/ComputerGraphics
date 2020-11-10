@@ -14,6 +14,7 @@ private:
 	bool m_TransformExist;
 
 	std::list<std::shared_ptr<Component>> m_Components;
+	std::queue<std::shared_ptr<Component>> m_OnCreateComponents;
 	std::shared_ptr<Transform> m_Transform;
 public:
 
@@ -29,8 +30,13 @@ public:
 	template<class T>
 	std::shared_ptr<T> AddComponent();
 
-	void OnAddTransform();
+	void OnAddTransform(std::shared_ptr<Transform> transform);
 	void AddComponent(std::shared_ptr<Component> component);
+
+	/// <summary>
+	/// 컴포넌트들의 OnCreate함수를 호출합니다.
+	/// </summary>
+	void OnCreate();
 
 	/// <summary>
 	/// 컴포넌트들의 OnUpdate함수를 호출합니다.

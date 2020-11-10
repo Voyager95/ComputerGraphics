@@ -5,7 +5,7 @@
 void RenderSystem::InitShader()
 {
 	//---VERTEX shader¿ª √ﬂ∞° 
-	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>( VERTEX , std::make_unique<ShaderInstance>("vertex.glsl", "fragment.glsl")));
+	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>( ShaderType::VERTEX , std::make_unique<ShaderInstance>("vertex.glsl", "fragment.glsl")));
 }
 
 RenderSystem& RenderSystem::GetInstance()

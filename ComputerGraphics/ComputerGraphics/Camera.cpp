@@ -5,8 +5,9 @@
 std::list<std::shared_ptr<Camera>> Camera::cameras;
 std::shared_ptr<Camera> Camera::main = nullptr;
 
-Camera::Camera(std::shared_ptr<Object> object): Component(object)
+Camera::Camera(int priority, std::shared_ptr<Object> object): Component(object)
 {
+	m_Priority = priority;
 }
 
 void Camera::SetPriority(int value)
@@ -14,26 +15,33 @@ void Camera::SetPriority(int value)
 	m_Priority = value;
 
 	//--- 최신화
-	bool initialized = false;
-	int highestPriority = -1;
-	auto highestPrioirtyCameraIter = cameras.begin();
-	for (auto iter = cameras.begin(); iter != cameras.end(); ++iter)
+	if (cameras.empty() == false)
 	{
-		if (initialized == false)
+		bool initialized = false;
+		int highestPriority = -1;
+		auto highestPrioirtyCameraIter = cameras.begin();
+		for (auto iter = cameras.begin(); iter != cameras.end(); ++iter)
 		{
-			highestPriority = iter->get()->GetPriority();
-			highestPrioirtyCameraIter = iter;
-			initialized = true;
-			continue;
-		}
+			if (initialized == false)
+			{
+				highestPriority = iter->get()->GetPriority();
+				highestPrioirtyCameraIter = iter;
+				initialized = true;
+				continue;
+			}
 
-		if (highestPriority < iter->get()->GetPriority())
-		{
-			highestPriority = iter->get()->GetPriority();
-			highestPrioirtyCameraIter = iter;
+			if (highestPriority < iter->get()->GetPriority())
+			{
+				highestPriority = iter->get()->GetPriority();
+				highestPrioirtyCameraIter = iter;
+			}
 		}
+		main = *highestPrioirtyCameraIter;
 	}
-	main = *highestPrioirtyCameraIter;
+	else
+	{
+		main = shared_from_this();
+	}
 }
 
 glm::mat4 Camera::GetViewMatrix()
@@ -65,10 +73,7 @@ glm::mat4 Camera::GetViewMatrix()
 
 void Camera::OnCreate()
 {
-	//--- 자신을 넣기
-	cameras.emplace_back(std::shared_ptr<Camera>(this));
-
-	SetPriority(0);
+	SetPriority(m_Priority);
 }
 
 void Camera::OnDestory()

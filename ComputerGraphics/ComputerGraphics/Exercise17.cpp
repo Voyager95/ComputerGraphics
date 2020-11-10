@@ -17,31 +17,34 @@ Exercise17::Exercise17()
 	////--- Camera 생성
 	std::shared_ptr<Object> camera = GlobalUtility::CreateObject();
 	std::cout << "참조" << camera.use_count() << "컴포넌트 사이즈" << camera->GetComponents().size() << std::endl;
-	auto c = std::make_shared<Camera>(camera);
+	auto z = camera->GetTransform();
+	z->position.y += 0.5f;
+	z->rotation.y += 45;
+	z->rotation.z += 45;
+	auto c = std::make_shared<Camera>(1, camera);
 	camera->AddComponent(c);
-	//AddObject(camera);
+	AddObject(camera);
 
 	std::cout << "참조" << camera.use_count() << "컴포넌트 사이즈" << camera->GetComponents().size() << std::endl;
 
 
-	////--- Cube 생성
-	//std::shared_ptr<Object> cube = std::make_shared<Object>("Cube");
-	//auto t = cube->GetTransform();
-	//t->position.y += 0.5f;
-	//t->rotation.y += 45;
-	//t->rotation.z += 45;
-	//std::cout << t->GetBelongingObject()->name << std::endl;
-	//auto cubeRenderer = std::make_shared<Renderer>(cube);
-	//auto model = rs.GetCopiedModelInstance("Cube.obj");
-	//for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
-	//{
-	//	*i *= 0.2;
-	//}
-	//model->RandomColor();
-	//model->UpdateBuffer();
-	//cubeRenderer->SetOwnModel(model);
-	//AddObject(cube);
+	//--- Cube 생성
+	std::shared_ptr<Object> cube = GlobalUtility::CreateObject();
+	auto t = cube->GetTransform();
+	t->position.y += 0.5f;
+	t->rotation.y += 45;
+	t->rotation.z += 45;
+	std::cout << t->GetBelongingObject()->name << std::endl;
+	auto cubeRenderer = std::make_shared<Renderer>(cube);
+	cube->AddComponent(cubeRenderer);
+	auto model = rs.GetCopiedModelInstance("human.obj");
+	for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
+	{
+		*i *= 0.3; 
+	}
+	model->RandomColor();
+	model->UpdateBuffer();
+	cubeRenderer->SetOwnModel(model);
+	AddObject(cube);
 
-	
-	//SubObject(camera);
 }

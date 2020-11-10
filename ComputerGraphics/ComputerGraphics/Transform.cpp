@@ -3,8 +3,6 @@
 
 Transform::Transform(std::shared_ptr<Object> object) : Component(object)
 {
-	GetBelongingObject()->OnAddTransform();
-
 	position.x = 0;
 	position.y = 0;
 	position.z = 0;

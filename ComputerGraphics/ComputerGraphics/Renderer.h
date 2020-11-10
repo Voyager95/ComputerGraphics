@@ -1,11 +1,10 @@
 #pragma once
-#include <string>
-#include <memory>
-#include <vector>
-#include <gl/glm/glm.hpp>
-#include "RenderSystem.h"
-#include "ModelInstnce.h"
+#include "stdafx.h"
 #include "Component.h"
+
+class RenderSystem;
+class ModelInstance;
+
 
 /// <summary>
 /// 오브젝트를 그리는 컴포넌트 입니다.
@@ -21,6 +20,9 @@ private:
     bool isSharedModel;             // 이 모델이 ResourceSystem으로부터 가지고온 공유 모델인지 확인합니다.
     bool m_IsModelExist;              // 모델이 있는지 판단하는 플레그입니다.
     std::shared_ptr<ModelInstance> m_Model;
+
+    //--- 텍스쳐 설정
+    //std::shared_ptr<TextureInstance> m_Tex;
 
     //--- 쉐이더 설정    
     bool m_IsAssigned;              // 이 렌더러가 렌더시스템에 등록되어 있는지 판단하는 플레그 입니다.

@@ -11,12 +11,6 @@
 
 class Renderer;
 
-enum ShaderType
-{
-	VERTEX,
-	TEXTURE
-};
-
 /// <summary>
 /// 실제로 그리는 역할을 하는 시스템입니다.
 /// - 쉐이더프로그램을 관리합니다.

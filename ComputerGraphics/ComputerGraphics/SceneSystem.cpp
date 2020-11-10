@@ -39,6 +39,12 @@ GLvoid MainLoop(int value)
 	RenderSystem& rs = RenderSystem::GetInstance();
 	if (ss.LoopEnd() != true)
 	{
+		//--- Create문 호출
+		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
+		{
+			object->get()->OnCreate();
+		}
+
 		//--- Update문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{

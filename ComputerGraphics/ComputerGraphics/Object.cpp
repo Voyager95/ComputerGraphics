@@ -28,14 +28,28 @@ inline std::shared_ptr<T> Object::AddComponent()
 	return t;
 }
 
-void Object::OnAddTransform()
+void Object::OnAddTransform(std::shared_ptr<Transform> transform)
 {
+	m_Transform = transform;
+	AddComponent(transform);
 	m_TransformExist = true;
 }
 
 void Object::AddComponent(std::shared_ptr<Component> component)
 {
 	m_Components.emplace_back(component);
+	m_OnCreateComponents.push(component);
+}
+
+void Object::OnCreate()
+{
+	while (m_OnCreateComponents.empty() == false)
+	{
+		auto c = m_OnCreateComponents.front();
+		c->OnCreate();
+
+		m_OnCreateComponents.pop();
+	}
 }
 
 void Object::OnUpdate()

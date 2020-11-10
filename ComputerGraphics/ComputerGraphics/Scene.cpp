@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Scene.h"
+#include "SceneSystem.h"
 #include "Object.h"
 
 Scene::Scene()

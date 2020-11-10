@@ -2,6 +2,13 @@
 
 class Object;
 
+enum class ShaderType
+{
+	VERTEX,
+	TEXTURE
+};
+
+
 class GlobalUtility
 {
 public:

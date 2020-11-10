@@ -3,7 +3,7 @@
 
 class Object;
 
-class Component : public std::enable_shared_from_this<Component>
+class Component
 {
 private:
 	std::shared_ptr<Object> m_Object;
@@ -19,7 +19,7 @@ public:
 	//--- Setter
 	void SetEnable(bool value) { m_Enable = value; if (value == true) OnEnable(); else OnDisable(); }
 
-	virtual void OnCreate();		// 이 컴포넌트가 생성되었을 때, 불리는 함수입니다. 생성자 호출때 불리게 됩니다.
+	virtual void OnCreate();		// 이 컴포넌트가 생성되었을 때, 불리는 함수입니다. 업데이트 전에 불리며 한번만 불리게 됩니다.
 	virtual void OnEnable();
 	virtual void OnDisable();		// 이 컴포넌트가 비활성화 되었을 때 불리는 함수입니다.
 	virtual void OnPreRender();		// 그리기 전에 호출되는 함수입니다.

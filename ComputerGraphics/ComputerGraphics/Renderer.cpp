@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Renderer.h"
 #include "ResourceSystem.h"
+#include "RenderSystem.h"
+#include "ModelInstnce.h"
 
 Renderer::Renderer(std::shared_ptr<Object> object) : Component(object)
 {
@@ -22,7 +24,7 @@ void Renderer::SetTargetShader(ShaderType type)
 	//--- 현재 렌더 시스템에 추가되어 있다면 제거
 	if (m_IsAssigned == true)
 	{
-		rs.SubRenderer(m_TargetShaderType, enable_shared_from_this<Renderer>::shared_from_this());
+		rs.SubRenderer(m_TargetShaderType, shared_from_this());
 		m_IsAssigned = false;
 	}
 	
@@ -94,7 +96,7 @@ void Renderer::CheckState()
 		else
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
-			rs.AddRenderer(m_TargetShaderType, enable_shared_from_this<Renderer>::shared_from_this());
+			rs.AddRenderer(m_TargetShaderType, shared_from_this());
 		}
 	}
 	else
@@ -102,7 +104,7 @@ void Renderer::CheckState()
 		if (m_IsAssigned)
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
-			rs.SubRenderer(m_TargetShaderType, enable_shared_from_this<Renderer>::shared_from_this());
+			rs.SubRenderer(m_TargetShaderType, shared_from_this());
 		}
 		else
 		{
