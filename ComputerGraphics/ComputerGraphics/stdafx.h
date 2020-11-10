@@ -16,6 +16,11 @@
 #include <cmath>
 #include <random>
 #include <queue>
+#include <map>
+#include <fstream>
+#include <sstream>
+#include <numeric>
+#include <unordered_map>
 
 #include "GlobalUtility.h"
 

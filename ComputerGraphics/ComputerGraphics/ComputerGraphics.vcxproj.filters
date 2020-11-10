@@ -135,6 +135,9 @@
     <ClCompile Include="Exercise17.cpp">
       <Filter>실습 17</Filter>
     </ClCompile>
+    <ClCompile Include="TextureInstance.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl">
@@ -189,6 +192,12 @@
     </ClInclude>
     <ClInclude Include="Exercise17.h">
       <Filter>실습 17</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureInstance.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

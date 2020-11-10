@@ -37,7 +37,7 @@ Exercise17::Exercise17()
 	std::cout << t->GetBelongingObject()->name << std::endl;
 	auto cubeRenderer = std::make_shared<Renderer>(cube);
 	cube->AddComponent(cubeRenderer);
-	auto model = rs.GetCopiedModelInstance("human.obj");
+	auto model = rs.GetCopiedModelInstance("cube.obj");
 	for (auto i = model->verticesPos.begin(); i != model->verticesPos.end(); ++i)
 	{
 		*i *= 0.3; 

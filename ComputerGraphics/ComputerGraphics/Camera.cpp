@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Object.h"
 #include "Transform.h"
+
 std::list<std::shared_ptr<Camera>> Camera::cameras;
 std::shared_ptr<Camera> Camera::main = nullptr;
 

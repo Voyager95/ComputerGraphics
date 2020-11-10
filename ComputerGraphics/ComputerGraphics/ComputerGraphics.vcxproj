@@ -161,6 +161,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ShaderInstance.cpp" />
+    <ClCompile Include="TextureInstance.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="실습1.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -210,7 +211,9 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="ShaderInstance.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TextureInstance.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>

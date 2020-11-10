@@ -1,11 +1,8 @@
 #pragma once
-#include <string>
-#include <memory>
-#include <iostream>
-#include <vector>
-#include <gl/glm/glm.hpp>
-#include <map>
-#include "ModelInstnce.h"
+#include "stdafx.h"
+
+class ModelInstance;
+class TextureInstance;
 
 /// <summary>
 /// 여러 리소스를 관리하는 시스템입니다.
@@ -29,6 +26,7 @@ private:
 	//--- Model
 	std::map<std::string, std::shared_ptr<ModelInstance>> m_Models;
 
+	std::map<std::string, std::shared_ptr<TextureInstance>> m_Texes;
 public:
 	ResourceSystem();
 
@@ -62,6 +60,15 @@ public:
 	/// </summary>
 	void UnloadModel();
 
+
+	//--- Texture
+
+	std::shared_ptr<TextureInstance> GetSharedTextureInstance(std::string key);
+
+	std::shared_ptr<TextureInstance> GetCopiedTextureInstance(std::string key);
+
+	void UnloadTextrue();
+
 private:
 	/// <summary>
 	/// Obj파일을 읽어서 ModelInstance를 만들고 반환합니다.
@@ -69,5 +76,21 @@ private:
 	/// <param name="path"></param>
 	/// <returns></returns>
 	std::shared_ptr<ModelInstance> ReadObj(std::string path);
+
+    template<class T>
+    bool CheckSame(T& container, int index_0, int index_1, int count)
+    {
+        for (int i = 0; i < count; ++i)
+        {
+            if (container[index_0 * count + i] != container[index_1 * count + i])
+                return false;
+        }
+
+        return true;
+    }
+
+	bool ReadObj(const char* objFileName, float*& vPosOut, float*& vNormalOut, float*& vTextureCoordinateOut, int*& indexOut, int& vertexCount, int& indexCount);
+
+	std::shared_ptr<TextureInstance> ReadTex(std::string path);
 };
 
