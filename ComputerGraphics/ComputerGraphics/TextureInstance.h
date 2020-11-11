@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 
 class TextureInstance
 {
@@ -7,6 +8,8 @@ public:
 	int width;
 	int height;
 	int numberOfChannel;
+
+	GLuint texture;
 
 	TextureInstance();
 	~TextureInstance();

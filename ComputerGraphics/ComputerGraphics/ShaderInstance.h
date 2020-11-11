@@ -19,6 +19,7 @@ private:
 	GLuint m_UniformTransformMat;									// Uniform 변수
 	GLuint m_UniformProjMat;
 	GLuint m_UniformViewMat;										// Uniform 변수
+	GLuint m_UniformTexture;
 	std::list<std::shared_ptr<Renderer>> m_TargetRenderer;			// 이 쉐이더를 사용하는 렌더러 입니다.
 
 public:

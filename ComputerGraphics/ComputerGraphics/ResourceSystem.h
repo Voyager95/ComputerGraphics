@@ -54,6 +54,8 @@ public:
 	/// <param name="model">모델의 인스턴스 포인터 입니다.</param>
 	void AddModelInstance(std::string key, std::shared_ptr<ModelInstance> model);
 
+	void AddTextureInstance(std::string key, std::shared_ptr<TextureInstance> texture);
+
 	/// <summary>
 	/// 모델인스턴스를 언로드합니다.
 	/// *m_Models을 Clear하는 것이므로 다른 오브젝트에서 참조하고 있다면 해당 모델인스턴스는 남아있을 수 있습니다.

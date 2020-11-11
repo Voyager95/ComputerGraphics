@@ -4,6 +4,7 @@
 
 class RenderSystem;
 class ModelInstance;
+class TextureInstance;
 
 
 /// <summary>
@@ -22,7 +23,8 @@ private:
     std::shared_ptr<ModelInstance> m_Model;
 
     //--- 텍스쳐 설정
-    //std::shared_ptr<TextureInstance> m_Tex;
+    bool m_IsTexExist;
+    std::shared_ptr<TextureInstance> m_Tex;
 
     //--- 쉐이더 설정    
     bool m_IsAssigned;              // 이 렌더러가 렌더시스템에 등록되어 있는지 판단하는 플레그 입니다.
@@ -36,8 +38,10 @@ public:
     Renderer(std::shared_ptr<Object> object, std::string objPath);
 
     //--- Getter
+    std::shared_ptr<TextureInstance> GetTexture() { return m_Tex; }
     std::shared_ptr<ModelInstance> GetModel() { return m_Model; }
     bool GetIsModelExist() { return m_IsModelExist; }
+    bool GetIsTextureExist() { return m_IsTexExist; }
 
     //--- Setter
     void SetTargetShader(ShaderType type);
@@ -47,6 +51,8 @@ public:
     /// </summary>
     /// <param name="objName">오브젝트의 위치이다</param>
     void SetSharedModel(std::string key);
+
+    void SetSharedTextrue(std::string key);
 
     /// <summary>
     /// 커스텀 모델을 제공합니다.

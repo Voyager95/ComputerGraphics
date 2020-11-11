@@ -65,74 +65,44 @@ void ResourceSystem::AddModelInstance(std::string key,std::shared_ptr<ModelInsta
 		std::cout << "[ResourceSystem AddModelInstance()] 이미 이 키에 해당하는 모델이 있습니다 키: " << key << std::endl;
 }
 
+void ResourceSystem::AddTextureInstance(std::string key, std::shared_ptr<TextureInstance> texture)
+{
+    //--- 키가 겹치는지 확인합니다.
+    if (m_Texes.find(key) == m_Texes.end())
+        m_Texes.emplace(std::pair<std::string, std::shared_ptr<TextureInstance>>(key, texture));
+    else
+        std::cout << "[ResourceSystem AddTextureInstance()] 이미 이 키에 해당하는 모델이 있습니다 키: " << key << std::endl;
+}
+
 std::shared_ptr<TextureInstance> ResourceSystem::GetSharedTextureInstance(std::string key)
 {
-	
-	return nullptr;
+    //-- 해당 모델이 존재하지 않는 경우
+    if (m_Texes.find(key) == m_Texes.end())
+    {
+        //- key를 통해 새롭게 ModelInstance를 생성합니다.
+        auto textureInstance = ReadTex(key);
+
+        // 모델을 찾을 수 없는 경우
+        if (textureInstance == nullptr)
+        {
+            return nullptr;
+        }
+        // 모델을 찾은 경우
+        else
+        {
+            AddTextureInstance(key, textureInstance);
+            return textureInstance;
+        }
+    }
+    //-- 해당 모델이 존재하는 경우
+    else
+    {
+        return m_Texes[key];
+    }
 }
 
 std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
 {
-	//auto objFile = fopen( path.c_str(), "r");
-
-	//if (objFile == nullptr)
-	//{
-	//	std::cout << "[ResourceSystem ReadObj()] 일치하는 파일이 없습니다." << std::endl;
-	//	fclose(objFile);
-	//	return nullptr;
-	//}
-
-	//auto instance = std::make_shared<ModelInstance>();
-
-	////--- 1. 전체 버텍스 개수 및 삼각형 개수 세기
-	//char count[128];
-	//int vertexNum = 0;
-	//int faceNum = 0;
-	//while (!feof(objFile)) {
-	//	fscanf(objFile, "%s", count);
-	//	if (count[0] == 'v' && count[1] == '\0')
-	//		vertexNum += 1;
-	//	else if (count[0] == 'f' && count[1] == '\0')
-	//		faceNum += 1;
-	//	memset(count, '\0', sizeof(count)); // 배열 초기화
-	//}
-
-	////--- 3. 할당된 메모리에 각 버텍스, 페이스 정보 입력
-	//char bind[100];
-	//rewind(objFile);
-	//while (!feof(objFile)) {
-	//	fscanf(objFile, "%s", bind);
-	//	if (bind[0] == 'v' && bind[1] == '\0') {
-	//		glm::vec3 vertex = glm::vec3(1);
-	//		
-	//		fscanf(objFile, "%f %f %f",
-	//			&vertex.x, &vertex.y,
-	//			&vertex.z);
-
-	//		std::cout << "("<<vertex.x <<", " <<vertex.y<< ", " << vertex.z << ")" << std::endl;
-
-	//		instance->verticesPos.push_back(vertex);
-	//	}
-	//	else if (bind[0] == 'f' && bind[1] == '\0') {
-	//		glm::ivec3 triesPos = glm::ivec3(1);
-	//		glm::ivec3 triesUV = glm::ivec3(1);
-	//		glm::ivec3 triesNormal = glm::ivec3(1);
-
-	//		int result = fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d",
-	//			&triesPos.x, &triesUV.x, &triesNormal.x, &triesPos.y, &triesUV.y, &triesNormal.y, &triesPos.z, &triesUV.z, &triesNormal.z );
-	//		
-	//		if (result > 0)
-	//		{
-	//			std::cout << "(" << triesPos.x << ", " << triesPos.y << ", " << triesPos.z << ")" << std::endl;
-	//			instance->triesPos.push_back(triesPos);
-	//		}
-	//	}
-	//}
-	//fclose(objFile);
-
-	//instance->UpdateBuffer();
-	//return instance;
-
     auto instance = std::make_shared<ModelInstance>();
 
     std::ifstream in(path.c_str());
@@ -300,6 +270,8 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
         std::cout << "third (" << third.x << ", " << third.y << ", " << third.z << ")" << std::endl;
     }
 
+    instance->UpdateBuffer();
+
     return instance;
 }
 
@@ -310,6 +282,15 @@ std::shared_ptr<TextureInstance> ResourceSystem::ReadTex(std::string path)
 	stbi_set_flip_vertically_on_load(true);
 	instance->data = stbi_load(path.c_str(), &instance->width, &instance->height, &instance->numberOfChannel, 0);
 
+    glGenTextures(1, &instance->texture);
+    glBindTexture(GL_TEXTURE_2D, instance->texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, instance->width, instance->height, 0, GL_RGB, GL_UNSIGNED_BYTE, instance->data);
 
-	return std::shared_ptr<TextureInstance>();
+
+
+	return instance;
 }

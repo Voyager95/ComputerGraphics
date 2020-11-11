@@ -57,6 +57,24 @@ void Renderer::SetSharedModel(std::string key)
 	CheckState();
 }
 
+void Renderer::SetSharedTextrue(std::string key)
+{
+	ResourceSystem& ss = ResourceSystem::GetInstance();
+
+	auto texture = ss.GetSharedTextureInstance(key);
+
+	if (texture == nullptr)
+	{
+		m_Tex = nullptr;
+		m_IsTexExist = false;
+	}
+	else
+	{
+		m_Tex = texture;
+		m_IsTexExist = true;
+	}
+}
+
 void Renderer::SetOwnModel(std::shared_ptr<ModelInstance> model)
 {
 	m_Model = model;

@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "ShaderInstance.h"
 #include "ModelInstnce.h"
+#include "TextureInstance.h"
 #include "Renderer.h"
 #include "Object.h"
 #include "Camera.h"
@@ -30,6 +31,8 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 	m_UniformTransformMat = glGetUniformLocation(GetProgram(), "transform");
 	m_UniformViewMat = glGetUniformLocation(GetProgram(), "view");
 	m_UniformProjMat = glGetUniformLocation(GetProgram(), "proj");
+	m_UniformTexture = glGetUniformLocation(GetProgram(), "tex");
+	glUniform1i(m_UniformTexture, 0);
 }
 
 void ShaderInstance::Render()
@@ -49,7 +52,7 @@ void ShaderInstance::Render()
 		auto viewMat = Camera::main->GetViewMatrix();
 		glUniformMatrix4fv(m_UniformViewMat, 1, GL_FALSE, glm::value_ptr(viewMat));
 
-		//--- 튜영 Uniform변수 전달
+		//--- 투영 Uniform변수 전달
 		auto projMat = Camera::main->GetProjMatrix();
 		glUniformMatrix4fv(m_UniformProjMat, 1, GL_FALSE, glm::value_ptr(projMat));
 
@@ -61,6 +64,14 @@ void ShaderInstance::Render()
 			auto model = renderer->GetModel();
 			auto vao = model->vao;
 			glBindVertexArray(vao);
+
+			//-- Texture변수 전달
+			if (renderer->GetIsTextureExist() == true)
+			{
+				auto tex = renderer->GetTexture();
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tex->texture);
+			}
 
 			//-- Uniform변수 전달
 			auto transform = renderer->GetBelongingObject()->GetTransform();
