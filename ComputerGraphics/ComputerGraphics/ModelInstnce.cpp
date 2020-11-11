@@ -56,7 +56,7 @@ void ModelInstance::UpdateBuffer()
 	}
 
 	//--- vertex 속성 포인터를 전달
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);	// 좌표값을 attribute 인덱스 0번에 명시한다: 버텍스 당 3* float
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);	// 좌표값을 attribute 인덱스 0번에 명시한다: 버텍스 당 3* float
 	glEnableVertexAttribArray(0);							// attribute 인덱스 0번을 사용가능하게 함
 
 
@@ -65,15 +65,15 @@ void ModelInstance::UpdateBuffer()
 
 	if (verticesColor.size() > 0)
 	{
-		glBufferData(GL_ARRAY_BUFFER, verticesColor.size() * sizeof(GLfloat) * 3, &verticesColor[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, verticesColor.size() * sizeof(glm::vec3), &verticesColor[0], GL_STATIC_DRAW);
 	}
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);	// 색상값을 attribute 인덱스 1번에 명시한다: 버텍스 당 4*float
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);	// 색상값을 attribute 인덱스 1번에 명시한다: 버텍스 당 4*float
 	glEnableVertexAttribArray(1);
 
 	//--- ebo_Pos를 활성화 하여 삼각형 정보를 바인드한다.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);		// GL_ELEMENT_ARRAY_BUFFER 버퍼 유형으로 바인딩
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, triesPos.size() * sizeof(glm::ivec3), &triesPos[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, triesIndex.size() * sizeof(glm::ivec3), &triesIndex[0], GL_STATIC_DRAW);
 }
 
 void ModelInstance::RandomColor()

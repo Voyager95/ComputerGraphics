@@ -56,7 +56,7 @@ void ShaderInstance::Render()
 			glUniformMatrix4fv(m_UniformTransformMat, 1, GL_FALSE, glm::value_ptr(transform->GetTransformMatrix()));
 
 			//-- 삼각형 그리기
-			glDrawElements(GL_TRIANGLES, model->triesPos.size() * 3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, model->triesIndex.size() * 3, GL_UNSIGNED_INT, 0);
 		}
 	}
 }

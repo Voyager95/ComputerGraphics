@@ -73,65 +73,223 @@ std::shared_ptr<TextureInstance> ResourceSystem::GetSharedTextureInstance(std::s
 
 std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
 {
-	auto objFile = fopen( path.c_str(), "r");
+	//auto objFile = fopen( path.c_str(), "r");
 
-	if (objFile == nullptr)
-	{
-		std::cout << "[ResourceSystem ReadObj()] 일치하는 파일이 없습니다." << std::endl;
-		fclose(objFile);
-		return nullptr;
-	}
+	//if (objFile == nullptr)
+	//{
+	//	std::cout << "[ResourceSystem ReadObj()] 일치하는 파일이 없습니다." << std::endl;
+	//	fclose(objFile);
+	//	return nullptr;
+	//}
 
-	auto instance = std::make_shared<ModelInstance>();
+	//auto instance = std::make_shared<ModelInstance>();
 
-	//--- 1. 전체 버텍스 개수 및 삼각형 개수 세기
-	char count[128];
-	int vertexNum = 0;
-	int faceNum = 0;
-	while (!feof(objFile)) {
-		fscanf(objFile, "%s", count);
-		if (count[0] == 'v' && count[1] == '\0')
-			vertexNum += 1;
-		else if (count[0] == 'f' && count[1] == '\0')
-			faceNum += 1;
-		memset(count, '\0', sizeof(count)); // 배열 초기화
-	}
+	////--- 1. 전체 버텍스 개수 및 삼각형 개수 세기
+	//char count[128];
+	//int vertexNum = 0;
+	//int faceNum = 0;
+	//while (!feof(objFile)) {
+	//	fscanf(objFile, "%s", count);
+	//	if (count[0] == 'v' && count[1] == '\0')
+	//		vertexNum += 1;
+	//	else if (count[0] == 'f' && count[1] == '\0')
+	//		faceNum += 1;
+	//	memset(count, '\0', sizeof(count)); // 배열 초기화
+	//}
 
-	//--- 3. 할당된 메모리에 각 버텍스, 페이스 정보 입력
-	char bind[100];
-	rewind(objFile);
-	while (!feof(objFile)) {
-		fscanf(objFile, "%s", bind);
-		if (bind[0] == 'v' && bind[1] == '\0') {
-			glm::vec3 vertex = glm::vec3(1);
-			
-			fscanf(objFile, "%f %f %f",
-				&vertex.x, &vertex.y,
-				&vertex.z);
+	////--- 3. 할당된 메모리에 각 버텍스, 페이스 정보 입력
+	//char bind[100];
+	//rewind(objFile);
+	//while (!feof(objFile)) {
+	//	fscanf(objFile, "%s", bind);
+	//	if (bind[0] == 'v' && bind[1] == '\0') {
+	//		glm::vec3 vertex = glm::vec3(1);
+	//		
+	//		fscanf(objFile, "%f %f %f",
+	//			&vertex.x, &vertex.y,
+	//			&vertex.z);
 
-			std::cout << "("<<vertex.x <<", " <<vertex.y<< ", " << vertex.z << ")" << std::endl;
+	//		std::cout << "("<<vertex.x <<", " <<vertex.y<< ", " << vertex.z << ")" << std::endl;
 
-			instance->verticesPos.push_back(vertex);
-		}
-		else if (bind[0] == 'f' && bind[1] == '\0') {
-			glm::ivec3 triesPos = glm::ivec3(1);
-			glm::ivec3 triesUV = glm::ivec3(1);
-			glm::ivec3 triesNormal = glm::ivec3(1);
+	//		instance->verticesPos.push_back(vertex);
+	//	}
+	//	else if (bind[0] == 'f' && bind[1] == '\0') {
+	//		glm::ivec3 triesPos = glm::ivec3(1);
+	//		glm::ivec3 triesUV = glm::ivec3(1);
+	//		glm::ivec3 triesNormal = glm::ivec3(1);
 
-			int result = fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d",
-				&triesPos.x, &triesUV.x, &triesNormal.x, &triesPos.y, &triesUV.y, &triesNormal.y, &triesPos.z, &triesUV.z, &triesNormal.z );
-			
-			if (result > 0)
-			{
-				std::cout << "(" << triesPos.x << ", " << triesPos.y << ", " << triesPos.z << ")" << std::endl;
-				instance->triesPos.push_back(triesPos);
-			}
-		}
-	}
-	fclose(objFile);
+	//		int result = fscanf(objFile, "%d/%d/%d %d/%d/%d %d/%d/%d",
+	//			&triesPos.x, &triesUV.x, &triesNormal.x, &triesPos.y, &triesUV.y, &triesNormal.y, &triesPos.z, &triesUV.z, &triesNormal.z );
+	//		
+	//		if (result > 0)
+	//		{
+	//			std::cout << "(" << triesPos.x << ", " << triesPos.y << ", " << triesPos.z << ")" << std::endl;
+	//			instance->triesPos.push_back(triesPos);
+	//		}
+	//	}
+	//}
+	//fclose(objFile);
 
-	instance->UpdateBuffer();
-	return instance;
+	//instance->UpdateBuffer();
+	//return instance;
+
+    auto instance = std::make_shared<ModelInstance>();
+
+    std::ifstream in(path.c_str());
+
+    if (!in.is_open())
+    {
+        std::cout << "ReadObj(const char*, float*&, float*& float*&, int*&)" << std::endl;
+        std::cout << path << " 파일을 읽지 못하였습니다." << std::endl;
+        return nullptr;
+    }
+
+    std::vector<float> rawPositionBuffer;
+    std::vector<float> rawNormalBuffer;
+    std::vector<float> rawTextureCoordinateBuffer;
+
+    std::vector<int> rawPosIndexBuffer;
+    std::vector<int> rawNormalIndexBuffer;
+    std::vector<int> rawTextureCoordinateIndexBuffer;
+
+    float tempFloat;
+    std::string tempString;
+
+    while (!in.eof())
+    {
+        in >> tempString;
+
+        if (tempString.size() == 1 && tempString[0] == 'v')
+        {
+            in >> tempFloat;
+            rawPositionBuffer.push_back(tempFloat);
+            in >> tempFloat;
+            rawPositionBuffer.push_back(tempFloat);
+            in >> tempFloat;
+            rawPositionBuffer.push_back(tempFloat);
+        }
+        else if (tempString.size() == 2 && tempString[0] == 'v' && tempString[1] == 'n')
+        {
+            in >> tempFloat;
+            rawNormalBuffer.push_back(tempFloat);
+            in >> tempFloat;
+            rawNormalBuffer.push_back(tempFloat);
+            in >> tempFloat;
+            rawNormalBuffer.push_back(tempFloat);
+        }
+        else if (tempString.size() == 2 && tempString[0] == 'v' && tempString[1] == 't')
+        {
+            in >> tempFloat;
+            rawTextureCoordinateBuffer.push_back(tempFloat);
+            in >> tempFloat;
+            rawTextureCoordinateBuffer.push_back(tempFloat);
+        }
+        else if (tempString.size() == 1 && tempString[0] == 'f')
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                in >> tempString;
+
+                std::istringstream iss(tempString);
+
+                std::getline(iss, tempString, '/');
+                rawPosIndexBuffer.push_back(atoi(tempString.c_str()) - 1);
+
+                std::getline(iss, tempString, '/');
+                rawTextureCoordinateIndexBuffer.push_back(atoi(tempString.c_str()) - 1);
+
+                std::getline(iss, tempString, '/');
+                rawNormalIndexBuffer.push_back(atoi(tempString.c_str()) - 1);
+            }
+        }
+    }
+
+    std::vector<float> dupPosBuffer; // Allowing Duplicating  중첩을 허용
+    std::vector<float> dupNormalBuffer;
+    std::vector<float> dupTextureCoordinateBuffer;
+    std::vector<int> dupIndexBuffer;
+
+    int rawIndexCount = rawPosIndexBuffer.size();
+
+    for (int i = 0; i < rawIndexCount; ++i)
+    {
+        dupPosBuffer.push_back(rawPositionBuffer[rawPosIndexBuffer[i] * 3 + 0]);
+        dupPosBuffer.push_back(rawPositionBuffer[rawPosIndexBuffer[i] * 3 + 1]);
+        dupPosBuffer.push_back(rawPositionBuffer[rawPosIndexBuffer[i] * 3 + 2]);
+
+        dupNormalBuffer.push_back(rawNormalBuffer[rawNormalIndexBuffer[i] * 3 + 0]);
+        dupNormalBuffer.push_back(rawNormalBuffer[rawNormalIndexBuffer[i] * 3 + 1]);
+        dupNormalBuffer.push_back(rawNormalBuffer[rawNormalIndexBuffer[i] * 3 + 2]);
+
+        dupTextureCoordinateBuffer.push_back(rawTextureCoordinateBuffer[rawTextureCoordinateIndexBuffer[i] * 2 + 0]);
+        dupTextureCoordinateBuffer.push_back(rawTextureCoordinateBuffer[rawTextureCoordinateIndexBuffer[i] * 2 + 1]);
+
+        dupIndexBuffer.push_back(i);
+    }
+
+    std::vector<int> noDupLocations;
+    noDupLocations.resize(dupIndexBuffer.size());
+    std::iota(noDupLocations.begin(), noDupLocations.end(), 0);
+
+    std::map<int, int> oldIndexToNewIndexDict;
+
+    int checkIndex = 0;
+    do
+    {
+        for (int i = checkIndex + 1; i < (int)noDupLocations.size(); ++i)
+        {
+            if (!CheckSame(dupPosBuffer, noDupLocations[checkIndex], noDupLocations[i], 3))
+                continue;
+
+            if (!CheckSame(dupNormalBuffer, noDupLocations[checkIndex], noDupLocations[i], 3))
+                continue;
+
+            if (!CheckSame(dupTextureCoordinateBuffer, noDupLocations[checkIndex], noDupLocations[i], 2))
+                continue;
+
+            oldIndexToNewIndexDict.emplace(noDupLocations[i], checkIndex);
+            noDupLocations.erase(noDupLocations.begin() + i);
+
+            --i;
+        }
+
+        ++checkIndex;
+    } while (checkIndex < (int)noDupLocations.size());
+
+    for (int i = 0; i < (int)noDupLocations.size(); ++i)
+        oldIndexToNewIndexDict.emplace(noDupLocations[i], i);
+
+    auto vertexCount = noDupLocations.size();
+    auto indexCount = rawIndexCount;
+
+    for (int i = 0; i < vertexCount; ++i)
+    {
+        instance->verticesPos.push_back(glm::vec3(
+            dupPosBuffer[noDupLocations[i] * 3 + 0],
+            dupPosBuffer[noDupLocations[i] * 3 + 1],
+            dupPosBuffer[noDupLocations[i] * 3 + 2]));
+
+        instance->verticesNormal.push_back(glm::vec3(
+            dupNormalBuffer[noDupLocations[i] * 3 + 0],
+            dupNormalBuffer[noDupLocations[i] * 3 + 1],
+            dupNormalBuffer[noDupLocations[i] * 3 + 2]));
+
+        instance->verticesUV.push_back(glm::vec2(
+            dupTextureCoordinateBuffer[noDupLocations[i] * 2 + 0],
+            dupTextureCoordinateBuffer[noDupLocations[i] * 2 + 1]));
+    }
+
+
+    for (int i = 0; i < indexCount/3; ++i)
+    {
+        instance->triesIndex.push_back(glm::ivec3(
+            oldIndexToNewIndexDict[dupIndexBuffer[i + 0]],
+            oldIndexToNewIndexDict[dupIndexBuffer[i + 1]],
+            oldIndexToNewIndexDict[dupIndexBuffer[i + 3]]
+        ));
+    }
+
+    return instance;
 }
 
 bool ResourceSystem::ReadObj(const char* objFileName, float*& vPosOut, float*& vNormalOut, float*& vTextureCoordinateOut, int*& indexOut, int& vertexCount, int& indexCount)

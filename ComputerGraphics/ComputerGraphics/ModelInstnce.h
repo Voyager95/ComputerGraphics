@@ -15,12 +15,9 @@ public:
     std::vector<glm::vec3> verticesPos;        // 버텍스 위치
     std::vector<glm::vec3> verticesColor;      // 버텍스 컬러
     std::vector<glm::vec3> verticesNormal;     // 버텍스 노멀
-    std::vector<glm::vec3> verticesUV;         // 버텍스 UV
+    std::vector<glm::vec2> verticesUV;         // 버텍스 UV
 
-    std::vector<glm::ivec3> triesPos;          // 삼각형 위치 인덱스
-    std::vector<glm::ivec3> triesColor;        // 삼각형 색상 인덱스
-    std::vector<glm::ivec3> triesNormal;       // 삼각형 노멀 인덱스
-    std::vector<glm::ivec3> triesUV;           // 삼각형 UV 인덱스
+    std::vector<glm::ivec3> triesIndex;          // 삼각형 위치 인덱스
 
     //--- Buffer 참조 변수
     GLuint vao, ebo;
