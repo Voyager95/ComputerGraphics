@@ -283,16 +283,21 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
     for (int i = 0; i < indexCount/3; ++i)
     {
         instance->triesIndex.push_back(glm::ivec3(
-            oldIndexToNewIndexDict[dupIndexBuffer[i + 0]],
-            oldIndexToNewIndexDict[dupIndexBuffer[i + 1]],
-            oldIndexToNewIndexDict[dupIndexBuffer[i + 3]]
+            oldIndexToNewIndexDict[dupIndexBuffer[i *3 + 0]],
+            oldIndexToNewIndexDict[dupIndexBuffer[i *3+ 1]],
+            oldIndexToNewIndexDict[dupIndexBuffer[i *3 + 2]]
         ));
     }
 
     for (auto i = instance->triesIndex.begin(); i != instance->triesIndex.end(); ++i)
     {
         std::cout << "("<< i->x << ", " << i->y << ", " << i->z <<")" << std::endl;
-       // std::cout << "(" << (instance->verticesPos[i->x])->x << ", " << i->y << ", " << i->z << ")" << std::endl;
+        auto first = instance->verticesPos[i->x];
+        std::cout << "first: (" << first.x << ", " << first.y << ", " << first.z << ")" << std::endl;
+        auto second = instance->verticesPos[i->y];
+        std::cout << "second (" << second.x << ", " << second.y << ", " << second.z << ")" << std::endl;
+        auto third = instance->verticesPos[i->z];
+        std::cout << "third (" << third.x << ", " << third.y << ", " << third.z << ")" << std::endl;
     }
 
     return instance;

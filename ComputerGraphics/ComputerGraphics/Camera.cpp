@@ -8,6 +8,14 @@ std::shared_ptr<Camera> Camera::main = nullptr;
 
 Camera::Camera(int priority, std::shared_ptr<Object> object): Component(object)
 {
+	projOption = CameraProj::PERSPECTIVE;
+	left = -50;
+	right = 50;
+	bottom = -50;
+	top = 50;
+	fovy = 45;
+	nearPlane = 0.1f;
+	farPlane = 50.0f;
 	m_Priority = priority;
 }
 
@@ -70,6 +78,22 @@ glm::mat4 Camera::GetViewMatrix()
 	glm::vec3 cameraUp = glm::cross(cameraforward, cameraRight);
 
 	return glm::lookAt(cameraPos, cameraforward, cameraUp);
+}
+
+glm::mat4 Camera::GetProjMatrix()
+{
+	if (projOption == CameraProj::ORTHO)
+	{
+		float aspect = (float)WinSize::WINSIZE_X / (float)WinSize::WINSIZE_Y;
+		auto mat = glm::perspective(glm::radians(fovy), aspect , nearPlane,farPlane);
+
+		return mat;
+	}
+	else
+	{
+		auto mat = glm::ortho(left, right, bottom, top, nearPlane, farPlane);
+		return mat;
+	}
 }
 
 void Camera::OnCreate()

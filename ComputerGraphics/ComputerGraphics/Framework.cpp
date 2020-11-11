@@ -6,9 +6,6 @@
 #include "Exercise17.h"
 
 //--- 전역 변수
-const unsigned int TIMER_CYCLE = 100;
-unsigned int WINSIZE_X = 800;
-unsigned int WINSIZE_Y = 800;
 
 //--- 함수 정의
 GLvoid Keyboard(unsigned char key, int x, int y);					// 키보드 이벤트 함수
@@ -25,7 +22,8 @@ void main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);		// 디스플레이 모드 설정
 	glEnable(GL_DEPTH_TEST);
 	glutInitWindowPosition(100, 100);								// 윈도우의 위치 지정
-	glutInitWindowSize(WINSIZE_X, WINSIZE_Y);						// 윈도우의 크기 지정
+	glutInitWindowSize((int)WinSize::WINSIZE_X,						// 윈도우의 크기 지정
+					   (int)WinSize::WINSIZE_Y);
 	glutCreateWindow("Example");									// 윈도우 생성(윈도우 이름)
 
 	//--- System 생성
@@ -76,11 +74,11 @@ GLvoid MouseMotion(int x, int y)
 {
 	//std::cout << x << " , " << y << std::endl;
 
-	float xCoordinate = x - (WINSIZE_X / 2);
-	float yCoordinate = -(y - (WINSIZE_X / 2));
+	float xCoordinate = x - ((float)WinSize::WINSIZE_X / 2);
+	float yCoordinate = -(y - ((float)WinSize::WINSIZE_Y / 2));
 
-	float normalizedX = xCoordinate / (WINSIZE_X / 2);
-	float normalizedY = yCoordinate / (WINSIZE_X / 2);
+	float normalizedX = xCoordinate / ((float)WinSize::WINSIZE_X / 2);
+	float normalizedY = yCoordinate / ((float)WinSize::WINSIZE_Y / 2);
 }
 
 /// <summary>
@@ -95,11 +93,11 @@ GLvoid Mouse(int button, int state, int x, int y)
 {
 	//std::cout << x << " , " << y << std::endl;
 
-	float xCoordinate = x - (WINSIZE_X / 2);
-	float yCoordinate = -(y - (WINSIZE_Y / 2));
+	float xCoordinate = x - ((float)WinSize::WINSIZE_X / 2);
+	float yCoordinate = -(y - ((float)WinSize::WINSIZE_Y / 2));
 
-	float normalizedX = xCoordinate / (WINSIZE_X / 2);
-	float normalizedY = yCoordinate / (WINSIZE_Y / 2);
+	float normalizedX = xCoordinate / ((float)WinSize::WINSIZE_X / 2);
+	float normalizedY = yCoordinate / ((float)WinSize::WINSIZE_Y / 2);
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{

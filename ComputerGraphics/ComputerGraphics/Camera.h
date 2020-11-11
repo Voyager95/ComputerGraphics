@@ -2,6 +2,12 @@
 #include "stdafx.h"
 #include "Component.h"
 
+enum class CameraProj
+{
+    ORTHO,
+    PERSPECTIVE
+};
+
 class Camera :
     public Component, public std::enable_shared_from_this<Camera>
 {
@@ -11,6 +17,21 @@ public:
 private:
     int m_Priority;
 public:
+    CameraProj projOption;
+
+    //--- Ortho Proj Option
+    float left;
+    float right;
+    float bottom;
+    float top;
+
+    //--- Perspective Proj Option
+    float fovy;
+
+    //--- Proj Common Option
+    float nearPlane;
+    float farPlane;
+
     Camera(int priority, std::shared_ptr<Object> object);
 
     //--- Getter
@@ -20,6 +41,7 @@ public:
     void SetPriority(int value);
 
     glm::mat4 GetViewMatrix();
+    glm::mat4 GetProjMatrix();
 
     virtual void OnCreate();
     virtual void OnDestory();

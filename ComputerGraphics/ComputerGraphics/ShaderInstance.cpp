@@ -29,15 +29,16 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 	//--- 쉐이더 Uniform변수 생성
 	m_UniformTransformMat = glGetUniformLocation(GetProgram(), "transform");
 	m_UniformViewMat = glGetUniformLocation(GetProgram(), "view");
+	m_UniformProjMat = glGetUniformLocation(GetProgram(), "proj");
 }
 
 void ShaderInstance::Render()
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glFrontFace(GL_CCW);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 
 	if (Camera::main != nullptr)
 	{
@@ -47,6 +48,10 @@ void ShaderInstance::Render()
 		//--- 카메라 뷰 Uniform변수 전달
 		auto viewMat = Camera::main->GetViewMatrix();
 		glUniformMatrix4fv(m_UniformViewMat, 1, GL_FALSE, glm::value_ptr(viewMat));
+
+		//--- 튜영 Uniform변수 전달
+		auto projMat = Camera::main->GetProjMatrix();
+		glUniformMatrix4fv(m_UniformProjMat, 1, GL_FALSE, glm::value_ptr(projMat));
 
 		//---이 쉐이더프로그램으로 그려야할 모든 렌더러들의 vao를 가지고와 그린다.
 		for (auto rendererPtr = GetRenderer().begin(); rendererPtr != GetRenderer().end(); ++rendererPtr)

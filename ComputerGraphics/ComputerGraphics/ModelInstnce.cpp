@@ -38,6 +38,7 @@ void ModelInstance::DeleteBuffer()
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo_Pos);
 	glDeleteBuffers(1, &vbo_Color);
+	glDeleteBuffers(1, &vbo_Normal);
 	glDeleteBuffers(1, &ebo);
 
 	//--- 플레그 변경

@@ -24,8 +24,15 @@
 
 #include "GlobalUtility.h"
 
+
 #define LOOPSPEED 16.7
 #define DELTATIME 0.016f
+
+enum class WinSize : int
+{
+	WINSIZE_X = 800,
+	WINSIZE_Y = 800
+};
 
 //--- ·»´ý ÇÔ¼ö Á¤ÀÇ
 static std::random_device rd;
