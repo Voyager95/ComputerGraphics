@@ -89,8 +89,6 @@ private:
         return true;
     }
 
-	bool ReadObj(const char* objFileName, float*& vPosOut, float*& vNormalOut, float*& vTextureCoordinateOut, int*& indexOut, int& vertexCount, int& indexCount);
-
 	std::shared_ptr<TextureInstance> ReadTex(std::string path);
 };
 

@@ -33,6 +33,12 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 
 void ShaderInstance::Render()
 {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glFrontFace(GL_CCW);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
 	if (Camera::main != nullptr)
 	{
 		//--- 프로그램 활성화

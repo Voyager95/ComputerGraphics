@@ -49,6 +49,12 @@
     <Filter Include="실습 17">
       <UniqueIdentifier>{815819be-b3ce-4131-91d3-fd77a771d79e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ComponentHeaderFile">
+      <UniqueIdentifier>{4e3fc598-6b6a-435c-a829-e46c827c0eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ComponentSourceFile">
+      <UniqueIdentifier>{0473e545-036d-4b17-823f-a75822702c34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="실습1.cpp">
@@ -138,6 +144,9 @@
     <ClCompile Include="TextureInstance.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Rotator.cpp">
+      <Filter>ComponentSourceFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl">
@@ -198,6 +207,9 @@
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotator.h">
+      <Filter>ComponentHeaderFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

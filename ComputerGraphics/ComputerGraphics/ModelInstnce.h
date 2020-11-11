@@ -22,7 +22,9 @@ public:
     //--- Buffer 참조 변수
     GLuint vao, ebo;
     GLuint vbo_Pos;
-    GLuint vbo_Color;    // 00: vertexPosition 01: vertexColor
+    GLuint vbo_Color;
+    GLuint vbo_Normal;
+    GLuint vbo_UV;
 
 private:
     //--- 플레그

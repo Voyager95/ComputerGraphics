@@ -22,6 +22,8 @@ void ModelInstance::GenerateBuffer()
 	//--- 2개의 VBO를 지정하고 할당하기
 	glGenBuffers(1, &vbo_Pos);
 	glGenBuffers(1, &vbo_Color);
+	glGenBuffers(1, &vbo_UV);
+	glGenBuffers(1, &vbo_Normal);
 
 	//--- EBO를 지정하고 할당하기
 	glGenBuffers(1, &ebo);
@@ -70,6 +72,30 @@ void ModelInstance::UpdateBuffer()
 
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);	// 색상값을 attribute 인덱스 1번에 명시한다: 버텍스 당 4*float
 	glEnableVertexAttribArray(1);
+
+	//--- vbo_Normal를 활성화하여 버텍스노말을 전달
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_Normal);
+
+	if (verticesNormal.size() > 0)
+	{
+		glBufferData(GL_ARRAY_BUFFER, verticesNormal.size() * sizeof(glm::vec3), &verticesNormal[0], GL_STATIC_DRAW);
+	}
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);	// 색상값을 attribute 인덱스 1번에 명시한다: 버텍스 당 4*float
+	glEnableVertexAttribArray(2);
+
+	//--- vbo_UV를 활성화하여 텍스쳐좌표를 전달
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_UV);
+
+	if (verticesUV.size() > 0)
+	{
+		glBufferData(GL_ARRAY_BUFFER, verticesUV.size() * sizeof(glm::vec2), &verticesUV[0], GL_STATIC_DRAW);
+	}
+
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), 0);	// 색상값을 attribute 인덱스 1번에 명시한다: 버텍스 당 4*float
+	glEnableVertexAttribArray(3);
+
+
 
 	//--- ebo_Pos를 활성화 하여 삼각형 정보를 바인드한다.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);		// GL_ELEMENT_ARRAY_BUFFER 버퍼 유형으로 바인딩

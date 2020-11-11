@@ -67,7 +67,7 @@ GLvoid MainLoop(int value)
 		glutPostRedisplay();
 
 		//--- 메인루프 재귀 호출
-		glutTimerFunc(20, MainLoop, 1);
+		glutTimerFunc(LOOPSPEED, MainLoop, 1);
 	}
 
 }

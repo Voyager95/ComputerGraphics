@@ -24,6 +24,9 @@
 
 #include "GlobalUtility.h"
 
+#define LOOPSPEED 16.7
+#define DELTATIME 0.016f
+
 //--- ·»´ý ÇÔ¼ö Á¤ÀÇ
 static std::random_device rd;
 static std::mt19937 gen(rd());
