@@ -20,14 +20,6 @@ Object::~Object()
 	std::cout << name << " »èÁ¦µÊ" << std::endl;
 }
 
-template<class T>
-inline std::shared_ptr<T> Object::AddComponent()
-{
-	auto t = std::shared_ptr<T>(shared_from_this());
-	m_Components.emplace_back(t);
-	return t;
-}
-
 void Object::OnAddTransform(std::shared_ptr<Transform> transform)
 {
 	m_Transform = transform;

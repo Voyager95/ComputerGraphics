@@ -15,6 +15,8 @@ class Renderer;
 class ShaderInstance
 {
 private:
+	ShaderType m_Type;
+
 	GLuint m_Program;												// 쉐이더 프로그램
 	GLuint m_UniformTransformMat;									// Uniform 변수
 	GLuint m_UniformProjMat;
@@ -24,7 +26,7 @@ private:
 
 public:
 	//--- Constructor
-	ShaderInstance(std::string vertexShaderPath, std::string fregmentShaderPath);
+	ShaderInstance(ShaderType type);
 
 	//--- Getter
 	GLuint GetProgram() { return m_Program; };

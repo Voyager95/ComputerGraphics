@@ -26,5 +26,6 @@ public:
 	virtual void OnUpdate();		// 업데이트 떄 불리는 함수입니다.
 	virtual void OnLateUpdate();	// 업데이트 이후 불리는 함수 입니다.
 	virtual void OnDestory();		// 파괴할 때, 불리는 함수입니다.
+	virtual void OnCollide(std::shared_ptr<Object> object);
 };
 

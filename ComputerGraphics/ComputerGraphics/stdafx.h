@@ -34,6 +34,15 @@ enum class WinSize : int
 	WINSIZE_Y = 800
 };
 
+enum class ShaderType
+{
+	VERTEX_ELEMENT,
+	TEXTURE_ELEMENT,
+	VERTEX_ARRAY,
+	TEXTURE_ARRAY,
+	LINE
+};
+
 //--- ·»´ý ÇÔ¼ö Á¤ÀÇ
 static std::random_device rd;
 static std::mt19937 gen(rd());

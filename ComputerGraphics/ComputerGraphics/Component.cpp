@@ -52,3 +52,7 @@ void Component::OnDestory()
 	//--- 파괴 함수를 활성화합니다.
 	OnDestory();
 }
+
+void Component::OnCollide(std::shared_ptr<Object> object)
+{
+}

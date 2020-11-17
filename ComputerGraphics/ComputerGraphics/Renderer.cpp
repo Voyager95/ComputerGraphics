@@ -7,7 +7,7 @@
 Renderer::Renderer(std::shared_ptr<Object> object) : Component(object)
 {
 	//--- 변수 초기화
-	m_TargetShaderType = ShaderType::VERTEX;
+	m_TargetShaderType = ShaderType::VERTEX_ELEMENT;
 	m_IsAssigned = false;
 	m_IsModelExist = false;
 }

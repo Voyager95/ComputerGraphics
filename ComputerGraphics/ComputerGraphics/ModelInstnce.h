@@ -26,6 +26,8 @@ public:
     GLuint vbo_Normal;
     GLuint vbo_UV;
 
+    //--- 설정
+    GLuint usage;
 private:
     //--- 플레그
     bool m_IsBufferGen;   // 버퍼가 생성되었는지 판단합니다.

@@ -13,15 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{5c3d8e0c-5a9c-42ba-813c-f5e47c937a05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="실습 파일">
-      <UniqueIdentifier>{482ad53d-721c-4c3f-93fe-3588a78adb72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="기본 코드">
-      <UniqueIdentifier>{ca4513d5-74d9-4bf3-8dcd-0c47aa1c5189}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{14e1c5c7-32dd-4462-ab43-153f3ba7e582}</UniqueIdentifier>
     </Filter>
@@ -49,53 +40,20 @@
     <Filter Include="실습 17">
       <UniqueIdentifier>{815819be-b3ce-4131-91d3-fd77a771d79e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ComponentHeaderFile">
-      <UniqueIdentifier>{4e3fc598-6b6a-435c-a829-e46c827c0eca}</UniqueIdentifier>
+    <Filter Include="숙제1">
+      <UniqueIdentifier>{9cbbb910-bdc6-4a21-8e78-e6b20f7e8982}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ComponentSourceFile">
-      <UniqueIdentifier>{0473e545-036d-4b17-823f-a75822702c34}</UniqueIdentifier>
+    <Filter Include="리소스 파일\Shader">
+      <UniqueIdentifier>{5c3d8e0c-5a9c-42ba-813c-f5e47c937a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\Shader\Fragment">
+      <UniqueIdentifier>{c7044a8c-519c-4d38-aebe-63c2f8db0d39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\Shader\Vertex">
+      <UniqueIdentifier>{7a72748a-dca0-4a66-bea9-667fc24633ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="실습1.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습2.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습3.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습4.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습5.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습6.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습7.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습9.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습10.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습11.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="실습12.cpp">
-      <Filter>실습 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicCode.cpp">
-      <Filter>기본 코드</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderBasicCode.cpp">
-      <Filter>기본 코드</Filter>
-    </ClCompile>
     <ClCompile Include="Framework.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -141,19 +99,31 @@
     <ClCompile Include="Exercise17.cpp">
       <Filter>실습 17</Filter>
     </ClCompile>
-    <ClCompile Include="TextureInstance.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Assignment1.cpp">
+      <Filter>숙제1</Filter>
     </ClCompile>
     <ClCompile Include="Rotator.cpp">
-      <Filter>ComponentSourceFile</Filter>
+      <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureInstance.cpp">
+      <Filter>ClassSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidbodySystem.cpp">
+      <Filter>SystemSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>BasicComponentSourceFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragment.glsl">
-      <Filter>Shader</Filter>
+    <None Include="VertexShader.glsl">
+      <Filter>리소스 파일\Shader\Vertex</Filter>
     </None>
-    <None Include="vertex.glsl">
-      <Filter>Shader</Filter>
+    <None Include="FragmentShader_Texture.glsl">
+      <Filter>리소스 파일\Shader\Fragment</Filter>
+    </None>
+    <None Include="FragmentShader_Vertex.glsl">
+      <Filter>리소스 파일\Shader\Fragment</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -196,20 +166,29 @@
     <ClInclude Include="stdafx.h">
       <Filter>PCH</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalUtility.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Exercise17.h">
       <Filter>실습 17</Filter>
     </ClInclude>
-    <ClInclude Include="TextureInstance.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Assignment1.h">
+      <Filter>숙제1</Filter>
     </ClInclude>
     <ClInclude Include="Rotator.h">
-      <Filter>ComponentHeaderFile</Filter>
+      <Filter>BasicComponentHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureInstance.h">
+      <Filter>ClassHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidbodySystem.h">
+      <Filter>SystemHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalUtility.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>BasicComponentHeaderFile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

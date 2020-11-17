@@ -27,7 +27,10 @@ public:
 	std::shared_ptr<Transform> GetTransform() { return m_Transform; }
 	std::list<std::shared_ptr<Component>> GetComponents() { return m_Components; }
 
-	template<class T>
+	template <typename T>
+	std::shared_ptr<T> GetComponent();
+
+	template<typename T>
 	std::shared_ptr<T> AddComponent();
 
 	void OnAddTransform(std::shared_ptr<Transform> transform);
@@ -53,3 +56,23 @@ public:
 	/// </summary>
 	void OnPreRender();
 };
+
+template<typename T>
+inline std::shared_ptr<T> Object::GetComponent()
+{
+	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
+	{
+		auto result = std::dynamic_pointer_cast<T>(*c);
+		if (result != nullptr)
+			return result;
+	}
+	return nullptr;
+}
+
+template<typename T>
+inline std::shared_ptr<T> Object::AddComponent()
+{
+	auto component = std::make_shared<T>(shared_from_this());
+	AddComponent(component);
+	return component;
+}

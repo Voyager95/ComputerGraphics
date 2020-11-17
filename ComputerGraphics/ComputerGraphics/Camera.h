@@ -32,6 +32,7 @@ public:
     float nearPlane;
     float farPlane;
 
+    Camera(std::shared_ptr<Object> object);
     Camera(int priority, std::shared_ptr<Object> object);
 
     //--- Getter

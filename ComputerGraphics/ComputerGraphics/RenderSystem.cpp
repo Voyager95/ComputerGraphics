@@ -1,11 +1,22 @@
-#include "RenderSystem.h"
 #include "stdafx.h"
+#include "RenderSystem.h"
+#include "GlobalUtility.h"
+#include "ShaderInstance.h"
 #include "Renderer.h"
 
 void RenderSystem::InitShader()
 {
-	//---VERTEX shader을 추가 
-	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>( ShaderType::VERTEX , std::make_unique<ShaderInstance>("vertex.glsl", "fragment.glsl")));
+	//---shader 추가
+	//--VERTEX_ELEMENT 추가
+	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>( ShaderType::VERTEX_ELEMENT , std::make_unique<ShaderInstance>(ShaderType::VERTEX_ELEMENT)));
+	//--VERTEX_ARRAY 추가
+	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>(ShaderType::VERTEX_ARRAY, std::make_unique<ShaderInstance>(ShaderType::VERTEX_ARRAY)));
+	//--TEXTURE_ARRAY 추가
+	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>(ShaderType::TEXTURE_ARRAY, std::make_unique<ShaderInstance>(ShaderType::TEXTURE_ARRAY)));
+	//--TEXTURE_ELEMENT 추가
+	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>(ShaderType::TEXTURE_ELEMENT, std::make_unique<ShaderInstance>(ShaderType::TEXTURE_ELEMENT)));
+	//-- LINE 추가
+	shaders.insert(std::pair<ShaderType, std::unique_ptr<ShaderInstance>>(ShaderType::LINE, std::make_unique<ShaderInstance>(ShaderType::LINE)));
 }
 
 RenderSystem& RenderSystem::GetInstance()
@@ -26,6 +37,13 @@ RenderSystem::RenderSystem()
 	}
 	else
 		std::cout << "GLEW Initialized\n";
+
+	//--- 렌더 설정
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glFrontFace(GL_CCW);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glLineWidth(3.0f);
 
 	//--- 쉐이더 생성
 	InitShader();

@@ -6,13 +6,32 @@
 std::list<std::shared_ptr<Camera>> Camera::cameras;
 std::shared_ptr<Camera> Camera::main = nullptr;
 
-Camera::Camera(int priority, std::shared_ptr<Object> object): Component(object)
+Camera::Camera(std::shared_ptr<Object> object): Component(object)
 {
+	//--- 변수 초기화
 	projOption = CameraProj::PERSPECTIVE;
+	//-- Ortho
 	left = -50;
 	right = 50;
 	bottom = -50;
 	top = 50;
+	//-- Perspective
+	fovy = 45;
+	nearPlane = 0.1f;
+	farPlane = 50.0f;
+	m_Priority = 0;
+}
+
+Camera::Camera(int priority, std::shared_ptr<Object> object): Component(object)
+{
+	//--- 변수 초기화
+	projOption = CameraProj::PERSPECTIVE;
+	//-- Ortho
+	left = -50;
+	right = 50;
+	bottom = -50;
+	top = 50;
+	//-- Perspective
 	fovy = 45;
 	nearPlane = 0.1f;
 	farPlane = 50.0f;

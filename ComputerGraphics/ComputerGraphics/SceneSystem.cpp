@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneSystem.h"
 #include "RenderSystem.h"
+#include "InputSystem.h"
 #include "Scene.h"
 #include "Object.h"
 #include "Component.h"
@@ -37,6 +38,8 @@ GLvoid MainLoop(int value)
 {
 	SceneSystem& ss = SceneSystem::GetInstance();
 	RenderSystem& rs = RenderSystem::GetInstance();
+	InputSystem& is = InputSystem::GetInstance();
+
 	if (ss.LoopEnd() != true)
 	{
 		//--- Create문 호출
@@ -62,6 +65,9 @@ GLvoid MainLoop(int value)
 		{
 			object->get()->OnPreRender();
 		}
+
+		//--- 인풋 초기화
+		is.ResetKey();
 
 		//--- 렌더
 		glutPostRedisplay();

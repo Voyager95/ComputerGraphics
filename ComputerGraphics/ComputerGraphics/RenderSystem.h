@@ -1,14 +1,9 @@
 #pragma once
-#include <map>
-#include <memory>
-#include <vector>
-#include <string>
-#include <gl/glew.h>
-#include <gl/freeglut.h>
-#include <gl/freeglut_ext.h>
+#include "stdafx.h"
 #include "GlobalUtility.h"
 #include "ShaderInstance.h"
 
+class ShaderInstance;
 class Renderer;
 
 /// <summary>
@@ -36,6 +31,8 @@ public:
 	void Render();
 	void AddRenderer(ShaderType type, std::shared_ptr<Renderer> renderer);
 	void SubRenderer(ShaderType type, std::shared_ptr<Renderer> renderer);
+
+	void SetPolygonMode(int mode) { glPolygonMode(GL_FRONT_AND_BACK, mode); }
 private:	
 	/// <summary>
 	/// - 쉐이더를 생성합니다.

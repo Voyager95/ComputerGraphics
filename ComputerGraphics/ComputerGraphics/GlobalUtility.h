@@ -1,17 +1,29 @@
 #pragma once
-
+#include "stdafx.h"
 class Object;
-
-enum class ShaderType
-{
-	VERTEX,
-	TEXTURE
-};
-
 
 class GlobalUtility
 {
 public:
+	//--- 싱글톤 디자인
+	GlobalUtility(const GlobalUtility&) = delete;
+	GlobalUtility& operator=(const GlobalUtility&) = delete;
+
+	/// <summary>
+	/// 싱글톤 인스턴스를 얻습니다.
+	/// *없는 경우 새로 만들어서 반환해줄 것입니다.
+	/// </summary>
+	/// <returns>싱글톤 인스턴스</returns>
+	static GlobalUtility& GetInstance();
+private:
+	GlobalUtility();
+public:
+
+	int presentWinSize_X;
+	int presentWinSize_Y;
+public:
+
+	//--- StaticMethod
 	static char* Filetobuf(const char* file)
 	{
 		FILE* fptr;

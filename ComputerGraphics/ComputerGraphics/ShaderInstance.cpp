@@ -8,14 +8,41 @@
 #include "Camera.h"
 #include "Transform.h"
 
-ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmentShaderPath)
+ShaderInstance::ShaderInstance(ShaderType type)
 {
+	m_Type = type;
+
 	//--- 프로그램 생성
 	m_Program = glCreateProgram();
 
-	//--- 쉐이더 생성
-	GLuint vertexShader = MakeVertexShader(vertexShaderPath);
-	GLuint fregmentShader = MakeFragmentShader(fregmentShaderPath);
+	//--- 쉐이더 생성	
+	GLuint vertexShader = 0;
+	GLuint fregmentShader = 0;
+	switch (m_Type)
+	{
+	case ShaderType::VERTEX_ELEMENT:
+		vertexShader = MakeVertexShader("VertexShader.glsl");
+		fregmentShader = MakeFragmentShader("FragmentShader_Vertex.glsl");
+		break;
+	case ShaderType::TEXTURE_ELEMENT:
+		vertexShader = MakeVertexShader("VertexShader.glsl");
+		fregmentShader = MakeFragmentShader("FragmentShader_Texture.glsl");
+		break;
+	case ShaderType::VERTEX_ARRAY:
+		vertexShader = MakeVertexShader("VertexShader.glsl");
+		fregmentShader = MakeFragmentShader("FragmentShader_Vertex.glsl");
+		break;
+	case ShaderType::TEXTURE_ARRAY:
+		vertexShader = MakeVertexShader("VertexShader.glsl");
+		fregmentShader = MakeFragmentShader("FragmentShader_Texture.glsl");
+		break;
+	case ShaderType::LINE: 
+		vertexShader = MakeVertexShader("VertexShader.glsl");
+		fregmentShader = MakeFragmentShader("FragmentShader_Vertex.glsl");
+		break;
+	default:
+		break;
+	}
 
 	//--- 프로그램에 쉐이더 붙이기
 	glAttachShader(m_Program, vertexShader);
@@ -37,12 +64,6 @@ ShaderInstance::ShaderInstance(std::string vertexShaderPath, std::string fregmen
 
 void ShaderInstance::Render()
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	glFrontFace(GL_CCW);
-	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
-
 	if (Camera::main != nullptr)
 	{
 		//--- 프로그램 활성화
@@ -78,7 +99,12 @@ void ShaderInstance::Render()
 			glUniformMatrix4fv(m_UniformTransformMat, 1, GL_FALSE, glm::value_ptr(transform->GetTransformMatrix()));
 
 			//-- 삼각형 그리기
-			glDrawElements(GL_TRIANGLES, model->triesIndex.size() * 3, GL_UNSIGNED_INT, 0);
+			if (m_Type == ShaderType::TEXTURE_ELEMENT || m_Type == ShaderType::VERTEX_ELEMENT)
+				glDrawElements(GL_TRIANGLES, model->triesIndex.size() * 3, GL_UNSIGNED_INT, 0);
+			if (m_Type == ShaderType::LINE)
+				glDrawArrays(GL_TRIANGLES, 0, 3);
+			else
+				glDrawArrays(GL_TRIANGLES, 0, model->triesIndex.size() * 3);
 		}
 	}
 }

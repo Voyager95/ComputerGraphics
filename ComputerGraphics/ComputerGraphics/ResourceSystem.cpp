@@ -259,16 +259,16 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
         ));
     }
 
-    for (auto i = instance->triesIndex.begin(); i != instance->triesIndex.end(); ++i)
-    {
-        std::cout << "("<< i->x << ", " << i->y << ", " << i->z <<")" << std::endl;
-        auto first = instance->verticesPos[i->x];
-        std::cout << "first: (" << first.x << ", " << first.y << ", " << first.z << ")" << std::endl;
-        auto second = instance->verticesPos[i->y];
-        std::cout << "second (" << second.x << ", " << second.y << ", " << second.z << ")" << std::endl;
-        auto third = instance->verticesPos[i->z];
-        std::cout << "third (" << third.x << ", " << third.y << ", " << third.z << ")" << std::endl;
-    }
+    //for (auto i = instance->triesIndex.begin(); i != instance->triesIndex.end(); ++i)
+    //{
+    //    std::cout << "("<< i->x << ", " << i->y << ", " << i->z <<")" << std::endl;
+    //    auto first = instance->verticesPos[i->x];
+    //    std::cout << "first: (" << first.x << ", " << first.y << ", " << first.z << ")" << std::endl;
+    //    auto second = instance->verticesPos[i->y];
+    //    std::cout << "second (" << second.x << ", " << second.y << ", " << second.z << ")" << std::endl;
+    //    auto third = instance->verticesPos[i->z];
+    //    std::cout << "third (" << third.x << ", " << third.y << ", " << third.z << ")" << std::endl;
+    //}
 
     instance->UpdateBuffer();
 
