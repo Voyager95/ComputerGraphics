@@ -21,7 +21,7 @@ private:
     std::shared_ptr<ModelInstance> m_Model;
 
 public:
-    SliceLine(std::shared_ptr<Object> object);
+    SliceLine(Object* object);
 
     virtual void OnCreate();
     virtual void OnUpdate();

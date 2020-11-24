@@ -45,25 +45,25 @@ GLvoid MainLoop(int value)
 		//--- Create문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			object->get()->OnCreate();
+			(*object)->OnCreate();
 		}
 
 		//--- Update문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			object->get()->OnUpdate();
+			(*object)->OnUpdate();
 		}
 
 		//--- LateUpdate문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			object->get()->OnLateUpdate();
+			(*object)->OnLateUpdate();
 		}
 
 		//--- OnPreRender문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			object->get()->OnPreRender();
+			(*object)->OnPreRender();
 		}
 
 		//--- 인풋 초기화

@@ -2,7 +2,7 @@
 #include "Rigidbody.h"
 #include "Object.h"
 
-Rigidbody::Rigidbody(std::shared_ptr<Object> object) : Component(object)
+Rigidbody::Rigidbody(Object* object) : Component(object)
 {
 
 }

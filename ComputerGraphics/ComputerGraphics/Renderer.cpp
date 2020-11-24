@@ -4,17 +4,12 @@
 #include "RenderSystem.h"
 #include "ModelInstnce.h"
 
-Renderer::Renderer(std::shared_ptr<Object> object) : Component(object)
+Renderer::Renderer(Object* object) : Component(object)
 {
 	//--- 변수 초기화
 	m_TargetShaderType = ShaderType::VERTEX_ELEMENT;
 	m_IsAssigned = false;
 	m_IsModelExist = false;
-}
-
-Renderer::Renderer(std::shared_ptr<Object> object, std::string objPath) : Renderer(object)
-{
-	SetSharedModel(objPath);
 }
 
 void Renderer::SetTargetShader(ShaderType type)
@@ -24,7 +19,7 @@ void Renderer::SetTargetShader(ShaderType type)
 	//--- 현재 렌더 시스템에 추가되어 있다면 제거
 	if (m_IsAssigned == true)
 	{
-		rs.SubRenderer(m_TargetShaderType, shared_from_this());
+		rs.SubRenderer(m_TargetShaderType, this);
 		m_IsAssigned = false;
 	}
 	
@@ -114,7 +109,7 @@ void Renderer::CheckState()
 		else
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
-			rs.AddRenderer(m_TargetShaderType, shared_from_this());
+			rs.AddRenderer(m_TargetShaderType, this);
 		}
 	}
 	else
@@ -122,7 +117,7 @@ void Renderer::CheckState()
 		if (m_IsAssigned)
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
-			rs.SubRenderer(m_TargetShaderType, shared_from_this());
+			rs.SubRenderer(m_TargetShaderType, this);
 		}
 		else
 		{

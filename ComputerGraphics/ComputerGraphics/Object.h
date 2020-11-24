@@ -13,9 +13,9 @@ public:
 private:
 	bool m_TransformExist;
 
-	std::list<std::shared_ptr<Component>> m_Components;
-	std::queue<std::shared_ptr<Component>> m_OnCreateComponents;
-	std::shared_ptr<Transform> m_Transform;
+	std::list<Component*> m_Components;
+	std::queue<Component*> m_OnCreateComponents;
+	Transform* m_Transform;
 public:
 
 	//-- Constructor
@@ -24,17 +24,17 @@ public:
 	~Object();
 
 	//---Getter
-	std::shared_ptr<Transform> GetTransform() { return m_Transform; }
-	std::list<std::shared_ptr<Component>> GetComponents() { return m_Components; }
+	Transform* GetTransform() { return m_Transform; }
+	std::list<Component*> GetComponents() { return m_Components; }
 
 	template <typename T>
-	std::shared_ptr<T> GetComponent();
+	T* GetComponent();
 
 	template<typename T>
-	std::shared_ptr<T> AddComponent();
+	T* AddComponent();
 
-	void OnAddTransform(std::shared_ptr<Transform> transform);
-	void AddComponent(std::shared_ptr<Component> component);
+	void OnAddTransform(Transform* transform);
+	void AddComponent(Component* component);
 
 	/// <summary>
 	/// 컴포넌트들의 OnCreate함수를 호출합니다.
@@ -58,11 +58,11 @@ public:
 };
 
 template<typename T>
-inline std::shared_ptr<T> Object::GetComponent()
+T* Object::GetComponent()
 {
 	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
 	{
-		auto result = std::dynamic_pointer_cast<T>(*c);
+		auto result = dynamic_cast<T*>(*c);
 		if (result != nullptr)
 			return result;
 	}
@@ -70,9 +70,9 @@ inline std::shared_ptr<T> Object::GetComponent()
 }
 
 template<typename T>
-inline std::shared_ptr<T> Object::AddComponent()
+T* Object::AddComponent()
 {
-	auto component = std::make_shared<T>(shared_from_this());
+	auto component = new T(this);
 	AddComponent(component);
 	return component;
 }

@@ -67,7 +67,7 @@ void RenderSystem::Render()
 	glutSwapBuffers(); // 화면에 출력하기
 }
 
-void RenderSystem::AddRenderer(ShaderType type, std::shared_ptr<Renderer> renderer)
+void RenderSystem::AddRenderer(ShaderType type, Renderer* renderer)
 {
 	if (shaders.find(type) != shaders.end())
 	{
@@ -79,7 +79,7 @@ void RenderSystem::AddRenderer(ShaderType type, std::shared_ptr<Renderer> render
 	}
 }
 
-void RenderSystem::SubRenderer(ShaderType type, std::shared_ptr<Renderer> renderer)
+void RenderSystem::SubRenderer(ShaderType type, Renderer* renderer)
 {
 	if (shaders.find(type) != shaders.end())
 	{

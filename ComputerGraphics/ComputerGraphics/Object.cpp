@@ -8,6 +8,10 @@
 Object::Object()
 {
 	m_TransformExist = false;
+
+	m_Transform = new Transform(this);
+
+	m_Components.emplace_back(m_Transform);
 }
 
 Object::Object(std::string name) : Object()
@@ -17,17 +21,24 @@ Object::Object(std::string name) : Object()
 
 Object::~Object()
 {
-	std::cout << name << " »èÁ¦µÊ" << std::endl;
+	std::cout << name << " »èÁ¦µÊ" << " ÄÄÆ÷³ÍÆ® ¼ö: " << m_Components.size() << std::endl;
+	//for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
+	//{
+	//	delete(*c);
+	//}
+
+	delete(m_Transform);
+		
 }
 
-void Object::OnAddTransform(std::shared_ptr<Transform> transform)
+void Object::OnAddTransform(Transform* transform)
 {
 	m_Transform = transform;
 	AddComponent(transform);
 	m_TransformExist = true;
 }
 
-void Object::AddComponent(std::shared_ptr<Component> component)
+void Object::AddComponent(Component* component)
 {
 	m_Components.emplace_back(component);
 	m_OnCreateComponents.push(component);
@@ -48,7 +59,7 @@ void Object::OnUpdate()
 {
 	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
 	{
-		c->get()->OnUpdate();
+		(*c)->OnUpdate();
 	}
 }
 
@@ -56,7 +67,7 @@ void Object::OnLateUpdate()
 {
 	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
 	{
-		c->get()->OnLateUpdate();
+		(*c)->OnLateUpdate();
 	}
 }
 
@@ -64,6 +75,6 @@ void Object::OnPreRender()
 {
 	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
 	{
-		c->get()->OnPreRender();
+		(*c)->OnPreRender();
 	}
 }

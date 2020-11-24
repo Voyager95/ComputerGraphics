@@ -11,7 +11,7 @@ class TextureInstance;
 /// 오브젝트를 그리는 컴포넌트 입니다.
 /// </summary>
 class Renderer :
-    public Component, public std::enable_shared_from_this<Renderer>
+    public Component
 {
 public:
 
@@ -34,8 +34,7 @@ private:
 
 public:
     //--- Constructor
-    Renderer(std::shared_ptr<Object> object);
-    Renderer(std::shared_ptr<Object> object, std::string objPath);
+    Renderer(Object* object);
 
     //--- Getter
     std::shared_ptr<TextureInstance> GetTexture() { return m_Tex; }

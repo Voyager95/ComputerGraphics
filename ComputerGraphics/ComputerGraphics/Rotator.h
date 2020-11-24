@@ -11,7 +11,7 @@ public:
     float speed;
     glm::vec3 direction;
 
-    Rotator(std::shared_ptr<Object> object);
+    Rotator(Object* object);
 
     virtual void OnUpdate();
 };

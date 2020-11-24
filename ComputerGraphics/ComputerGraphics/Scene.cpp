@@ -7,12 +7,13 @@ Scene::Scene()
 {
 }
 
-void Scene::AddObject(std::shared_ptr<Object> object)
+void Scene::AddObject(Object* object)
 {
 	objects.emplace_back(object);
 }
 
-void Scene::SubObject(std::shared_ptr<Object> object)
+void Scene::SubObject(Object* object)
 {
 	objects.remove(object);
+	delete object;
 }

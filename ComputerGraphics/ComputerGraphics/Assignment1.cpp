@@ -11,43 +11,41 @@
 Assignment1::Assignment1()
 {
 	//--- Camera 持失
-	std::shared_ptr<Object> camera = GlobalUtility::CreateObject();
+	Object* camera = new Object();
 	//-- Transform
 	auto cameraTransform = camera->GetTransform();
 	cameraTransform->position.y += 15.0f;
 	cameraTransform->position.z += -10.0f;
 	cameraTransform->rotation.x += 45;
 	//-- Camera
-	auto cameraCamera = std::make_shared<Camera>(1, camera);
-	camera->AddComponent(cameraCamera);
-	//cameraCamera->projOption = CameraProj::ORTHO;
+	camera->AddComponent<Camera>();
 	AddObject(camera);
 
 	//--- Plane 持失
-	std::shared_ptr<Object> plane = GlobalUtility::CreateObject();
+	auto plane = new Object();
 	//-- Transform
 	auto planeTransform = plane->GetTransform();
 	planeTransform->scale *= 5;
 	//-- Randerer
-	auto planeRenderer = std::make_shared<Renderer>(plane);
-	plane->AddComponent(planeRenderer);
+	auto planeRenderer = plane->AddComponent<Renderer>();
 	planeRenderer->SetTargetShader(ShaderType::TEXTURE_ELEMENT);
 	planeRenderer->SetSharedModel("human.obj");
 	planeRenderer->SetSharedTextrue("human.png");
 	AddObject(plane);
 
+
 	//--- SliceLine 持失
-	std::shared_ptr<Object> sliceLine = GlobalUtility::CreateObject();
+	Object* sliceLine = new Object("SliceLine");
 	//-- Renderer
 	auto sliceLineRenderer = sliceLine->AddComponent<Renderer>();
-	//-- SliceLine
-	auto sliceLineSliceLine = std::make_shared<SliceLine>(sliceLine);
-	sliceLine->AddComponent(sliceLineSliceLine);
+
 	AddObject(sliceLine);
+
+	SubObject(sliceLine);
 	
 }
 
-SliceLine::SliceLine(std::shared_ptr<Object> object) : Component(object)
+SliceLine::SliceLine(Object* object) : Component(object)
 {
 
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Transform.h"
 
-Transform::Transform(std::shared_ptr<Object> object) : Component(object)
+Transform::Transform(Object* object) : Component(object)
 {
 	position.x = 0;
 	position.y = 0;
@@ -14,6 +14,11 @@ Transform::Transform(std::shared_ptr<Object> object) : Component(object)
 	scale.x = 1;
 	scale.y = 1;
 	scale.z = 1;
+}
+
+Transform::~Transform()
+{
+	std::cout << "Tranform »èÁ¦" << std::endl;
 }
 
 glm::mat4x4 Transform::GetTransformMatrix()

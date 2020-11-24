@@ -12,8 +12,8 @@ class Camera :
     public Component, public std::enable_shared_from_this<Camera>
 {
 public:
-    static std::list<std::shared_ptr<Camera>> cameras;
-    static std::shared_ptr<Camera> main;
+    static std::list<Camera*> cameras;
+    static Camera* main;
 private:
     int m_Priority;
 public:
@@ -32,8 +32,7 @@ public:
     float nearPlane;
     float farPlane;
 
-    Camera(std::shared_ptr<Object> object);
-    Camera(int priority, std::shared_ptr<Object> object);
+    Camera(Object* object);
 
     //--- Getter
     int GetPriority() { return m_Priority; }

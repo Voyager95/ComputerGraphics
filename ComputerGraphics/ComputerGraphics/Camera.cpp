@@ -3,10 +3,10 @@
 #include "Object.h"
 #include "Transform.h"
 
-std::list<std::shared_ptr<Camera>> Camera::cameras;
-std::shared_ptr<Camera> Camera::main = nullptr;
+std::list<Camera*> Camera::cameras;
+Camera* Camera::main = nullptr;
 
-Camera::Camera(std::shared_ptr<Object> object): Component(object)
+Camera::Camera(Object* object): Component(object)
 {
 	//--- 변수 초기화
 	projOption = CameraProj::PERSPECTIVE;
@@ -20,22 +20,6 @@ Camera::Camera(std::shared_ptr<Object> object): Component(object)
 	nearPlane = 0.1f;
 	farPlane = 50.0f;
 	m_Priority = 0;
-}
-
-Camera::Camera(int priority, std::shared_ptr<Object> object): Component(object)
-{
-	//--- 변수 초기화
-	projOption = CameraProj::PERSPECTIVE;
-	//-- Ortho
-	left = -50;
-	right = 50;
-	bottom = -50;
-	top = 50;
-	//-- Perspective
-	fovy = 45;
-	nearPlane = 0.1f;
-	farPlane = 50.0f;
-	m_Priority = priority;
 }
 
 void Camera::SetPriority(int value)
@@ -52,15 +36,15 @@ void Camera::SetPriority(int value)
 		{
 			if (initialized == false)
 			{
-				highestPriority = iter->get()->GetPriority();
+				highestPriority = (*iter)->GetPriority();
 				highestPrioirtyCameraIter = iter;
 				initialized = true;
 				continue;
 			}
 
-			if (highestPriority < iter->get()->GetPriority())
+			if (highestPriority < (*iter)->GetPriority())
 			{
-				highestPriority = iter->get()->GetPriority();
+				highestPriority = (*iter)->GetPriority();
 				highestPrioirtyCameraIter = iter;
 			}
 		}
@@ -68,7 +52,7 @@ void Camera::SetPriority(int value)
 	}
 	else
 	{
-		main = shared_from_this();
+		main = this;
 	}
 }
 

@@ -7,12 +7,12 @@ class Component;
 class Scene
 {
 public:
-	std::list<std::shared_ptr<Object>> objects;
+	std::list<Object*> objects;
 
 	Scene();
 
-	void AddObject(std::shared_ptr<Object> object);
-	void SubObject(std::shared_ptr<Object> object);
+	void AddObject(Object* object);
+	void SubObject(Object* object);
 private:
 };
 

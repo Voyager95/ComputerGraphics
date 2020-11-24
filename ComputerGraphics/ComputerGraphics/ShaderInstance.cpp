@@ -81,7 +81,7 @@ void ShaderInstance::Render()
 		for (auto rendererPtr = GetRenderer().begin(); rendererPtr != GetRenderer().end(); ++rendererPtr)
 		{
 			//-- vao 바인딩
-			auto renderer = rendererPtr->get();
+			auto renderer = *rendererPtr;
 			auto model = renderer->GetModel();
 			auto vao = model->vao;
 			glBindVertexArray(vao);
@@ -109,7 +109,7 @@ void ShaderInstance::Render()
 	}
 }
 
-void ShaderInstance::SubRenderer(std::shared_ptr<Renderer> renderer)
+void ShaderInstance::SubRenderer(Renderer* renderer)
 {
 	if (std::find(m_TargetRenderer.begin(), m_TargetRenderer.end(), renderer) != m_TargetRenderer.end())
 		m_TargetRenderer.remove(renderer);
@@ -117,7 +117,7 @@ void ShaderInstance::SubRenderer(std::shared_ptr<Renderer> renderer)
 		std::cout << "[ShaderInstance AddRenderer()] 삭제하고자 하는 렌더러는 이미 없습니다." << std::endl;
 }
 
-void ShaderInstance::AddRenderer(std::shared_ptr<Renderer> renderer)
+void ShaderInstance::AddRenderer(Renderer* renderer)
 {
 	if (std::find(m_TargetRenderer.begin(), m_TargetRenderer.end(), renderer) == m_TargetRenderer.end())
 		m_TargetRenderer.emplace_back(renderer);

@@ -14,6 +14,6 @@ class Rigidbody :
     public Component
 {
 public:
-    Rigidbody(std::shared_ptr<Object> object);
+    Rigidbody(Object* object);
 };
 

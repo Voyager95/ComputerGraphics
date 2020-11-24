@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Component.h"
 
-Component::Component(std::shared_ptr<Object> object)
+Component::Component(Object* object)
 {
 	//--- 자신이 속해있는 오브젝트를 넣습니다.
 	m_Object = object;
@@ -16,8 +16,7 @@ Component::Component(std::shared_ptr<Object> object)
 
 Component::~Component()
 {
-	m_Object = nullptr;
-	
+	OnDestory();
 }
 
 void Component::OnCreate()
@@ -46,13 +45,8 @@ void Component::OnLateUpdate()
 
 void Component::OnDestory()
 {
-	//--- 먼저 이 컴포넌트를 비활성화 합니다.
-	SetEnable(false);
-
-	//--- 파괴 함수를 활성화합니다.
-	OnDestory();
 }
 
-void Component::OnCollide(std::shared_ptr<Object> object)
+void Component::OnCollide(Object* object)
 {
 }

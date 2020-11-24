@@ -15,7 +15,8 @@ public:
 	glm::vec3 scale;
 
 	//--- Constructor
-	Transform(std::shared_ptr<Object> object);
+	Transform(Object* object);
+	~Transform();
 
 	//--- Getter
 	glm::mat4x4 GetTransformMatrix();

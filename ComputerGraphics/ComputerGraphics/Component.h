@@ -6,15 +6,15 @@ class Object;
 class Component
 {
 private:
-	std::shared_ptr<Object> m_Object;
+	Object* m_Object;
 	bool m_Enable;
 public:
-	Component(std::shared_ptr<Object> object);
+	Component(Object* object);
 	~Component();
 
 	//--- Getter
 	bool GetEnable() { return m_Enable; }
-	std::shared_ptr<Object> GetBelongingObject() { return m_Object; }
+	Object* GetBelongingObject() { return m_Object; }
 
 	//--- Setter
 	void SetEnable(bool value) { m_Enable = value; if (value == true) OnEnable(); else OnDisable(); }
@@ -25,7 +25,7 @@ public:
 	virtual void OnPreRender();		// 그리기 전에 호출되는 함수입니다.
 	virtual void OnUpdate();		// 업데이트 떄 불리는 함수입니다.
 	virtual void OnLateUpdate();	// 업데이트 이후 불리는 함수 입니다.
-	virtual void OnDestory();		// 파괴할 때, 불리는 함수입니다.
-	virtual void OnCollide(std::shared_ptr<Object> object);
+	virtual void OnDestory();		// 파괴할 때, 불리는 함수입니다. (사용되지 않음, 소멸자 사용)
+	virtual void OnCollide(Object* object);
 };
 

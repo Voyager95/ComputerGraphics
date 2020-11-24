@@ -29,8 +29,8 @@ private:
 public:
 
 	void Render();
-	void AddRenderer(ShaderType type, std::shared_ptr<Renderer> renderer);
-	void SubRenderer(ShaderType type, std::shared_ptr<Renderer> renderer);
+	void AddRenderer(ShaderType type, Renderer* renderer);
+	void SubRenderer(ShaderType type, Renderer* renderer);
 
 	void SetPolygonMode(int mode) { glPolygonMode(GL_FRONT_AND_BACK, mode); }
 private:	

@@ -22,7 +22,7 @@ private:
 	GLuint m_UniformProjMat;
 	GLuint m_UniformViewMat;										// Uniform 변수
 	GLuint m_UniformTexture;
-	std::list<std::shared_ptr<Renderer>> m_TargetRenderer;			// 이 쉐이더를 사용하는 렌더러 입니다.
+	std::list<Renderer*> m_TargetRenderer;			// 이 쉐이더를 사용하는 렌더러 입니다.
 
 public:
 	//--- Constructor
@@ -30,12 +30,12 @@ public:
 
 	//--- Getter
 	GLuint GetProgram() { return m_Program; };
-	std::list<std::shared_ptr<Renderer>>& GetRenderer() {return m_TargetRenderer; };
+	std::list<Renderer*>& GetRenderer() {return m_TargetRenderer; };
 
 
 	void Render();
-	void SubRenderer(std::shared_ptr<Renderer> renderer);
-	void AddRenderer(std::shared_ptr<Renderer> renderer);
+	void SubRenderer(Renderer* renderer);
+	void AddRenderer(Renderer* renderer);
 private:
 	/// <summary>
 	/// 쉐이더 버텍스를 만들어 반환합니다.
