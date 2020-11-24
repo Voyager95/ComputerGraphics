@@ -271,7 +271,7 @@ std::shared_ptr<ModelInstance> ResourceSystem::ReadObj(std::string path)
     //}
 
     instance->UpdateBuffer();
-
+    instance->RandomColor();
     return instance;
 }
 

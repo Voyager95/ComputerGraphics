@@ -9,7 +9,7 @@ enum class CameraProj
 };
 
 class Camera :
-    public Component, public std::enable_shared_from_this<Camera>
+    public Component
 {
 public:
     static std::list<Camera*> cameras;

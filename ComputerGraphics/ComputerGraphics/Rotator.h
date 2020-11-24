@@ -1,9 +1,5 @@
 #pragma once
-#include "stdafx.h"
 #include "Component.h"
-
-class Object;
-
 class Rotator :
     public Component
 {

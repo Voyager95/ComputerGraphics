@@ -3,9 +3,8 @@
 #include "ResourceSystem.h"
 #include "SceneSystem.h"
 #include "InputSystem.h"
-#include "RigidbodySystem.h"
 
-#include "Assignment1.h"
+#include "TermProject.h"
 
 //--- 전역 변수
 
@@ -36,7 +35,6 @@ void main(int argc, char** argv)
 	ResourceSystem::GetInstance();									// 리소스 시스템 생성
 	SceneSystem::GetInstance();										// 씬 시스템 생성
 	InputSystem::GetInstance();										// 인풋 시스템 생성
-	RigidbodySystem::GetInstance();									// 강체 시스템 생성
 
 	//--- 이벤트 함수 등록
 	glutDisplayFunc(DrawScene);										// 출력 함수의 지정( 즉 그릴 함수 지정)
@@ -168,7 +166,7 @@ GLvoid KeyboardUp(unsigned char key, int x, int y)
 
 GLvoid InitialLoop(int value)
 {
-	auto scene = std::make_shared<Assignment1>();
+	auto scene = std::make_shared<TermProject>();
 
 	auto& ss = SceneSystem::GetInstance();
 

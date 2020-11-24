@@ -154,11 +154,12 @@
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="ResourceSystem.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
-    <ClCompile Include="RigidbodySystem.cpp" />
     <ClCompile Include="Rotator.cpp" />
+    <ClCompile Include="SimpleMove.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="ShaderInstance.cpp" />
+    <ClCompile Include="TermProject.cpp" />
     <ClCompile Include="TextureInstance.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -175,13 +176,14 @@
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ResourceSystem.h" />
     <ClInclude Include="Rigidbody.h" />
-    <ClInclude Include="RigidbodySystem.h" />
     <ClInclude Include="Rotator.h" />
+    <ClInclude Include="SimpleMove.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="ShaderInstance.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TermProject.h" />
     <ClInclude Include="TextureInstance.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>

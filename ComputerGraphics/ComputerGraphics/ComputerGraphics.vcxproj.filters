@@ -52,6 +52,12 @@
     <Filter Include="리소스 파일\Shader\Vertex">
       <UniqueIdentifier>{7a72748a-dca0-4a66-bea9-667fc24633ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TermProjectHeaderFile">
+      <UniqueIdentifier>{ed43c956-5463-4503-911b-a4f24877c07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TernProjectHeaderFile">
+      <UniqueIdentifier>{6d498f20-00ad-4404-a8c2-edc1c6d2654e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp">
@@ -102,17 +108,20 @@
     <ClCompile Include="Assignment1.cpp">
       <Filter>숙제1</Filter>
     </ClCompile>
-    <ClCompile Include="Rotator.cpp">
-      <Filter>BasicComponentSourceFile</Filter>
-    </ClCompile>
     <ClCompile Include="TextureInstance.cpp">
       <Filter>ClassSourceFile</Filter>
     </ClCompile>
-    <ClCompile Include="RigidbodySystem.cpp">
-      <Filter>SystemSourceFile</Filter>
-    </ClCompile>
     <ClCompile Include="Rigidbody.cpp">
       <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="TermProject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMove.cpp">
+      <Filter>BasicComponentSourceFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Rotator.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,14 +181,8 @@
     <ClInclude Include="Assignment1.h">
       <Filter>숙제1</Filter>
     </ClInclude>
-    <ClInclude Include="Rotator.h">
-      <Filter>BasicComponentHeaderFile</Filter>
-    </ClInclude>
     <ClInclude Include="TextureInstance.h">
       <Filter>ClassHeaderFile</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidbodySystem.h">
-      <Filter>SystemHeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="GlobalUtility.h">
       <Filter>Main</Filter>
@@ -189,6 +192,15 @@
     </ClInclude>
     <ClInclude Include="Rigidbody.h">
       <Filter>BasicComponentHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="TermProject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMove.h">
+      <Filter>BasicComponentHeaderFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotator.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

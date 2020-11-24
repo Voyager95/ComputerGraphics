@@ -16,9 +16,9 @@ Camera::Camera(Object* object): Component(object)
 	bottom = -50;
 	top = 50;
 	//-- Perspective
-	fovy = 45;
+	fovy = 60;
 	nearPlane = 0.1f;
-	farPlane = 50.0f;
+	farPlane = 100.0f;
 	m_Priority = 0;
 }
 
@@ -85,7 +85,7 @@ glm::mat4 Camera::GetViewMatrix()
 
 glm::mat4 Camera::GetProjMatrix()
 {
-	if (projOption == CameraProj::ORTHO)
+	if (projOption == CameraProj::PERSPECTIVE)
 	{
 		float aspect = (float)WinSize::WINSIZE_X / (float)WinSize::WINSIZE_Y;
 		auto mat = glm::perspective(glm::radians(fovy), aspect , nearPlane,farPlane);
