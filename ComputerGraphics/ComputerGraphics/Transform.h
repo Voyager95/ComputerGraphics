@@ -14,11 +14,13 @@ public:
 	glm::vec3 rotation;
 	glm::vec3 scale;
 
+	Transform* parent;
 	//--- Constructor
 	Transform(Object* object);
 	~Transform();
 
 	//--- Getter
 	glm::mat4x4 GetTransformMatrix();
+	glm::vec3 GetWorldPosition();
 };
 

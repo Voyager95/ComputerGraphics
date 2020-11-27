@@ -14,6 +14,8 @@ Transform::Transform(Object* object) : Component(object)
 	scale.x = 1;
 	scale.y = 1;
 	scale.z = 1;
+
+	parent = nullptr;
 }
 
 Transform::~Transform()
@@ -23,6 +25,7 @@ Transform::~Transform()
 
 glm::mat4x4 Transform::GetTransformMatrix()
 {
+
 	//-- ÀÌµ¿
 	glm::mat4 translate = glm::mat4(1.0f);
 	translate = glm::translate(translate, position);
@@ -37,5 +40,13 @@ glm::mat4x4 Transform::GetTransformMatrix()
 	glm::mat4 size = glm::mat4(1.0f);
 	size = glm::scale(size, scale);
 
-	return translate*rotate*size;
+	if (parent != nullptr)
+		return parent->GetTransformMatrix() * translate * rotate * size;
+	else
+		return translate * rotate * size;
+}
+
+glm::vec3 Transform::GetWorldPosition()
+{
+	return glm::vec3();
 }

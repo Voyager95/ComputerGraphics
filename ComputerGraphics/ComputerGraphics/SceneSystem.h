@@ -40,7 +40,7 @@ public:
 	bool LoopEnd() { return m_LoopEnd; };
 
 	/// <summary>
-	/// 현재 씬을 시작합니다.
+	/// 현재 씬을 시작합니다
 	/// 즉, 루프를 돌립니다.
 	/// </summary>
 	void StartLoop();
@@ -50,5 +50,8 @@ public:
 	/// 즉, 루프를 멈춥니다.
 	/// </summary>
 	void StopLoop();
+
+public:
+	static Object* GetObjectByName(std::string name);
 };
 

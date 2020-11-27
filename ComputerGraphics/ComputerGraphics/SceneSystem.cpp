@@ -34,6 +34,21 @@ void SceneSystem::StopLoop()
 	m_LoopEnd = true;
 }
 
+Object* SceneSystem::GetObjectByName(std::string name)
+{
+	SceneSystem& ss = SceneSystem::GetInstance();
+
+	for (auto o = ss.GetPresentScene()->objects.begin(); o != ss.GetPresentScene()->objects.end(); ++o)
+	{
+		if ((*o)->name == name)
+		{
+			return (*o);
+		}
+	}
+
+	return nullptr;
+}
+
 GLvoid MainLoop(int value)
 {
 	SceneSystem& ss = SceneSystem::GetInstance();

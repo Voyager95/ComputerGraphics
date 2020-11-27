@@ -8,11 +8,12 @@ class Scene
 {
 public:
 	std::list<Object*> objects;
-
+ 
 	Scene();
 
 	void AddObject(Object* object);
 	void SubObject(Object* object);
+
 private:
 };
 

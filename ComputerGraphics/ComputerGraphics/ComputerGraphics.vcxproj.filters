@@ -123,6 +123,9 @@
     <ClCompile Include="Rotator.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleFallower.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl">
@@ -200,6 +203,9 @@
       <Filter>BasicComponentHeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="Rotator.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleFallower.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

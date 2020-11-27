@@ -155,6 +155,7 @@
     <ClCompile Include="ResourceSystem.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Rotator.cpp" />
+    <ClCompile Include="SimpleFallower.cpp" />
     <ClCompile Include="SimpleMove.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ResourceSystem.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Rotator.h" />
+    <ClInclude Include="SimpleFallower.h" />
     <ClInclude Include="SimpleMove.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
