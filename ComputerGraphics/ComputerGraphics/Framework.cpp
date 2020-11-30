@@ -4,7 +4,7 @@
 #include "SceneSystem.h"
 #include "InputSystem.h"
 
-#include "TermProject.h"
+#include "Assignment2.h"
 
 //--- 전역 변수
 
@@ -28,7 +28,7 @@ void main(int argc, char** argv)
 					   (int)WinSize::WINSIZE_Y);					
 	GlobalUtility::GetInstance().presentWinSize_X = (int)WinSize::WINSIZE_X;
 	GlobalUtility::GetInstance().presentWinSize_Y = (int)WinSize::WINSIZE_Y;
-	glutCreateWindow("2015182009김태현 Assignment1");				// 윈도우 생성(윈도우 이름)
+	glutCreateWindow("2015182009김태현 Assignment2");				// 윈도우 생성(윈도우 이름)
 
 	//--- System 생성
 	RenderSystem::GetInstance();									// 렌더 시스템 생성
@@ -166,7 +166,7 @@ GLvoid KeyboardUp(unsigned char key, int x, int y)
 
 GLvoid InitialLoop(int value)
 {
-	auto scene = std::make_shared<TermProject>();
+	auto scene = std::make_shared<Assignment2>();
 
 	auto& ss = SceneSystem::GetInstance();
 

@@ -41,5 +41,9 @@ public:
 		buf[length] = 0; // Null terminator
 		return buf; // Return the buffer
 	}
+
+	static glm::vec3 Lerp(glm::vec3 from, glm::vec3 to, float factor);
+
+	static void PrintVec3(std::string name, glm::vec3 value);
 };
 

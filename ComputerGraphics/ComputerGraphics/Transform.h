@@ -1,10 +1,8 @@
 #pragma once
-#include <memory>
-#include <gl/glm/glm.hpp>
-#include <gl/glm/ext.hpp>
-#include <gl/glm/gtc/matrix_transform.hpp>
+#include "stdafx.h"
 #include "Component.h"
-#include "Object.h"
+
+class Object;
 
 class Transform :
     public Component
@@ -22,5 +20,14 @@ public:
 	//--- Getter
 	glm::mat4x4 GetTransformMatrix();
 	glm::vec3 GetWorldPosition();
+	glm::vec3 GetWorldRotation();
+
+	//--- Setter
+	void SetWorldRotation(glm::vec3 target);
+	void SetWorldPosition(glm::vec3 target);
+
+	//--- Utility
+	void LookAt(Object* target);
+	void LookAt(glm::vec3 target);
 };
 

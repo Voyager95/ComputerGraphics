@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Transform.h"
+#include "Object.h"
 
 Transform::Transform(Object* object) : Component(object)
 {
@@ -48,5 +49,45 @@ glm::mat4x4 Transform::GetTransformMatrix()
 
 glm::vec3 Transform::GetWorldPosition()
 {
-	return glm::vec3();
+	auto worldPos = GetTransformMatrix()* glm::vec4(0,0,0,1);
+	/*std::cout << worldPos.x << ", " << worldPos.y << ", " << worldPos.z << std::endl;*/
+	return  glm::vec3(worldPos);
+}
+
+glm::vec3 Transform::GetWorldRotation()
+{
+	if (parent == nullptr)
+		return rotation;
+	else
+		return rotation + parent->GetWorldRotation();
+}
+
+void Transform::SetWorldRotation(glm::vec3 target)
+{
+	if (parent == nullptr)
+		rotation = target;
+	else
+	{
+		rotation = target - parent->GetWorldRotation();
+	}
+}
+
+void Transform::SetWorldPosition(glm::vec3 target)
+{
+	if (parent == nullptr)
+		position = target;
+	else
+	{
+		position = target - parent->GetWorldPosition();
+	}
+}
+
+void Transform::LookAt(Object* target)
+{
+	LookAt(target->GetTransform()->GetWorldPosition());
+}
+
+void Transform::LookAt(glm::vec3 target)
+{
+	// 구현되지 않음
 }

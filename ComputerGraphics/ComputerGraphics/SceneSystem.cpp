@@ -26,6 +26,12 @@ SceneSystem::SceneSystem()
 void SceneSystem::StartLoop()
 {
 	m_LoopEnd = false;
+
+	//--- Scene OnCreate를 호출합니다.
+	SceneSystem& ss = SceneSystem::GetInstance();
+	ss.GetPresentScene()->OnCreate();
+
+	//--- 루프 시작
 	glutTimerFunc( 0, MainLoop, 1);
 }
 
@@ -57,25 +63,28 @@ GLvoid MainLoop(int value)
 
 	if (ss.LoopEnd() != true)
 	{
-		//--- Create문 호출
+		//--- Scene의 Update문 호출
+		ss.GetPresentScene()->OnUpdate();
+
+		//--- SceneOBject의 Create문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
 			(*object)->OnCreate();
 		}
 
-		//--- Update문 호출
+		//--- SceneOBject의 Update문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
 			(*object)->OnUpdate();
 		}
 
-		//--- LateUpdate문 호출
+		//--- SceneOBject의 LateUpdate문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
 			(*object)->OnLateUpdate();
 		}
 
-		//--- OnPreRender문 호출
+		//--- SceneOBject의 OnPreRender문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
 			(*object)->OnPreRender();

@@ -37,9 +37,6 @@
     <Filter Include="PCH">
       <UniqueIdentifier>{e91c66c6-307a-4412-b625-107b2ff1df6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="실습 17">
-      <UniqueIdentifier>{815819be-b3ce-4131-91d3-fd77a771d79e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="숙제1">
       <UniqueIdentifier>{9cbbb910-bdc6-4a21-8e78-e6b20f7e8982}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="TernProjectHeaderFile">
       <UniqueIdentifier>{6d498f20-00ad-4404-a8c2-edc1c6d2654e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="숙제2">
+      <UniqueIdentifier>{815819be-b3ce-4131-91d3-fd77a771d79e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,9 +102,6 @@
     <ClCompile Include="GlobalUtility.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Exercise17.cpp">
-      <Filter>실습 17</Filter>
-    </ClCompile>
     <ClCompile Include="Assignment1.cpp">
       <Filter>숙제1</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
     <ClCompile Include="Rigidbody.cpp">
       <Filter>BasicComponentSourceFile</Filter>
     </ClCompile>
-    <ClCompile Include="TermProject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleMove.cpp">
       <Filter>BasicComponentSourceFile</Filter>
     </ClCompile>
@@ -125,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="SimpleFallower.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Assignment2.cpp">
+      <Filter>숙제2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,9 +175,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>PCH</Filter>
     </ClInclude>
-    <ClInclude Include="Exercise17.h">
-      <Filter>실습 17</Filter>
-    </ClInclude>
     <ClInclude Include="Assignment1.h">
       <Filter>숙제1</Filter>
     </ClInclude>
@@ -196,9 +190,6 @@
     <ClInclude Include="Rigidbody.h">
       <Filter>BasicComponentHeaderFile</Filter>
     </ClInclude>
-    <ClInclude Include="TermProject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleMove.h">
       <Filter>BasicComponentHeaderFile</Filter>
     </ClInclude>
@@ -207,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="SimpleFallower.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Assignment2.h">
+      <Filter>숙제2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -71,7 +71,7 @@ void ShaderInstance::Render()
 
 		//--- 카메라 뷰 Uniform변수 전달
 		auto viewMat = Camera::main->GetViewMatrix();
-		glUniformMatrix4fv(m_UniformViewMat, 1, GL_FALSE, glm::value_ptr(viewMat));
+		glUniformMatrix4fv(m_UniformViewMat, 1, GL_FALSE, &viewMat[0][0]);
 
 		//--- 투영 Uniform변수 전달
 		auto projMat = Camera::main->GetProjMatrix();
@@ -101,7 +101,7 @@ void ShaderInstance::Render()
 			//-- 삼각형 그리기
 			if (m_Type == ShaderType::TEXTURE_ELEMENT || m_Type == ShaderType::VERTEX_ELEMENT)
 				glDrawElements(GL_TRIANGLES, model->triesIndex.size() * 3, GL_UNSIGNED_INT, 0);
-			if (m_Type == ShaderType::LINE)
+			else if (m_Type == ShaderType::LINE)
 				glDrawArrays(GL_TRIANGLES, 0, 3);
 			else
 				glDrawArrays(GL_TRIANGLES, 0, model->triesIndex.size() * 3);

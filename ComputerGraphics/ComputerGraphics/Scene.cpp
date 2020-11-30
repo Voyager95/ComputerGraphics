@@ -17,3 +17,11 @@ void Scene::SubObject(Object* object)
 	objects.remove(object);
 	delete object;
 }
+
+void Scene::OnCreate()
+{
+}
+
+void Scene::OnUpdate()
+{
+}

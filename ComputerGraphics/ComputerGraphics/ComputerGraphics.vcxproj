@@ -144,7 +144,6 @@
     <ClCompile Include="Assignment1.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Exercise17.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="GlobalUtility.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -160,7 +159,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="ShaderInstance.cpp" />
-    <ClCompile Include="TermProject.cpp" />
+    <ClCompile Include="Assignment2.cpp" />
     <ClCompile Include="TextureInstance.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -168,7 +167,6 @@
     <ClInclude Include="Assignment1.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="Exercise17.h" />
     <ClInclude Include="GlobalUtility.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ModelInstnce.h" />
@@ -185,7 +183,7 @@
     <ClInclude Include="ShaderInstance.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TermProject.h" />
+    <ClInclude Include="Assignment2.h" />
     <ClInclude Include="TextureInstance.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
