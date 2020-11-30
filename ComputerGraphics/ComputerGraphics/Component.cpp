@@ -19,6 +19,11 @@ Component::~Component()
 	OnDestory();
 }
 
+Transform* Component::GetBelongingTransform()
+{
+	return m_Object->GetTransform();
+}
+
 void Component::OnCreate()
 {
 }

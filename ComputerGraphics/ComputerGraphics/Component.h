@@ -15,7 +15,7 @@ public:
 
 	//--- Getter
 	bool GetEnable() { return m_Enable; }
-	Transform* GetBelongingTransform() { return m_Object->GetTransform(); }
+	Transform* GetBelongingTransform();
 	Object* GetBelongingObject() { return m_Object; }
 
 
@@ -23,7 +23,7 @@ public:
 	void SetEnable(bool value) { m_Enable = value; if (value == true) OnEnable(); else OnDisable(); }
 
 	virtual void OnCreate();		// 이 컴포넌트가 생성되었을 때, 불리는 함수입니다. 업데이트 전에 불리며 한번만 불리게 됩니다.
-	virtual void OnEnable();
+	virtual void OnEnable();		// 이 컴포넌트가 활성화 되었을 때, 불리는 함수입니다.
 	virtual void OnDisable();		// 이 컴포넌트가 비활성화 되었을 때 불리는 함수입니다.
 	virtual void OnPreRender();		// 그리기 전에 호출되는 함수입니다.
 	virtual void OnUpdate();		// 업데이트 떄 불리는 함수입니다.

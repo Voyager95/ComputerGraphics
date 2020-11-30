@@ -4,7 +4,7 @@
 #include "SceneSystem.h"
 #include "InputSystem.h"
 
-#include "Assignment2.h"
+#include "Termproject.h"
 
 //--- 전역 변수
 
@@ -166,7 +166,7 @@ GLvoid KeyboardUp(unsigned char key, int x, int y)
 
 GLvoid InitialLoop(int value)
 {
-	auto scene = std::make_shared<Assignment2>();
+	auto scene = std::make_shared<TermProject>();
 
 	auto& ss = SceneSystem::GetInstance();
 

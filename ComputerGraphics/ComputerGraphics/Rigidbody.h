@@ -2,9 +2,9 @@
 #include "stdafx.h"
 #include "Component.h"
 
-class Object;
+static float GRAVITY = -9.8;
 
-static glm::vec3 gravity = glm::vec3(0, -9.8, 0);
+class Object;
 
 /// <summary>
 /// 파라미터 설정
@@ -18,10 +18,11 @@ class Rigidbody :
 private:
     glm::vec3 m_presentDirecttion;
 public:
+    bool gravity;                       // 중력을 적용할지 체크합니다.
 
     Rigidbody(Object* object);
 
-    void AddForce(glm:vec3 direction);
+    void AddForce(glm::vec3 direction);
 
     virtual void OnUpdate();
 };

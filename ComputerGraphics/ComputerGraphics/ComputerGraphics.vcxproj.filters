@@ -38,14 +38,6 @@
     <Filter Include="Resources\Shader\Vertex">
       <UniqueIdentifier>{7a72748a-dca0-4a66-bea9-667fc24633ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HeaderFile">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="SourceFile">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{48ded403-ad02-4391-a1be-e6cc5bfb3e33}</UniqueIdentifier>
     </Filter>
@@ -63,6 +55,14 @@
     </Filter>
     <Filter Include="ComponentSourceFile">
       <UniqueIdentifier>{2167074f-9719-48f4-94ba-3c1699ef521c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DefaultHeaderFile">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="DefaultSourceFile">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +130,15 @@
       <Filter>ComponentSourceFile</Filter>
     </ClCompile>
     <ClCompile Include="TermProject.cpp">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClCompile>
+    <ClCompile Include="Tower.cpp">
       <Filter>Scene\텀프로젝트</Filter>
     </ClCompile>
   </ItemGroup>
@@ -212,6 +221,15 @@
       <Filter>ComponentHeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="TermProject.h">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="Tower.h">
       <Filter>Scene\텀프로젝트</Filter>
     </ClInclude>
   </ItemGroup>

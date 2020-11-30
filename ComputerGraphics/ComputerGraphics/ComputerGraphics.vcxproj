@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assignment1.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Framework.cpp" />
@@ -162,10 +163,13 @@
     <ClCompile Include="Assignment2.cpp" />
     <ClCompile Include="TermProject.cpp" />
     <ClCompile Include="TextureInstance.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Tower.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assignment1.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GlobalUtility.h" />
@@ -187,6 +191,8 @@
     <ClInclude Include="Assignment2.h" />
     <ClInclude Include="TermProject.h" />
     <ClInclude Include="TextureInstance.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="Tower.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
