@@ -6,3 +6,7 @@ Rigidbody::Rigidbody(Object* object) : Component(object)
 {
 
 }
+
+void Rigidbody::OnUpdate()
+{
+}

@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 class Object;
+class Transform;
 
 class Component
 {
@@ -14,7 +15,9 @@ public:
 
 	//--- Getter
 	bool GetEnable() { return m_Enable; }
+	Transform* GetBelongingTransform() { return m_Object->GetTransform(); }
 	Object* GetBelongingObject() { return m_Object; }
+
 
 	//--- Setter
 	void SetEnable(bool value) { m_Enable = value; if (value == true) OnEnable(); else OnDisable(); }

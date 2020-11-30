@@ -4,6 +4,8 @@
 
 class Object;
 
+static glm::vec3 gravity = glm::vec3(0, -9.8, 0);
+
 /// <summary>
 /// 파라미터 설정
 /// -충돌처리를 할꺼니?
@@ -13,7 +15,14 @@ class Object;
 class Rigidbody :
     public Component
 {
+private:
+    glm::vec3 m_presentDirecttion;
 public:
+
     Rigidbody(Object* object);
+
+    void AddForce(glm:vec3 direction);
+
+    virtual void OnUpdate();
 };
 

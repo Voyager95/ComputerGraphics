@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{14e1c5c7-32dd-4462-ab43-153f3ba7e582}</UniqueIdentifier>
     </Filter>
@@ -37,26 +25,44 @@
     <Filter Include="PCH">
       <UniqueIdentifier>{e91c66c6-307a-4412-b625-107b2ff1df6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="숙제1">
-      <UniqueIdentifier>{9cbbb910-bdc6-4a21-8e78-e6b20f7e8982}</UniqueIdentifier>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="리소스 파일\Shader">
+    <Filter Include="Resources\Shader">
       <UniqueIdentifier>{5c3d8e0c-5a9c-42ba-813c-f5e47c937a05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="리소스 파일\Shader\Fragment">
+    <Filter Include="Resources\Shader\Fragment">
       <UniqueIdentifier>{c7044a8c-519c-4d38-aebe-63c2f8db0d39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="리소스 파일\Shader\Vertex">
+    <Filter Include="Resources\Shader\Vertex">
       <UniqueIdentifier>{7a72748a-dca0-4a66-bea9-667fc24633ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TermProjectHeaderFile">
+    <Filter Include="HeaderFile">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="SourceFile">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{48ded403-ad02-4391-a1be-e6cc5bfb3e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\텀프로젝트">
       <UniqueIdentifier>{ed43c956-5463-4503-911b-a4f24877c07a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TernProjectHeaderFile">
-      <UniqueIdentifier>{6d498f20-00ad-4404-a8c2-edc1c6d2654e}</UniqueIdentifier>
+    <Filter Include="Scene\숙제1">
+      <UniqueIdentifier>{9cbbb910-bdc6-4a21-8e78-e6b20f7e8982}</UniqueIdentifier>
     </Filter>
-    <Filter Include="숙제2">
+    <Filter Include="Scene\숙제2">
       <UniqueIdentifier>{815819be-b3ce-4131-91d3-fd77a771d79e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ComponentHeaderFile">
+      <UniqueIdentifier>{c7111060-fa58-4155-9442-697a88e00214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ComponentSourceFile">
+      <UniqueIdentifier>{2167074f-9719-48f4-94ba-3c1699ef521c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,11 +105,8 @@
     <ClCompile Include="Object.cpp">
       <Filter>ClassSourceFile</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalUtility.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Assignment1.cpp">
-      <Filter>숙제1</Filter>
+      <Filter>Scene\숙제1</Filter>
     </ClCompile>
     <ClCompile Include="TextureInstance.cpp">
       <Filter>ClassSourceFile</Filter>
@@ -111,28 +114,34 @@
     <ClCompile Include="Rigidbody.cpp">
       <Filter>BasicComponentSourceFile</Filter>
     </ClCompile>
+    <ClCompile Include="Assignment2.cpp">
+      <Filter>Scene\숙제2</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalUtility.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
     <ClCompile Include="SimpleMove.cpp">
-      <Filter>BasicComponentSourceFile</Filter>
+      <Filter>ComponentSourceFile</Filter>
     </ClCompile>
     <ClCompile Include="Rotator.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>ComponentSourceFile</Filter>
     </ClCompile>
     <ClCompile Include="SimpleFallower.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>ComponentSourceFile</Filter>
     </ClCompile>
-    <ClCompile Include="Assignment2.cpp">
-      <Filter>숙제2</Filter>
+    <ClCompile Include="TermProject.cpp">
+      <Filter>Scene\텀프로젝트</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl">
-      <Filter>리소스 파일\Shader\Vertex</Filter>
+      <Filter>Resources\Shader\Vertex</Filter>
     </None>
     <None Include="FragmentShader_Texture.glsl">
-      <Filter>리소스 파일\Shader\Fragment</Filter>
+      <Filter>Resources\Shader\Fragment</Filter>
     </None>
     <None Include="FragmentShader_Vertex.glsl">
-      <Filter>리소스 파일\Shader\Fragment</Filter>
+      <Filter>Resources\Shader\Fragment</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +185,7 @@
       <Filter>PCH</Filter>
     </ClInclude>
     <ClInclude Include="Assignment1.h">
-      <Filter>숙제1</Filter>
+      <Filter>Scene\숙제1</Filter>
     </ClInclude>
     <ClInclude Include="TextureInstance.h">
       <Filter>ClassHeaderFile</Filter>
@@ -190,17 +199,20 @@
     <ClInclude Include="Rigidbody.h">
       <Filter>BasicComponentHeaderFile</Filter>
     </ClInclude>
+    <ClInclude Include="Assignment2.h">
+      <Filter>Scene\숙제2</Filter>
+    </ClInclude>
     <ClInclude Include="SimpleMove.h">
-      <Filter>BasicComponentHeaderFile</Filter>
+      <Filter>ComponentHeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="Rotator.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>ComponentHeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="SimpleFallower.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>ComponentHeaderFile</Filter>
     </ClInclude>
-    <ClInclude Include="Assignment2.h">
-      <Filter>숙제2</Filter>
+    <ClInclude Include="TermProject.h">
+      <Filter>Scene\텀프로젝트</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
