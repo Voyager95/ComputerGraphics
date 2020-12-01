@@ -6,6 +6,7 @@
 Rigidbody::Rigidbody(Object* object) : Component(object)
 {
 	gravity = true;
+	m_presentDirecttion = glm::vec3(0, 0, 0);
 }
 
 void Rigidbody::AddForce(glm::vec3 direction)
@@ -18,7 +19,7 @@ void Rigidbody::OnUpdate()
 	//--- 중력 가속도 적용
 	if (gravity== true &&m_presentDirecttion.y > GRAVITY)
 	{
-		m_presentDirecttion += GRAVITY * DELTATIME;
+		m_presentDirecttion.y += GRAVITY * DELTATIME;
 	}
 
 	//--- 이동

@@ -55,5 +55,7 @@ public:
     /// 각 버텍스에 렌덤한 색상을 부여합니다.
     /// </summary>
     void RandomColor();
+
+    void SetColor(glm::vec3 color);
 };
 

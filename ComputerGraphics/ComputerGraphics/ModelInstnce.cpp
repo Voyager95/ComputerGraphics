@@ -118,3 +118,13 @@ void ModelInstance::RandomColor()
 		verticesColor.push_back(glm::vec3(colorDis(gen), colorDis(gen), colorDis(gen)));
 	}
 }
+
+void ModelInstance::SetColor(glm::vec3 color)
+{
+	verticesColor.clear();
+
+	for (int i = 0; i < verticesPos.size(); ++i)
+	{
+		verticesColor.push_back(color);
+	}
+}

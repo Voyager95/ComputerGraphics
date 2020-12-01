@@ -8,13 +8,16 @@
 #include "InputSystem.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "ResourceSystem.h"
+#include "ModelInstnce.h"
+
 TermProject::TermProject()
 {
 	//--- Ball
 	auto ball = InstantiateBall();
 	//Transform
 	auto ballTransform = ball->GetTransform();
-	ballTransform->position = glm::vec3(0, 0, -10);
+	ballTransform->position = glm::vec3(0, 15, -6);
 	AddObject(ball);
 
 	//--- Camera
@@ -34,6 +37,13 @@ TermProject::TermProject()
 	auto towerTransform = tower->GetTransform();
 	towerTransform->position.y -= 10;
 	AddObject(tower);
+
+	//--- Tile
+	auto tile = InstantiateBlackTile();
+	//Transform
+	auto tileTransform = tile->GetTransform();
+	tileTransform->rotation.y = -22.5;
+	AddObject(tile);
 }
 
 void TermProject::OnUpdate()
@@ -59,6 +69,15 @@ void TermProject::OnUpdate()
 
 Object* InstantiateBall()
 {
+	static std::shared_ptr<ModelInstance> ballModel;	
+	if (ballModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		ballModel = rs.GetCopiedModelInstance("Ball.obj");
+		ballModel->SetColor(glm::vec3(0.5,0.5,0));
+		ballModel->UpdateBuffer();
+	}
+
 	//--- Ball
 	auto ball = new Object("Ball");
 	//Ball
@@ -66,25 +85,32 @@ Object* InstantiateBall()
 	//Rigidbody
 	ball->AddComponent<Rigidbody>();
 	//Renderer
-	auto ballRenderer = ball->AddComponent<Renderer>();
-	ballRenderer->SetSharedModel("Ball.obj");
-	ballRenderer->SetSharedTextrue("Green.png");
-	ballRenderer->SetTargetShader(ShaderType::TEXTURE_ELEMENT);
+	auto ballRenderer = ball->AddComponent<Renderer>();	
+	ballRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+	ballRenderer->SetOwnModel(ballModel);
 
 	return ball;
 }
 
 Object* InstantiateBlackTile()
 {
+	static std::shared_ptr<ModelInstance> blackTileModel;
+	if (blackTileModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		blackTileModel = rs.GetCopiedModelInstance("Pizza.obj");
+		blackTileModel->SetColor(glm::vec3(0.1, 0.1, 0.1));
+		blackTileModel->UpdateBuffer();
+	}
+
 	auto tile = new Object();
 	//Tile
 	auto tileTile = tile->AddComponent<Tile>();
 	tileTile->type = TileType::BLACK;
 	//Renderer
 	auto tileRenderer = tile->AddComponent<Renderer>();
-	tileRenderer->SetSharedModel("Tile.obj");
-	tileRenderer->SetSharedTextrue("Black.png");
-	tileRenderer->SetTargetShader(ShaderType::TEXTURE_ELEMENT);
+	tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+	tileRenderer->SetOwnModel(blackTileModel);
 
 	return tile;
 }
@@ -116,12 +142,20 @@ Object* InstantiateLighterItem()
 
 Object* InstantiateTower()
 {
+	static std::shared_ptr<ModelInstance> towerModel;
+	if (towerModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		towerModel = rs.GetCopiedModelInstance("Tower.obj");
+		towerModel->SetColor(glm::vec3(0, 0.5, 0.5));
+		towerModel->UpdateBuffer();
+	}
+
 	auto tower = new Object();
 	//Renderer
 	auto towerRenderer = tower->AddComponent<Renderer>();
-	towerRenderer->SetSharedModel("Tower.obj");
-	towerRenderer->SetSharedTextrue("Yellow.png");
-	towerRenderer->SetTargetShader(ShaderType::TEXTURE_ELEMENT);
+	towerRenderer->SetOwnModel(towerModel);
+	towerRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
 
 	return tower;
 }
