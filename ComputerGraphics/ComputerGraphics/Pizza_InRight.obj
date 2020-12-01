@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 01.12.2020 15:24:33
+# File Created: 01.12.2020 16:01:10
 
 mtllib Pizza_InRight.mtl
 
@@ -7,12 +7,12 @@ mtllib Pizza_InRight.mtl
 # object Object003
 #
 
-v  0.000 24.368 -0.000
-v  2.646 24.368 2.646
-v  1.432 24.368 3.457
-v  2.646 26.650 2.646
-v  -0.000 26.650 0.000
-v  1.432 26.650 3.457
+v  0.000 -0.000 -0.000
+v  2.646 0.000 2.646
+v  1.432 0.000 3.457
+v  2.646 2.282 2.646
+v  -0.000 2.282 0.000
+v  1.432 2.282 3.457
 # 6 vertices
 
 vn 0.000 -1.000 0.000
