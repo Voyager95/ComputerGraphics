@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "Ball.h"
 #include "Object.h"
+#include "rigidbody.h"
+
 
 Tile::Tile(Object* object) : Component(object)
 {
@@ -37,7 +39,20 @@ void Tile::OnUpdate()
 		- 타일의 중심각도, 공의 radius는 모델 크기와 맞지 않을 수 있습니다. 충돌알고리즘을 작성하고 크기를 조절하면서 맞추십시오.
 		*/
 
-		if (isCollide == true)
+		auto tileTransform = GetBelongingTransform();		
+		auto tileAngle = tileTransform->rotation;
+		auto tilePosition = tileTransform->position;
+		auto ballPosition = ballTransform->position;
+		auto ballRigidbody = ball->GetComponent<Rigidbody>();
+		auto rigidbody = ballRigidbody->GetPresentDirection();
+
+		if (ballPosition.y - ballBall->radius <= tilePosition.y && tileAngle.y <= 0 && tileAngle.y >= -45)
+			isCollide = true;
+		else
+			isCollide = false;
+
+
+		if (isCollide == true && rigidbody.y <0)
 		{
 			switch (type)
 			{

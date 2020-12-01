@@ -20,6 +20,9 @@ private:
 public:
     bool gravity;                       // 중력을 적용할지 체크합니다.
 
+    //--- Getter
+    glm::vec3 GetPresentDirection() { return m_presentDirecttion; }
+
     Rigidbody(Object* object);
 
     void AddForce(glm::vec3 direction);
