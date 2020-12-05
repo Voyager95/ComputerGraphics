@@ -47,11 +47,7 @@ std::shared_ptr<ModelInstance> ResourceSystem::GetSharedModelInstance(std::strin
 // *복사생성자로 복사해야하는데 아직모르겠음 ㅠㅠ
 std::shared_ptr<ModelInstance> ResourceSystem::GetCopiedModelInstance(std::string key)
 {
-	auto sharedModel = GetSharedModelInstance(key);
-
-	//ModelInstance d(sharedModel);
-
-	//auto copiedModel = std::make_shared<ModelInstance>(sharedModel);
+	auto sharedModel = ReadObj(key);
 
 	return sharedModel;
 }

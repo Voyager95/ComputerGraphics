@@ -61,7 +61,7 @@ Assignment2::Assignment2()
 	auto playerChildTransform = playerChild->GetTransform();
 	playerChildTransform->scale = glm::vec3(1);
 	playerChildTransform->position = glm::vec3(5, 0, 0);
-	playerChildTransform->parent = playerTransform;
+	playerChildTransform->SetParent(playerTransform);
 	std::cout << playerChildTransform->GetWorldPosition().x << std::endl;
 	//Renderer
 	auto playerChildRenderer = playerChild->AddComponent<Renderer>();
@@ -209,7 +209,7 @@ void CameraController::FirstPersonView()
 		std::cout << "해당 오브젝트는 없습니다" << std::endl;
 		return;
 	}
-	cameraTransform->parent = player->GetTransform();
+	cameraTransform->SetParent(player->GetTransform());
 
 	cameraTransform->position.y = 0;
 	cameraTransform->position.z = 0.5f;
@@ -221,7 +221,7 @@ void CameraController::ThirdPersonView()
 	auto cameraTransform = GetBelongingObject()->GetTransform();
 
 	//--- 부모 제거
-	cameraTransform->parent = nullptr;
+	cameraTransform->DeleteParent();
 
 	//-- Transform
 	cameraTransform->position.y = 15.0f;

@@ -40,9 +40,9 @@ void Tile::OnUpdate()
 		*/
 
 		auto tileTransform = GetBelongingTransform();		
-		auto tileAngle = tileTransform->rotation;
-		auto tilePosition = tileTransform->position;
-		auto ballPosition = ballTransform->position;
+		auto tileAngle = tileTransform->GetWorldRotation();				// 로컬 로테이션 -> 월드 로테이션
+		auto tilePosition = tileTransform->GetWorldPosition();			// 로컬 포지션 -> 월드 포지션
+		auto ballPosition = ballTransform->GetWorldPosition();			// 로컬 포지션 -> 월드 포지션
 		auto ballRigidbody = ball->GetComponent<Rigidbody>();
 		auto rigidbody = ballRigidbody->GetPresentDirection();
 
@@ -50,7 +50,6 @@ void Tile::OnUpdate()
 			isCollide = true;
 		else
 			isCollide = false;
-
 
 		if (isCollide == true && rigidbody.y <0)
 		{

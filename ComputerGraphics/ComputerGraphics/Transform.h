@@ -12,12 +12,17 @@ public:
 	glm::vec3 rotation;
 	glm::vec3 scale;
 
-	Transform* parent;
+public:
+	std::list<Transform*> m_Children;
+	Transform* m_Parent;
+public:
 	//--- Constructor
 	Transform(Object* object);
 	~Transform();
 
 	//--- Getter
+	Transform* GetParent() { return m_Parent; }
+	std::list<Transform*> GetChildren() { return m_Children; }
 	glm::mat4x4 GetTransformMatrix();
 	glm::vec3 GetWorldPosition();
 	glm::vec3 GetWorldRotation();
@@ -29,5 +34,10 @@ public:
 	//--- Utility
 	void LookAt(Object* target);
 	void LookAt(glm::vec3 target);
+
+	//--- Parent/Child
+	void SetParent(Object* object);
+	void SetParent(Transform* transform);
+	void DeleteParent();
 };
 

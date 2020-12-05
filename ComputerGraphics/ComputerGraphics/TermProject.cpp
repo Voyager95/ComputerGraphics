@@ -13,37 +13,35 @@
 
 TermProject::TermProject()
 {
+	std::srand(time(NULL));
+
+	//--- 초기화
+	InitializeDiscSetting();
+	InitializeDiscCombination();
+
 	//--- Ball
 	auto ball = InstantiateBall();
 	//Transform
 	auto ballTransform = ball->GetTransform();
-	ballTransform->position = glm::vec3(0, 15, -6);
+	ballTransform->position = glm::vec3(0, 0, -6);
 	AddObject(ball);
 
 	//--- Camera
 	auto camera = new Object("Camera");
 	//Transform
 	auto cameraTransform = camera->GetTransform();
-	//cameraTransform->parent = ballTransform;
+	cameraTransform->SetParent(ballTransform);
 	cameraTransform->rotation = glm::vec3(15, 0, 0);
 	cameraTransform->position = glm::vec3(0, 10, -50);
 	//Camera
 	camera->AddComponent<Camera>();
 	AddObject(camera);
 
-	//--- Tower
-	auto tower = InstantiateTower();
-	//Transform
+	auto tower = InstantiateTower(0);
 	auto towerTransform = tower->GetTransform();
-	towerTransform->position.y -= 10;
+	m_Tower.emplace_back(tower);
+	towerTransform->position.y = -80;
 	AddObject(tower);
-
-	//--- Tile
-	auto tile = InstantiateBlackTile();
-	//Transform
-	auto tileTransform = tile->GetTransform();
-	tileTransform->rotation.y = -22.5;
-	AddObject(tile);
 }
 
 void TermProject::OnUpdate()
@@ -62,12 +60,99 @@ void TermProject::OnUpdate()
 		{
 			auto t = (*i)->GetTransform();
 
-			t->rotation += m_TowerRotateSpeed * rotate * DELTATIME;
+			t->rotation.y += m_TowerRotateSpeed * rotate * DELTATIME;
 		}
 	}
 }
 
-Object* InstantiateBall()
+void TermProject::InitializeDiscSetting()
+{
+	std::array<TileGenerate, TILENUMPERDDISC> tmp;
+
+	//---Index NO.00
+	tmp[0] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::NONE;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::BLACK;
+	tmp[5] = TileGenerate::NONE;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::BLACK;
+	discSetting.push_back(tmp);
+
+	//---Index NO.01
+	tmp[0] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::NONE;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::BLACK;
+	discSetting.push_back(tmp);
+
+	//---Index NO.02
+	tmp[0] = TileGenerate::NONE;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::RED;
+	tmp[4] = TileGenerate::BLACK;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::BLACK;
+	discSetting.push_back(tmp);
+
+	//---Index NO.03
+	tmp[0] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::RED;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::NONE;
+	discSetting.push_back(tmp);
+}
+
+void TermProject::InitializeDiscCombination()
+{
+	std::array<int, DISCNUMPERTOWER> tmp;
+
+	//---Index NO.00
+	tmp[0] = 1;
+	tmp[1] = 0;
+	tmp[2] = 3;
+	tmp[3] = 2;
+	tmp[4] = 1;
+	tmp[5] = 2;
+	tmp[6] = 0;
+	tmp[7] = 1;
+	discList.push_back(tmp);
+
+	//---Index NO.01
+	tmp[0] = 1;
+	tmp[1] = 0;
+	tmp[2] = 3;
+	tmp[3] = 2;
+	tmp[4] = 1;
+	tmp[5] = 2;
+	tmp[6] = 0;
+	tmp[7] = 1;
+	discList.push_back(tmp);
+
+	//---Index NO.02
+	tmp[0] = 1;
+	tmp[1] = 0;
+	tmp[2] = 3;
+	tmp[3] = 2;
+	tmp[4] = 1;
+	tmp[5] = 2;
+	tmp[6] = 0;
+	tmp[7] = 1;
+	discList.push_back(tmp);
+}
+
+Object* TermProject::InstantiateBall()
 {
 	static std::shared_ptr<ModelInstance> ballModel;	
 	if (ballModel == nullptr)
@@ -92,7 +177,7 @@ Object* InstantiateBall()
 	return ball;
 }
 
-Object* InstantiateBlackTile()
+Object* TermProject::InstantiateBlackTile()
 {
 	static std::shared_ptr<ModelInstance> blackTileModel;
 	if (blackTileModel == nullptr)
@@ -115,33 +200,53 @@ Object* InstantiateBlackTile()
 	return tile;
 }
 
-Object* InstantiateRedTile()
+Object* TermProject::InstantiateRedTile()
 {
+	static std::shared_ptr<ModelInstance> redTileModel;
+	if (redTileModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		redTileModel = rs.GetCopiedModelInstance("Pizza.obj");
+		redTileModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		redTileModel->UpdateBuffer();
+	}
+
 	auto tile = new Object();
 	//Tile
 	auto tileTile = tile->AddComponent<Tile>();
 	tileTile->type = TileType::RED;
 	//Renderer
 	auto tileRenderer = tile->AddComponent<Renderer>();
-	tileRenderer->SetSharedModel("Tile.obj");
-	tileRenderer->SetSharedTextrue("Red.png");
-	tileRenderer->SetTargetShader(ShaderType::TEXTURE_ELEMENT);
+	tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+	tileRenderer->SetOwnModel(redTileModel);
 
 	return tile;
 }
 
-Object* InstantiateBiggerItem()
+Object* TermProject::InstantiateBiggerItem()
 {
 	return nullptr;
 }
 
-Object* InstantiateLighterItem()
+Object* TermProject::InstantiateLighterItem()
 {
 	return nullptr;
 }
 
-Object* InstantiateTower()
+Object* TermProject::InstantiateTower()
 {
+	int count = discList.size();
+
+	int index = std::rand() % count;
+
+	auto tower = InstantiateTower(index);
+
+	return tower;
+}
+
+Object* TermProject::InstantiateTower(int index)
+{
+	//--- 타워모델 생성
 	static std::shared_ptr<ModelInstance> towerModel;
 	if (towerModel == nullptr)
 	{
@@ -151,16 +256,64 @@ Object* InstantiateTower()
 		towerModel->UpdateBuffer();
 	}
 
+	//--- Tower
 	auto tower = new Object();
 	//Renderer
 	auto towerRenderer = tower->AddComponent<Renderer>();
 	towerRenderer->SetOwnModel(towerModel);
 	towerRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
 
+	//--- 디스크 리스크
+	std::array<std::array<TileGenerate, TILENUMPERDDISC>, DISCNUMPERTOWER> discListInstance;
+	auto selectedList = discList[index];
+	for (int i = 0; i < DISCNUMPERTOWER; ++i)
+	{
+		discListInstance[i] = discSetting[selectedList[i]];
+	}
+
+	//--- 디스크 생성
+	float discYPosition = 0.0f;
+	for (int i = 0; i < DISCNUMPERTOWER; ++i)
+	{
+		discYPosition += 10;
+		//-- Disc
+		auto discInstance = InstantiateDisc(discListInstance[i]);
+		discInstance->name = "디스크" + i;
+		//Transform
+		auto discInstanceTransform = discInstance->GetTransform();
+		discInstanceTransform->SetParent(tower);
+		discInstanceTransform->position.y = discYPosition;
+	}
+
 	return tower;
 }
 
-Object* InstnatiateDisc()
+Object* TermProject::InstantiateDisc(std::array<TileGenerate, TILENUMPERDDISC> discCom)
 {
-	return nullptr;
+	Object* disc = new Object();
+	disc->name = "디스크";
+
+	float yRotate = 0;
+
+	for (int i = 0; i < TILENUMPERDDISC; ++i)
+	{
+		if (discCom[i] != TileGenerate::NONE)
+		{
+			Object* tile = nullptr;
+			//-- 타일 생성
+			if (discCom[i] == TileGenerate::BLACK)
+				tile = InstantiateBlackTile();
+			else
+				tile = InstantiateRedTile();
+			tile->name = "타일" + i;
+			//Transform
+			auto tileTransform = tile->GetTransform();
+			tileTransform->SetParent(disc->GetTransform());
+			tileTransform->rotation.y = yRotate;
+		}
+
+		yRotate += 45;
+	}
+
+	return disc;
 }

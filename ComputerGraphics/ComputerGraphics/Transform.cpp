@@ -16,7 +16,7 @@ Transform::Transform(Object* object) : Component(object)
 	scale.y = 1;
 	scale.z = 1;
 
-	parent = nullptr;
+	m_Parent = nullptr;
 }
 
 Transform::~Transform()
@@ -41,8 +41,8 @@ glm::mat4x4 Transform::GetTransformMatrix()
 	glm::mat4 size = glm::mat4(1.0f);
 	size = glm::scale(size, scale);
 
-	if (parent != nullptr)
-		return parent->GetTransformMatrix() * translate * rotate * size;
+	if (m_Parent != nullptr)
+		return m_Parent->GetTransformMatrix() * translate * rotate * size;
 	else
 		return translate * rotate * size;
 }
@@ -56,29 +56,29 @@ glm::vec3 Transform::GetWorldPosition()
 
 glm::vec3 Transform::GetWorldRotation()
 {
-	if (parent == nullptr)
+	if (m_Parent == nullptr)
 		return rotation;
 	else
-		return rotation + parent->GetWorldRotation();
+		return rotation + m_Parent->GetWorldRotation();
 }
 
 void Transform::SetWorldRotation(glm::vec3 target)
 {
-	if (parent == nullptr)
+	if (m_Parent == nullptr)
 		rotation = target;
 	else
 	{
-		rotation = target - parent->GetWorldRotation();
+		rotation = target - m_Parent->GetWorldRotation();
 	}
 }
 
 void Transform::SetWorldPosition(glm::vec3 target)
 {
-	if (parent == nullptr)
+	if (m_Parent == nullptr)
 		position = target;
 	else
 	{
-		position = target - parent->GetWorldPosition();
+		position = target - m_Parent->GetWorldPosition();
 	}
 }
 
@@ -90,4 +90,24 @@ void Transform::LookAt(Object* target)
 void Transform::LookAt(glm::vec3 target)
 {
 	// 구현되지 않음
+}
+
+void Transform::SetParent(Object* object)
+{
+	SetParent(object->GetTransform());
+}
+
+void Transform::SetParent(Transform* transform)
+{
+	m_Parent = transform;
+	transform->m_Children.emplace_back(this);
+}
+
+void Transform::DeleteParent()
+{
+	if (m_Parent != nullptr)
+	{
+		m_Parent->m_Children.remove(this);
+		m_Parent = nullptr;
+	}
 }
