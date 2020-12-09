@@ -46,12 +46,33 @@ void Tile::OnUpdate()
 		auto ballRigidbody = ball->GetComponent<Rigidbody>();
 		auto rigidbody = ballRigidbody->GetPresentDirection();
 
-		if (ballPosition.y - ballBall->radius <= tilePosition.y && tileAngle.y <= 0 && tileAngle.y >= -45)
-			isCollide = true;
+		int floor = 0;		
+
+		if (tileAngle.y > 360)
+			tileAngle.y = tileAngle.y - 360;
+		else if (tileAngle.y < -360)
+			tileAngle.y = tileAngle.y + 360;
+
+		
+		if (tileAngle.y <= 0 && tileAngle.y >= -45 || tileAngle.y >= 315 && tileAngle.y <= 360)
+		{
+			if (ballPosition.y - ballBall->radius <= tilePosition.y)
+			{
+				isCollide = true;
+				//std::cout << tileAngle.y << std::endl;
+				std::cout << tilePosition.y << std::endl;
+				std::cout << rigidbody.y << std::endl;
+				//std::cout << ballPosition.y - ballBall->radius << std::endl;
+			}
+		}
 		else
+		{
 			isCollide = false;
 
-		if (isCollide == true && rigidbody.y <0)
+			//std::cout << tileAngle.y << std::endl;
+		}
+		
+		if (isCollide == true && rigidbody.y < 0)
 		{
 			switch (type)
 			{
@@ -65,5 +86,6 @@ void Tile::OnUpdate()
 				break;
 			}
 		}
+
 	}
 }
