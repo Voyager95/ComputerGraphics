@@ -21,6 +21,7 @@ TermProject::TermProject()
 
 	//--- Ball
 	auto ball = InstantiateBall();
+	m_Ball = ball;
 	//Transform
 	auto ballTransform = ball->GetTransform();
 	ballTransform->position = glm::vec3(0, 0, -6);
@@ -37,23 +38,26 @@ TermProject::TermProject()
 	camera->AddComponent<Camera>();
 	AddObject(camera);
 
+	//--- Initial Tower
 	auto tower = InstantiateTower(0);
-	auto towerTransform = tower->GetTransform();
 	m_Tower.emplace_back(tower);
+	//Transform
+	auto towerTransform = tower->GetTransform();
 	towerTransform->position.y = -80;
 	AddObject(tower);
 }
 
 void TermProject::OnUpdate()
 {
+	//--- 키 입력 처리
 	InputSystem& is = InputSystem::GetInstance();
-
+	//-- 키
 	float rotate = 0;
 	if (is.GetKey('A'))
 		rotate += -1;
 	if (is.GetKey('D'))
 		rotate += 1;
-
+	//-- 적용
 	if (m_Tower.empty() != true)
 	{
 		for (auto i = m_Tower.begin(); i != m_Tower.end(); ++i)
@@ -62,6 +66,33 @@ void TermProject::OnUpdate()
 
 			t->rotation.y += m_TowerRotateSpeed * rotate * DELTATIME;
 		}
+	}
+
+	//--- 생성 체크
+	SpawnTower();
+}
+
+void TermProject::SpawnTower()
+{
+	if (m_Ball == nullptr || m_Tower.size() < 1)
+		return;
+	auto ballTransform = m_Ball->GetTransform();
+	auto towerIndex = m_Tower.size() - 1;
+	auto tower = m_Tower[towerIndex];
+	auto towerTransform = tower->GetTransform();
+
+	auto spawnPosition = towerTransform->GetWorldPosition().y + towerInstantiateOffset;
+	std::cout << "생성 위치: " << spawnPosition << " 공 위치: " << ballTransform->GetWorldPosition().y << std::endl;
+	if ( spawnPosition > ballTransform->GetWorldPosition().y)
+	{
+		std::cout << "타워 생성 됨" << std::endl;
+
+		auto instancedTower = InstantiateTower();
+		m_Tower.emplace_back(instancedTower);
+		auto instancedTowerTransform = instancedTower->GetTransform();
+		//- 타워 위치 조정
+		auto desiredPos = glm::vec3(0,towerTransform->GetWorldPosition().y - TOWERHEIGHT,0 );
+		instancedTowerTransform->SetWorldPosition(desiredPos);
 	}
 }
 

@@ -5,6 +5,8 @@
 #define TILENUMPERDDISC 8
 #define DISCNUMPERTOWER 8
 
+#define TOWERHEIGHT 85
+
 class Object;
 
 enum class TileGenerate
@@ -18,10 +20,16 @@ class TermProject :
     public Scene
 {
 private:
+    //--- Ball
+    Object* m_Ball;
+
     //--- Tower
-    float m_TowerRotateSpeed = 20;
-    std::vector<Object*> m_Tower;
+    float m_TowerRotateSpeed = 200;
+    std::vector<Object*> m_Tower; 
 public:
+    //--- Seting
+
+    int towerInstantiateOffset = 60;
 
     /// <summary>
     /// 미리 설정해 놓은 디스크 세팅입니다.
@@ -34,9 +42,22 @@ public:
     /// </summary>
     std::vector<std::array<int, DISCNUMPERTOWER>> discList;
 
+    //--- 생성자
+
     TermProject();
 
+    //--- 이벤트 함수
+
     virtual void OnUpdate();
+
+    //--- 기본 함수
+
+    /// <summary>
+    /// 플레이어 위치를 확인하면서 필요한 경우 타워를 생성해 줍니다.
+    /// </summary>
+    void SpawnTower();
+
+    //--- 생성 함수
 
     /// <summary>
     /// 디스크 세팅을 초기화합니다.
