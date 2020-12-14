@@ -4,9 +4,12 @@
 #include "Transform.h"
 #include "Ball.h"
 #include "Object.h"
+#include "Frag.h"
+#include "Renderer.h"
 #include "rigidbody.h"
-
-
+#include "ModelInstnce.h"
+#include "ResourceSystem.h"
+#include "Scene.h"
 Tile::Tile(Object* object) : Component(object)
 {
 	type = TileType::BLACK;
@@ -15,6 +18,35 @@ Tile::Tile(Object* object) : Component(object)
 
 void Tile::Destory()
 {
+	switch (type)
+	{
+	case TileType::BLACK:
+	{
+		auto frag = Tile::InstantiateBlackFragTile();
+		auto scene = GetBelongingObject()->GetBelongingScene();
+		auto transform = frag->GetTransform();
+		transform->SetWorldPosition(GetBelongingTransform()->GetWorldPosition());
+		transform->SetWorldRotation(GetBelongingTransform()->GetWorldRotation());
+		scene->AddObject(frag);
+	}
+		break;
+	case TileType::RED:
+	{
+		auto frag = Tile::InstantiateRedFragTile();
+		auto scene = GetBelongingObject()->GetBelongingScene();
+		auto transform = frag->GetTransform();
+		transform->SetWorldPosition(GetBelongingTransform()->GetWorldPosition());
+		transform->SetWorldRotation(GetBelongingTransform()->GetWorldRotation());
+		scene->AddObject(frag);
+	}
+		break;
+	case TileType::LIGHTER:
+		break;
+	case TileType::BIGGER:
+		break;
+	default:
+		break;
+	}
 	GetBelongingObject()->SubObject();
 }
 
@@ -95,4 +127,166 @@ void Tile::OnUpdate()
 		}
 
 	}
+}
+
+Object* Tile::InstantiateRedFragTile()
+{
+	static std::shared_ptr<ModelInstance> tileInLeftModel;
+	static std::shared_ptr<ModelInstance> tileInRightModel;
+	static std::shared_ptr<ModelInstance> tileOutLeftModel;
+	static std::shared_ptr<ModelInstance> tileOutRightModel;
+	if (tileInLeftModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		tileInLeftModel = rs.GetCopiedModelInstance("Pizza_InLeft.obj");
+		tileInLeftModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileInLeftModel->UpdateBuffer();
+
+		tileInRightModel = rs.GetCopiedModelInstance("Pizza_InRight.obj");
+		tileInRightModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileInRightModel->UpdateBuffer();
+
+		tileOutLeftModel = rs.GetCopiedModelInstance("Pizza_OutLeft.obj");
+		tileOutLeftModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileOutLeftModel->UpdateBuffer();
+
+		tileOutRightModel = rs.GetCopiedModelInstance("Pizza_OutRight.obj");
+		tileOutRightModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileOutRightModel->UpdateBuffer();
+	}
+
+	//--- Parent
+	auto parent = new Object();
+	//Transform
+	auto parentTransform = parent->GetTransform();
+	//Frag
+	auto parentFrag = parent->AddComponent<Frag>();
+
+	//--- Frag
+	for (int i = 0; i < 4; ++i)
+	{
+		std::shared_ptr<ModelInstance> model = nullptr;
+		glm::vec3 direction;
+		glm::vec3 torque;
+		switch (i)
+		{
+		case 0:
+			model = tileInLeftModel;
+			torque = glm::vec3(0, 50, 5);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		case 1:
+			model = tileInRightModel;
+			torque = glm::vec3(0, 50, 50);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		case 2:
+			model = tileOutLeftModel;
+			torque = glm::vec3(50, 50, 5);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		case 3:
+			model = tileOutRightModel;
+			torque = glm::vec3(50, 50, 50);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		}
+
+		auto tile = new Object();
+		//Transform
+		auto tileTransform = tile->GetTransform();
+		tileTransform->SetParent(parentTransform);
+		//Renderer
+		auto tileRenderer = tile->AddComponent<Renderer>();
+		tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+		tileRenderer->SetOwnModel(model);
+		//Rigidbody
+		auto tileRigidbody = tile->AddComponent<Rigidbody>();
+		tileRigidbody->AddForce(direction);
+		tileRigidbody->AddTorque(torque);
+	}
+
+
+	return parent;
+}
+
+Object* Tile::InstantiateBlackFragTile()
+{
+	static std::shared_ptr<ModelInstance> tileInLeftModel;
+	static std::shared_ptr<ModelInstance> tileInRightModel;
+	static std::shared_ptr<ModelInstance> tileOutLeftModel;
+	static std::shared_ptr<ModelInstance> tileOutRightModel;
+	if (tileInLeftModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		tileInLeftModel = rs.GetCopiedModelInstance("Pizza_InLeft.obj");
+		tileInLeftModel->SetColor(glm::vec3(0.1, 0.1, 0.1));
+		tileInLeftModel->UpdateBuffer();
+
+		tileInRightModel = rs.GetCopiedModelInstance("Pizza_InRight.obj");
+		tileInRightModel->SetColor(glm::vec3(0.1, 0.1, 0.1));
+		tileInRightModel->UpdateBuffer();
+
+		tileOutLeftModel = rs.GetCopiedModelInstance("Pizza_OutLeft.obj");
+		tileOutLeftModel->SetColor(glm::vec3(0.1, 0.1, 0.1));
+		tileOutLeftModel->UpdateBuffer();
+
+		tileOutRightModel = rs.GetCopiedModelInstance("Pizza_OutRight.obj");
+		tileOutRightModel->SetColor(glm::vec3(0.1, 0.1, 0.1));
+		tileOutRightModel->UpdateBuffer();
+	}
+
+	//--- Parent
+	auto parent = new Object();
+	//Transform
+	auto parentTransform = parent->GetTransform();
+	//Frag
+	auto parentFrag = parent->AddComponent<Frag>();
+
+	//--- Frag
+	for (int i = 0; i < 4; ++i)
+	{
+		std::shared_ptr<ModelInstance> model = nullptr;
+		glm::vec3 direction;
+		glm::vec3 torque;
+		switch (i)
+		{
+		case 0:
+			model = tileInLeftModel;
+			torque = glm::vec3(0, 50, 5);
+			direction = glm::vec3(0, 8, 0);
+			break;
+		case 1:
+			model = tileInRightModel;
+			torque = glm::vec3(0, -50, 50);
+			direction = glm::vec3(0, 10, 0);
+			break;
+		case 2:
+			model = tileOutLeftModel;
+			torque = glm::vec3(50, 50, -5);
+			direction = glm::vec3(0, 5, 0);
+			break;
+		case 3:
+			model = tileOutRightModel;
+			torque = glm::vec3(-50, -50, 50);
+			direction = glm::vec3(0, 5, 0);
+			break;
+		}
+
+		auto tile = new Object();
+		//Transform
+		auto tileTransform = tile->GetTransform();
+		tileTransform->SetParent(parentTransform);
+		//Renderer
+		auto tileRenderer = tile->AddComponent<Renderer>();
+		tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+		tileRenderer->SetOwnModel(model);
+		//Rigidbody
+		auto tileRigidbody = tile->AddComponent<Rigidbody>();
+		tileRigidbody->AddForce(direction);
+		tileRigidbody->AddTorque(torque);
+	}
+
+
+	return parent;
 }

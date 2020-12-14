@@ -23,5 +23,8 @@ public:
     virtual void OnCreate();
 
     virtual void OnUpdate();
+public:
+    static Object* InstantiateRedFragTile();
+    static Object* InstantiateBlackFragTile();
 };
 
