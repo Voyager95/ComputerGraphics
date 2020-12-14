@@ -185,6 +185,72 @@ void TermProject::InitializeDiscSetting()
 	tmp[6] = TileGenerate::BLACK;
 	tmp[7] = TileGenerate::NONE;
 	discSetting.push_back(tmp);
+
+	//---Index NO.04
+	tmp[0] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::NONE;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::NONE;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::RED;
+	discSetting.push_back(tmp);
+
+	//---Index NO.05
+	tmp[0] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::NONE;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::NONE;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::RED;
+	discSetting.push_back(tmp);
+
+	//---Index NO.06
+	tmp[0] = TileGenerate::RED;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::RED;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::NONE;
+	discSetting.push_back(tmp);
+
+	//---Index NO.07
+	tmp[0] = TileGenerate::RED;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::NONE;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::RED;
+	tmp[5] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::RED;
+	tmp[7] = TileGenerate::BLACK;
+	discSetting.push_back(tmp);
+
+	//---Index NO.08
+	tmp[0] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::RED;
+	tmp[3] = TileGenerate::BLACK;
+	tmp[4] = TileGenerate::BLACK;
+	tmp[5] = TileGenerate::RED;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::NONE;
+	discSetting.push_back(tmp);
+
+	//---Index NO.09
+	tmp[0] = TileGenerate::NONE;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::RED;
+	tmp[4] = TileGenerate::BLACK;
+	tmp[5] = TileGenerate::NONE;
+	tmp[6] = TileGenerate::BLACK;
+	tmp[7] = TileGenerate::RED;
+	discSetting.push_back(tmp);
 }
 
 void TermProject::InitializeDiscCombination()
@@ -193,7 +259,7 @@ void TermProject::InitializeDiscCombination()
 
 	//---Index NO.00
 	tmp[0] = 1;
-	tmp[1] = 0;
+	tmp[1] = 4;
 	tmp[2] = 3;
 	tmp[3] = 2;
 	tmp[4] = 1;
@@ -203,25 +269,58 @@ void TermProject::InitializeDiscCombination()
 	discList.push_back(tmp);
 
 	//---Index NO.01
-	tmp[0] = 1;
-	tmp[1] = 0;
-	tmp[2] = 3;
-	tmp[3] = 2;
-	tmp[4] = 1;
-	tmp[5] = 2;
-	tmp[6] = 0;
-	tmp[7] = 1;
+	tmp[0] = 4;
+	tmp[1] = 3;
+	tmp[2] = 6;
+	tmp[3] = 1;
+	tmp[4] = 0;
+	tmp[5] = 5;
+	tmp[6] = 2;
+	tmp[7] = 4;
 	discList.push_back(tmp);
 
 	//---Index NO.02
-	tmp[0] = 1;
-	tmp[1] = 0;
+	tmp[0] = 2;
+	tmp[1] = 4;
+	tmp[2] = 1;
+	tmp[3] = 5;
+	tmp[4] = 7;
+	tmp[5] = 6;
+	tmp[6] = 3;
+	tmp[7] = 0;
+	discList.push_back(tmp);
+
+	//---Index NO.03
+	tmp[0] = 7;
+	tmp[1] = 6;
 	tmp[2] = 3;
+	tmp[3] = 8;
+	tmp[4] = 7;
+	tmp[5] = 4;
+	tmp[6] = 2;
+	tmp[7] = 5;
+	discList.push_back(tmp);
+
+	//---Index NO.04
+	tmp[0] = 5;
+	tmp[1] = 2;
+	tmp[2] = 7;
+	tmp[3] = 6;
+	tmp[4] = 4;
+	tmp[5] = 9;
+	tmp[6] = 3;
+	tmp[7] = 8;
+	discList.push_back(tmp);
+
+	//---Index NO.05
+	tmp[0] = 9;
+	tmp[1] = 7;
+	tmp[2] = 6;
 	tmp[3] = 2;
-	tmp[4] = 1;
-	tmp[5] = 2;
-	tmp[6] = 0;
-	tmp[7] = 1;
+	tmp[4] = 8;
+	tmp[5] = 9;
+	tmp[6] = 4;
+	tmp[7] = 8;
 	discList.push_back(tmp);
 }
 
