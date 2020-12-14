@@ -36,7 +36,6 @@ void SceneSystem::StartScene(std::shared_ptr<Scene> targetScene)
 
 void SceneSystem::ChangeScene()
 {
-	m_PresentScene->SubAllObject();
 	m_PresentScene->SetIsActivatedScene(false);
 	m_PresentScene = nullptr;
 
@@ -47,11 +46,6 @@ void SceneSystem::ChangeScene()
 
 SceneSystem::SceneSystem()
 {
-}
-
-void SceneSystem::SubObjectsOfPresentScene()
-{
-	m_PresentScene->SubAllObject();
 }
 
 void SceneSystem::StartLoop()
@@ -100,25 +94,29 @@ GLvoid MainLoop(int value)
 		//--- SceneOBject의 Create문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			(*object)->OnCreate();
+			if ((*object)->GetIsAddedScene())
+				(*object)->OnCreate();
 		}
 
 		//--- SceneOBject의 Update문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			(*object)->OnUpdate();
+			if ((*object)->GetIsAddedScene())
+				(*object)->OnUpdate();
 		}
 
 		//--- SceneOBject의 LateUpdate문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			(*object)->OnLateUpdate();
+			if ((*object)->GetIsAddedScene())
+				(*object)->OnLateUpdate();
 		}
 
 		//--- SceneOBject의 OnPreRender문 호출
 		for (auto object = ss.GetPresentScene()->objects.begin(); object != ss.GetPresentScene()->objects.end(); ++object)
 		{
-			(*object)->OnPreRender();
+			if ((*object)->GetIsAddedScene())
+				(*object)->OnPreRender();
 		}
 
 		//--- 인풋 초기화
@@ -126,6 +124,9 @@ GLvoid MainLoop(int value)
 
 		//--- 렌더
 		glutPostRedisplay();
+
+		//--- 삭제 대상 오브젝트 삭제
+		ss.GetPresentScene()->ClearToRemove();
 
 		//--- 메인루프 재귀 호출
 		glutTimerFunc(LOOPSPEED, MainLoop, 1);

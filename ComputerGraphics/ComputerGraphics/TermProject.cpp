@@ -100,7 +100,6 @@ void TermProject::DeleteTower()
 			auto target = *tower;
 			tower =m_Tower.erase(tower);
 			presentScene->SubObject(target);
-			delete(target);
 		}
 		else
 		{
@@ -251,6 +250,17 @@ void TermProject::InitializeDiscSetting()
 	tmp[6] = TileGenerate::BLACK;
 	tmp[7] = TileGenerate::RED;
 	discSetting.push_back(tmp);
+
+	//---Index NO.10
+	tmp[0] = TileGenerate::NONE;
+	tmp[1] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::NONE;
+	tmp[3] = TileGenerate::BIGGER;
+	tmp[4] = TileGenerate::BLACK;
+	tmp[5] = TileGenerate::NONE;
+	tmp[6] = TileGenerate::LIGHTER;
+	tmp[7] = TileGenerate::RED;
+	discSetting.push_back(tmp);
 }
 
 void TermProject::InitializeDiscCombination()
@@ -260,10 +270,10 @@ void TermProject::InitializeDiscCombination()
 	//---Index NO.00
 	tmp[0] = 1;
 	tmp[1] = 4;
-	tmp[2] = 3;
+	tmp[2] = 10;
 	tmp[3] = 2;
 	tmp[4] = 1;
-	tmp[5] = 2;
+	tmp[5] = 10;
 	tmp[6] = 0;
 	tmp[7] = 1;
 	discList.push_back(tmp);
@@ -483,14 +493,50 @@ Object* TermProject::InstantiateRedTileFrag()
 	return parent;
 }
 
-Object* TermProject::InstantiateBiggerItem()
+Object* TermProject::InstantiateBiggerTile()
 {
-	return nullptr;
+	static std::shared_ptr<ModelInstance> BiggerTileModel;
+	if (BiggerTileModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		BiggerTileModel = rs.GetCopiedModelInstance("Tile_Bigger.obj");
+		BiggerTileModel->SetColor(glm::vec3(0.2, 0.2, 0.2));
+		BiggerTileModel->UpdateBuffer();
+	}
+
+	auto tile = new Object();
+	//Tile
+	auto tileTile = tile->AddComponent<Tile>();
+	tileTile->type = TileType::BIGGER;
+	//Renderer
+	auto tileRenderer = tile->AddComponent<Renderer>();
+	tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+	tileRenderer->SetOwnModel(BiggerTileModel);
+
+	return tile;
 }
 
-Object* TermProject::InstantiateLighterItem()
+Object* TermProject::InstantiateLighterTile()
 {
-	return nullptr;
+	static std::shared_ptr<ModelInstance> BiggerTileModel;
+	if (BiggerTileModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		BiggerTileModel = rs.GetCopiedModelInstance("Tile_Lighter.obj");
+		BiggerTileModel->SetColor(glm::vec3(0.8, 0.8, 0.8));
+		BiggerTileModel->UpdateBuffer();
+	}
+
+	auto tile = new Object();
+	//Tile
+	auto tileTile = tile->AddComponent<Tile>();
+	tileTile->type = TileType::LIGHTER;
+	//Renderer
+	auto tileRenderer = tile->AddComponent<Renderer>();
+	tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+	tileRenderer->SetOwnModel(BiggerTileModel);
+
+	return tile;
 }
 
 Object* TermProject::InstantiateTower()
@@ -560,10 +606,21 @@ Object* TermProject::InstantiateDisc(std::array<TileGenerate, TILENUMPERDDISC> d
 		{
 			Object* tile = nullptr;
 			//-- 鸥老 积己
-			if (discCom[i] == TileGenerate::BLACK)
+			switch (discCom[i])
+			{
+			case TileGenerate::BIGGER:
+				tile = InstantiateBiggerTile();
+				break;
+			case TileGenerate::BLACK:
 				tile = InstantiateBlackTile();
-			else
+				break;
+			case TileGenerate::LIGHTER:
+				tile = InstantiateLighterTile();
+				break;
+			case TileGenerate::RED:
 				tile = InstantiateRedTile();
+				break;
+			}
 			tile->name = "鸥老";
 			//Transform
 			auto tileTransform = tile->GetTransform();

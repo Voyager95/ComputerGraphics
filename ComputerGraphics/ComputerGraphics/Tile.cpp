@@ -13,10 +13,14 @@ Tile::Tile(Object* object) : Component(object)
 	angle = 30;
 }
 
+void Tile::Destory()
+{
+	GetBelongingObject()->SubObject();
+}
+
 void Tile::OnCreate()
 {
 	auto tileTransform = GetBelongingTransform();
-	GlobalUtility::PrintVec3("타일 위치: ",tileTransform->GetWorldPosition());
 }
 
 void Tile::OnUpdate()
@@ -62,16 +66,11 @@ void Tile::OnUpdate()
 			if (ballPosition.y - ballBall->radius <= tilePosition.y && ballPosition.y - ballBall->radius >= tilePosition.y - 1)
 			{
 				isCollide = true;
-				//std::cout << tileAngle.y << std::endl;
-				//std::cout << tilePosition.y << std::endl;
-				//std::cout << ballPosition.y - ballBall->radius << std::endl;
 			}
 		}
-
 		else
 		{
 			isCollide = false;
-			//std::cout << tileAngle.y << std::endl;
 		}
 		
 		if (isCollide == true && rigidbody.y < 0)
@@ -79,10 +78,16 @@ void Tile::OnUpdate()
 			switch (type)
 			{
 			case TileType::BLACK:
-				ballBall->Bounce();
+				ballBall->Bounce(this);
 				break;
 			case TileType::RED:
-				ballBall->Damage();
+				ballBall->Damage(this);
+				break;
+			case TileType::BIGGER:
+				ballBall->Bigger(this);
+				break;
+			case TileType::LIGHTER:
+				ballBall->Lighter(this);
 				break;
 			default:
 				break;

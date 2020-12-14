@@ -4,7 +4,9 @@
 enum class TileType
 {
     BLACK,
-    RED
+    RED,
+    LIGHTER,
+    BIGGER,
 };
 
 class Tile :
@@ -15,6 +17,8 @@ public:
     float angle;            // 이 타일의 중심 각도입니다. 
 
     Tile(Object* object);
+
+    void Destory();
 
     virtual void OnCreate();
 

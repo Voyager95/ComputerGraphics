@@ -16,8 +16,6 @@ Renderer::Renderer(Object* object) : Component(object)
 
 Renderer::~Renderer()
 {
-	std::cout << GetBelongingObject()->name << " Renderer »èÁ¦" << std::endl;
-
 	RenderSystem& rs = RenderSystem::GetInstance();
 	rs.SubRenderer(m_TargetShaderType, this);
 }

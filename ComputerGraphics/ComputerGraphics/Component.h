@@ -9,6 +9,8 @@ class Component
 private:
 	Object* m_Object;
 	bool m_Enable;
+
+
 public:
 	Component(Object* object);
 	virtual ~Component();

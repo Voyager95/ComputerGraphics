@@ -56,6 +56,8 @@ public:
     /// </summary>
     void RandomColor();
 
+    void SetSize(float size);
+
     void SetColor(glm::vec3 color);
 };
 

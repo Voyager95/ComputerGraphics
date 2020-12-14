@@ -119,6 +119,14 @@ void ModelInstance::RandomColor()
 	}
 }
 
+void ModelInstance::SetSize(float size)
+{
+	for (auto i = verticesPos.begin(); i != verticesPos.end(); ++i)
+	{
+		(*i) *= size;
+	}
+}
+
 void ModelInstance::SetColor(glm::vec3 color)
 {
 	verticesColor.clear();

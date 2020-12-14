@@ -24,6 +24,9 @@ private:
     glm::vec3 m_presentDirection;
     glm::vec3 m_Torque;
 public:
+    //--- Setter
+    void SetPresentDirection(glm::vec3 value) { m_presentDirection = value; }
+
 
     //--- Getter
     glm::vec3 GetPresentDirection() { return m_presentDirection; }

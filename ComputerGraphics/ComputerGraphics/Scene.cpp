@@ -18,7 +18,11 @@ Scene::~Scene()
 
 		std::cout << (*obj)->name << " 오브젝트 삭제" << std::endl;
 		delete((*obj));
+		
+		ClearToRemove();
 	}
+
+	
 }
 
 void Scene::AddObject(Object* object)
@@ -42,16 +46,15 @@ void Scene::AddObject(Object* object)
 	}
 }
 
-void Scene::SubObject(Object* object)
+void Scene::SubObject(Object* object, bool toDelete)
 {
 	auto result = std::find(objects.begin(), objects.end(), object);
-	if (result != objects.end())
+	auto isExistToRemove = std::find(toRemove.begin(), toRemove.end(), object);
+	if (result != objects.end() && isExistToRemove == toRemove.end())
 	{
 		object->OnSubScene();
-		objects.remove(object);
+		toRemove.push_back(object);
 	}
-	else
-		std::cout << "[Scene SubObject()] 이미 씬에 없는 오브젝트입니다. " << object->name << std::endl;
 
 	auto objectTransform = object->GetTransform();
 	auto objectChildren = objectTransform->GetChildren();
@@ -62,14 +65,21 @@ void Scene::SubObject(Object* object)
 	}
 }
 
-void Scene::SubAllObject()
-{
-}
-
 void Scene::OnCreate()
 {
 }
 
 void Scene::OnUpdate()
 {
+}
+
+void Scene::ClearToRemove()
+{
+	while (toRemove.empty() != true)
+	{
+		auto object = toRemove.begin();
+		objects.remove(*object);
+		toRemove.remove(*object);
+		//delete(*object);
+	}
 }

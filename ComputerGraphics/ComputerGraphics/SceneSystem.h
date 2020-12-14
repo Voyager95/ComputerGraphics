@@ -40,7 +40,6 @@ public:
 private:	
 	SceneSystem();
 
-	void SubObjectsOfPresentScene();
 public:
 	//--- Getter
 	std::shared_ptr<Scene> GetPresentScene() { return m_PresentScene; }

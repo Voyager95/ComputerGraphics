@@ -16,7 +16,6 @@ Component::Component(Object* object)
 
 Component::~Component()
 {
-	std::cout << "컴포넌트 삭제" << std::endl;
 }
 
 Transform* Component::GetBelongingTransform()

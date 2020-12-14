@@ -13,6 +13,8 @@ enum class TileGenerate
 {
     NONE,
     BLACK,
+    BIGGER,
+    LIGHTER,
     RED
 };
 
@@ -113,13 +115,13 @@ public:
     /// 커지는 아이템을 생성합니다.
     /// </summary>
     /// <returns></returns>
-    Object* InstantiateBiggerItem();
+    Object* InstantiateBiggerTile();
 
     /// <summary>
     /// 가벼워 지는 아이템을 생성합니다.
     /// </summary>
     /// <returns></returns>
-    Object* InstantiateLighterItem();
+    Object* InstantiateLighterTile();
 
     /// <summary>
     /// 타워를 생성합니다. 랜덤으로 생성합니다.

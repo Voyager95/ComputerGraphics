@@ -113,16 +113,16 @@ void ShaderInstance::SubRenderer(Renderer* renderer)
 {
 	if (std::find(m_TargetRenderer.begin(), m_TargetRenderer.end(), renderer) != m_TargetRenderer.end())
 		m_TargetRenderer.remove(renderer);
-	else
-		std::cout << "[ShaderInstance AddRenderer()] 삭제하고자 하는 렌더러는 이미 없습니다." << std::endl;
+	//else
+	//	std::cout << "[ShaderInstance AddRenderer()] 삭제하고자 하는 렌더러는 이미 없습니다." << std::endl;
 }
 
 void ShaderInstance::AddRenderer(Renderer* renderer)
 {
 	if (std::find(m_TargetRenderer.begin(), m_TargetRenderer.end(), renderer) == m_TargetRenderer.end())
 		m_TargetRenderer.emplace_back(renderer);
-	else
-		std::cout << "[ShaderInstance AddRenderer()] 이미 추가하려는 렌더러가 있습니다." << std::endl;
+	//else
+	//	std::cout << "[ShaderInstance AddRenderer()] 이미 추가하려는 렌더러가 있습니다." << std::endl;
 }
 
 GLuint ShaderInstance::MakeVertexShader(std::string vertexShaderPath)
