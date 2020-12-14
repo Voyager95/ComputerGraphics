@@ -9,7 +9,9 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "ResourceSystem.h"
+#include "SceneSystem.h"
 #include "ModelInstnce.h"
+#include "Frag.h"
 
 TermProject::TermProject()
 {
@@ -49,6 +51,8 @@ TermProject::TermProject()
 
 void TermProject::OnUpdate()
 {
+	m_Timer += DELTATIME;
+
 	//--- 키 입력 처리
 	InputSystem& is = InputSystem::GetInstance();
 	//-- 키
@@ -70,10 +74,46 @@ void TermProject::OnUpdate()
 
 	//--- 생성 체크
 	SpawnTower();
+
+	//--- 삭제 체크
+	DeleteTower();
+}
+
+void TermProject::DeleteTower()
+{
+	SceneSystem& ss = SceneSystem::GetInstance();
+	auto presentScene = ss.GetPresentScene();
+
+	if (m_Ball == nullptr || m_Tower.size() < 1)
+		return;
+
+	auto ballPos = m_Ball->GetTransform()->position;
+
+	auto tower = m_Tower.begin();
+
+	while (tower != m_Tower.end())
+	{
+		auto towerPos = (*tower)->GetTransform()->position;
+
+		if (towerPos.y > ballPos.y + towerDeleteOffset)
+		{
+			auto target = *tower;
+			tower =m_Tower.erase(tower);
+			presentScene->SubObject(target);
+			delete(target);
+		}
+		else
+		{
+			tower++;
+		}
+	}
 }
 
 void TermProject::SpawnTower()
 {
+	SceneSystem& ss = SceneSystem::GetInstance();
+	auto presentScene = ss.GetPresentScene();
+
 	if (m_Ball == nullptr || m_Tower.size() < 1)
 		return;
 	auto ballTransform = m_Ball->GetTransform();
@@ -82,7 +122,7 @@ void TermProject::SpawnTower()
 	auto towerTransform = tower->GetTransform();
 
 	auto spawnPosition = towerTransform->GetWorldPosition().y + towerInstantiateOffset;
-	std::cout << "생성 위치: " << spawnPosition << " 공 위치: " << ballTransform->GetWorldPosition().y << std::endl;
+
 	if ( spawnPosition > ballTransform->GetWorldPosition().y)
 	{
 		std::cout << "타워 생성 됨" << std::endl;
@@ -93,6 +133,8 @@ void TermProject::SpawnTower()
 		//- 타워 위치 조정
 		auto desiredPos = glm::vec3(0,towerTransform->GetWorldPosition().y - TOWERHEIGHT,0 );
 		instancedTowerTransform->SetWorldPosition(desiredPos);
+
+		presentScene->AddObject(instancedTower);
 	}
 }
 
@@ -199,7 +241,9 @@ Object* TermProject::InstantiateBall()
 	//Ball
 	ball->AddComponent<Ball>();
 	//Rigidbody
-	ball->AddComponent<Rigidbody>();
+	auto ballRigidbody = ball->AddComponent<Rigidbody>();
+	ballRigidbody->gravitylimitSpeed = 20.0f;
+	ballRigidbody->gravityMultiples = 2.0f;
 	//Renderer
 	auto ballRenderer = ball->AddComponent<Renderer>();	
 	ballRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
@@ -231,6 +275,11 @@ Object* TermProject::InstantiateBlackTile()
 	return tile;
 }
 
+Object* TermProject::InstantiateBlackTileFrag()
+{
+	return nullptr;
+}
+
 Object* TermProject::InstantiateRedTile()
 {
 	static std::shared_ptr<ModelInstance> redTileModel;
@@ -252,6 +301,87 @@ Object* TermProject::InstantiateRedTile()
 	tileRenderer->SetOwnModel(redTileModel);
 
 	return tile;
+}
+
+Object* TermProject::InstantiateRedTileFrag()
+{
+	static std::shared_ptr<ModelInstance> tileInLeftModel;
+	static std::shared_ptr<ModelInstance> tileInRightModel;
+	static std::shared_ptr<ModelInstance> tileOutLeftModel;
+	static std::shared_ptr<ModelInstance> tileOutRightModel;
+	if (tileInLeftModel == nullptr)
+	{
+		ResourceSystem& rs = ResourceSystem::GetInstance();
+		tileInLeftModel = rs.GetCopiedModelInstance("Pizza_InLeft.obj");
+		tileInLeftModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileInLeftModel->UpdateBuffer();
+
+		tileInRightModel = rs.GetCopiedModelInstance("Pizza_InRight.obj");
+		tileInRightModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileInRightModel->UpdateBuffer();
+
+		tileOutLeftModel = rs.GetCopiedModelInstance("Pizza_OutLeft.obj");
+		tileOutLeftModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileOutLeftModel->UpdateBuffer();
+
+		tileOutRightModel = rs.GetCopiedModelInstance("Pizza_OutRight.obj");
+		tileOutRightModel->SetColor(glm::vec3(0.8, 0.2, 0.2));
+		tileOutRightModel->UpdateBuffer();
+	}
+
+	//--- Parent
+	auto parent = new Object();
+	//Transform
+	auto parentTransform = parent->GetTransform();
+	//Frag
+	auto parentFrag = parent->AddComponent<Frag>();
+
+	//--- Frag
+	for (int i = 0; i < 4; ++i)
+	{
+		std::shared_ptr<ModelInstance> model = nullptr;
+		glm::vec3 direction;
+		glm::vec3 torque;
+		switch (i)
+		{
+		case 0:
+			model = tileInLeftModel;
+			torque = glm::vec3(0,50,5);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		case 1:
+			model = tileInRightModel;
+			torque = glm::vec3(0, 50, 50);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		case 2:
+			model = tileOutLeftModel;
+			torque = glm::vec3(50, 50, 5);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		case 3:
+			model = tileOutRightModel;
+			torque = glm::vec3(50, 50, 50);
+			direction = glm::vec3(0, 30, 0);
+			break;
+		}
+
+		auto tile = new Object();
+		//Transform
+		auto tileTransform = tile->GetTransform();
+		tileTransform->SetParent(parentTransform);
+		//Renderer
+		auto tileRenderer = tile->AddComponent<Renderer>();
+		tileRenderer->SetTargetShader(ShaderType::VERTEX_ELEMENT);
+		tileRenderer->SetOwnModel(model);
+		//Rigidbody
+		auto tileRigidbody = tile->AddComponent<Rigidbody>();
+		tileRigidbody->AddForce(direction);
+		tileRigidbody->AddTorque(torque);
+	}
+
+
+	return parent;
 }
 
 Object* TermProject::InstantiateBiggerItem()
@@ -288,7 +418,7 @@ Object* TermProject::InstantiateTower(int index)
 	}
 
 	//--- Tower
-	auto tower = new Object();
+	auto tower = new Object("타워");
 	//Renderer
 	auto towerRenderer = tower->AddComponent<Renderer>();
 	towerRenderer->SetOwnModel(towerModel);
@@ -321,8 +451,7 @@ Object* TermProject::InstantiateTower(int index)
 
 Object* TermProject::InstantiateDisc(std::array<TileGenerate, TILENUMPERDDISC> discCom)
 {
-	Object* disc = new Object();
-	disc->name = "디스크";
+	Object* disc = new Object("디스크");
 
 	float yRotate = 0;
 
@@ -336,7 +465,7 @@ Object* TermProject::InstantiateDisc(std::array<TileGenerate, TILENUMPERDDISC> d
 				tile = InstantiateBlackTile();
 			else
 				tile = InstantiateRedTile();
-			tile->name = "타일" + i;
+			tile->name = "타일";
 			//Transform
 			auto tileTransform = tile->GetTransform();
 			tileTransform->SetParent(disc->GetTransform());

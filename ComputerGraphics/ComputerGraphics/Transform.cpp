@@ -21,7 +21,11 @@ Transform::Transform(Object* object) : Component(object)
 
 Transform::~Transform()
 {
-	std::cout << "Tranform 삭제" << std::endl;
+	std::cout << GetBelongingObject()->name <<" Tranform 삭제" << std::endl;
+
+	//--- 부모 관계를 끊기
+	if (GetParent() != nullptr)
+		DeleteParent();
 }
 
 glm::mat4x4 Transform::GetTransformMatrix()

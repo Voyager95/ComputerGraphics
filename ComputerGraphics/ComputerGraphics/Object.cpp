@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Renderer.h"
+#include "SceneSystem.h"
+#include "Scene.h"
 
 Object::Object()
 {
@@ -17,18 +19,33 @@ Object::Object()
 Object::Object(std::string name) : Object()
 {
 	this->name = name;
+	m_BelongingScene = nullptr;
 }
 
 Object::~Object()
 {
-	std::cout << name << " 삭제됨" << " 컴포넌트 수: " << m_Components.size() << std::endl;
-	//for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
-	//{
-	//	delete(*c);
-	//}
+	//--- 자식 오브젝트도 삭제 절차 밟기 
+	auto childrenList = m_Transform->GetChildren();
+	if (childrenList.size() > 0)
+	{
+		for (auto i = childrenList.begin(); i != childrenList.end(); ++i)
+		{
+			delete((*i)->GetBelongingObject());
+		}
+	}
 
-	delete(m_Transform);
-		
+	// 씬에 추가되어 있다면 삭제하기
+	if (m_IsAddedScene == true)
+	{
+		SubObject();
+	}
+
+	// 컴포넌트 삭제
+	std::cout << name << " 삭제됨" << " 컴포넌트 수: " << m_Components.size() << std::endl;
+	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
+	{
+		delete(*c);
+	}
 }
 
 void Object::OnAddTransform(Transform* transform)
@@ -42,6 +59,14 @@ void Object::AddComponent(Component* component)
 {
 	m_Components.emplace_back(component);
 	m_OnCreateComponents.push(component);
+}
+
+void Object::SubObject()
+{
+	if (m_IsAddedScene == true)
+	{
+		m_BelongingScene->SubObject(this);
+	}
 }
 
 void Object::OnCreate()
@@ -76,5 +101,26 @@ void Object::OnPreRender()
 	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
 	{
 		(*c)->OnPreRender();
+	}
+}
+
+void Object::OnAddScene(Scene* scene)
+{
+	m_BelongingScene = scene;
+	m_IsAddedScene = true;
+
+	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
+	{
+		(*c)->OnAddScene();
+	}
+}
+
+void Object::OnSubScene()
+{
+	m_IsAddedScene = false;
+
+	for (auto c = m_Components.begin(); c != m_Components.end(); ++c)
+	{
+		(*c)->OnSubScene();
 	}
 }

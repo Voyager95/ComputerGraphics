@@ -2,12 +2,21 @@
 #include "Ball.h"
 #include "Object.h"
 #include "Rigidbody.h"
+#include "SceneSystem.h"
+#include "Scene.h"
+#include "TermProject.h"
 
 Ball::Ball(Object* object) : Component(object)
 {
 	radius = 4;
 
 	m_HitPoint = 1;
+
+	slowSpeedColor = glm::vec3(0.2, 0.2, 0.8);
+	fastSpeedColor = glm::vec3(0.9, 0.7, 0.2);
+	maxSpeedColor = glm::vec3(1, 0.2, 0.2);
+
+	maxSpeed = 18;
 }
 
 void Ball::Damage()
@@ -34,7 +43,17 @@ void Ball::Bounce()
 	std::cout << "°ø Æ¨±è" << std::endl;
 }
 
+void Ball::OnUpdate()
+{
+}
+
 void Ball::Death()
 {
 	std::cout << "°ø Á×À½" << std::endl;
+
+	auto scene = std::make_shared<TermProject>();
+
+	auto& ss = SceneSystem::GetInstance();
+
+	ss.StartScene(std::static_pointer_cast<Scene>(scene));
 }

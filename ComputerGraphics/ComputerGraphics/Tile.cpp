@@ -13,6 +13,12 @@ Tile::Tile(Object* object) : Component(object)
 	angle = 30;
 }
 
+void Tile::OnCreate()
+{
+	auto tileTransform = GetBelongingTransform();
+	GlobalUtility::PrintVec3("타일 위치: ",tileTransform->GetWorldPosition());
+}
+
 void Tile::OnUpdate()
 {
 	SceneSystem& ss = SceneSystem::GetInstance();

@@ -15,17 +15,24 @@ class Object;
 class Rigidbody :
     public Component
 {
-private:
-    glm::vec3 m_presentDirecttion;
 public:
     bool gravity;                       // 중력을 적용할지 체크합니다.
+    float gravityMultiples;              // 중력 적용 배수입니다.
+    bool gravityLimit;                  // 특정 속력이 되면 중력을 더이상 적용하지 않을 것입니다.
+    float gravitylimitSpeed;            // gravityLimit 최대 스피드
+private:
+    glm::vec3 m_presentDirection;
+    glm::vec3 m_Torque;
+public:
 
     //--- Getter
-    glm::vec3 GetPresentDirection() { return m_presentDirecttion; }
+    glm::vec3 GetPresentDirection() { return m_presentDirection; }
 
     Rigidbody(Object* object);
 
     void AddForce(glm::vec3 direction);
+
+    void AddTorque(glm::vec3 direction);
 
     virtual void OnUpdate();
 };

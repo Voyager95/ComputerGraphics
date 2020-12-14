@@ -35,6 +35,7 @@ private:
 public:
     //--- Constructor
     Renderer(Object* object);
+    ~Renderer();
 
     //--- Getter
     std::shared_ptr<TextureInstance> GetTexture() { return m_Tex; }
@@ -61,13 +62,15 @@ public:
 
     //--- Event
     
-    /// <summary>
-    /// CheckState()
-    /// </summary>
     virtual void OnEnable();
 
-
     virtual void OnDisable();
+
+    virtual void OnDestroy();
+
+    virtual void OnAddScene();
+
+    virtual void OnSubScene();
 
 private:
 

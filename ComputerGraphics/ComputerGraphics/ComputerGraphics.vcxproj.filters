@@ -141,6 +141,9 @@
     <ClCompile Include="Tower.cpp">
       <Filter>Scene\텀프로젝트</Filter>
     </ClCompile>
+    <ClCompile Include="Frag.cpp">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl">
@@ -230,6 +233,9 @@
       <Filter>Scene\텀프로젝트</Filter>
     </ClInclude>
     <ClInclude Include="Tower.h">
+      <Filter>Scene\텀프로젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="Frag.h">
       <Filter>Scene\텀프로젝트</Filter>
     </ClInclude>
   </ItemGroup>

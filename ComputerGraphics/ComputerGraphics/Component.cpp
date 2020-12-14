@@ -16,7 +16,7 @@ Component::Component(Object* object)
 
 Component::~Component()
 {
-	OnDestory();
+	std::cout << "컴포넌트 삭제" << std::endl;
 }
 
 Transform* Component::GetBelongingTransform()
@@ -48,7 +48,11 @@ void Component::OnLateUpdate()
 {
 }
 
-void Component::OnDestory()
+void Component::OnAddScene()
+{
+}
+
+void Component::OnSubScene()
 {
 }
 

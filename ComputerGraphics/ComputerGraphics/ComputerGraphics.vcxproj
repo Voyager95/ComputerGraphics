@@ -145,6 +145,7 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Frag.cpp" />
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="GlobalUtility.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Frag.h" />
     <ClInclude Include="GlobalUtility.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ModelInstnce.h" />

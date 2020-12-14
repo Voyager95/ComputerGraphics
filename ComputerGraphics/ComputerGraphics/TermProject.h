@@ -19,7 +19,15 @@ enum class TileGenerate
 class TermProject :
     public Scene
 {
+public:
+    //--- Seting
+    int towerInstantiateOffset = 60;
+    int towerDeleteOffset = 15;
+
 private:
+    //--- General
+    float m_Timer = 0;
+
     //--- Ball
     Object* m_Ball;
 
@@ -27,9 +35,6 @@ private:
     float m_TowerRotateSpeed = 200;
     std::vector<Object*> m_Tower; 
 public:
-    //--- Seting
-
-    int towerInstantiateOffset = 60;
 
     /// <summary>
     /// 미리 설정해 놓은 디스크 세팅입니다.
@@ -51,6 +56,11 @@ public:
     virtual void OnUpdate();
 
     //--- 기본 함수
+
+    /// <summary>
+    /// 플레이어 위치를 확인하면서 필요한 경우 타워를 제거해 줍니다.
+    /// </summary>
+    void DeleteTower();
 
     /// <summary>
     /// 플레이어 위치를 확인하면서 필요한 경우 타워를 생성해 줍니다.
@@ -82,10 +92,22 @@ public:
     Object* InstantiateBlackTile();
 
     /// <summary>
+    /// 검정 타일 파편을 생성합니다.
+    /// </summary>
+    /// <returns></returns>
+    Object* InstantiateBlackTileFrag();
+
+    /// <summary>
     /// 빨간 타일을 생성합니다.
     /// </summary>
     /// <returns></returns>
     Object* InstantiateRedTile();
+
+    /// <summary>
+    /// 빨간 타일 파편을 생성합니다.
+    /// </summary>
+    /// <returns></returns>
+    Object* InstantiateRedTileFrag();
 
     /// <summary>
     /// 커지는 아이템을 생성합니다.

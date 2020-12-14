@@ -4,6 +4,7 @@
 class Component;
 class Transform;
 class Renderer;
+class Scene;
 
 class Object : public std::enable_shared_from_this<Object>
 {
@@ -12,10 +13,13 @@ public:
 	std::string tag;
 private:
 	bool m_TransformExist;
+	bool m_IsAddedScene;
 
 	std::list<Component*> m_Components;
 	std::queue<Component*> m_OnCreateComponents;
 	Transform* m_Transform;
+
+	Scene* m_BelongingScene;
 public:
 
 	//-- Constructor
@@ -26,6 +30,11 @@ public:
 	//---Getter
 	Transform* GetTransform() { return m_Transform; }
 	std::list<Component*> GetComponents() { return m_Components; }
+	bool GetIsAddedScene() { return m_IsAddedScene; }
+	Scene* GetBelongingScene() { return m_BelongingScene; }
+
+	//---Setter
+	void SetIsAddedScene(bool value) { m_IsAddedScene = value; }
 
 	template <typename T>
 	T* GetComponent();
@@ -35,6 +44,8 @@ public:
 
 	void OnAddTransform(Transform* transform);
 	void AddComponent(Component* component);
+
+	void SubObject();
 
 	/// <summary>
 	/// 컴포넌트들의 OnCreate함수를 호출합니다.
@@ -55,6 +66,16 @@ public:
 	/// 컴포넌트들의 OnPreDraw함수를 호출합니다.
 	/// </summary>
 	void OnPreRender();
+
+	/// <summary>
+	/// 컴포넌트들의 OnAddScene함수를 호출합니다.
+	/// </summary>
+	void OnAddScene(Scene* scene);
+
+	/// <summary>
+	/// 컴포넌트들의 OnSubScene함수를 호출합니다.
+	/// </summary>
+	void OnSubScene();
 };
 
 template<typename T>

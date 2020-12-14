@@ -14,13 +14,44 @@ SceneSystem& SceneSystem::GetInstance()
 
 void SceneSystem::StartScene(std::shared_ptr<Scene> targetScene)
 {
-	m_PresentScene = targetScene;
+	if (m_PresentScene != nullptr)
+	{
+		if (m_TobeChangeScene != nullptr)
+		{
+			std::cout << "[SceneSystem StartScene()] 다음으로 만들 씬이 이미 있습니다." << std::endl;
+			return;
+		}
+		m_TobeChangeScene = targetScene;
+		StopLoop();
+	}
+	else
+	{
+		targetScene->SetIsActivatedScene(true);
 
-	StartLoop();
+		m_PresentScene = targetScene;
+
+		StartLoop();
+	}
+}
+
+void SceneSystem::ChangeScene()
+{
+	m_PresentScene->SubAllObject();
+	m_PresentScene->SetIsActivatedScene(false);
+	m_PresentScene = nullptr;
+
+	StartScene(m_TobeChangeScene);
+
+	m_TobeChangeScene = nullptr;
 }
 
 SceneSystem::SceneSystem()
 {
+}
+
+void SceneSystem::SubObjectsOfPresentScene()
+{
+	m_PresentScene->SubAllObject();
 }
 
 void SceneSystem::StartLoop()
@@ -98,6 +129,10 @@ GLvoid MainLoop(int value)
 
 		//--- 메인루프 재귀 호출
 		glutTimerFunc(LOOPSPEED, MainLoop, 1);
+	}
+	else
+	{
+		ss.ChangeScene();
 	}
 
 }

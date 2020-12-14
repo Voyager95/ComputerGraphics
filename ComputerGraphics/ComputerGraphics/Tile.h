@@ -16,6 +16,8 @@ public:
 
     Tile(Object* object);
 
+    virtual void OnCreate();
+
     virtual void OnUpdate();
 };
 

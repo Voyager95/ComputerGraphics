@@ -3,6 +3,8 @@
 #include "ResourceSystem.h"
 #include "RenderSystem.h"
 #include "ModelInstnce.h"
+#include "Object.h"
+#include "Scene.h"
 
 Renderer::Renderer(Object* object) : Component(object)
 {
@@ -10,6 +12,14 @@ Renderer::Renderer(Object* object) : Component(object)
 	m_TargetShaderType = ShaderType::VERTEX_ELEMENT;
 	m_IsAssigned = false;
 	m_IsModelExist = false;
+}
+
+Renderer::~Renderer()
+{
+	std::cout << GetBelongingObject()->name << " Renderer 삭제" << std::endl;
+
+	RenderSystem& rs = RenderSystem::GetInstance();
+	rs.SubRenderer(m_TargetShaderType, this);
 }
 
 void Renderer::SetTargetShader(ShaderType type)
@@ -87,6 +97,20 @@ void Renderer::OnDisable()
 	CheckState();
 }
 
+void Renderer::OnDestroy()
+{
+}
+
+void Renderer::OnAddScene()
+{
+	CheckState();
+}
+
+void Renderer::OnSubScene()
+{
+	CheckState();
+}
+
 void Renderer::CheckState()
 {
 	//--- 렌더를 해야할지 판단합니다. *현재는 enable된 상태라면 ShaderInstance에 등록합니다.
@@ -99,6 +123,19 @@ void Renderer::CheckState()
 	if (GetIsModelExist() == false)
 		isRender = false;
 
+	if (GetBelongingObject()->GetIsAddedScene() == false)
+		isRender = false;
+
+	//auto d = GetBelongingObject()->GetBelongingScene();
+	//if (d == nullptr)
+	//{
+	//	isRender = false;
+	//	return;
+	//}
+
+	//if (GetBelongingObject()->GetBelongingScene()->GetIsActivatedScene() == false)
+	//	isRender = false;
+
 	//--- 렌더시스템에 등록 또는 해제 합니다.
 	if (isRender)
 	{
@@ -110,6 +147,7 @@ void Renderer::CheckState()
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
 			rs.AddRenderer(m_TargetShaderType, this);
+			m_IsAssigned = true;
 		}
 	}
 	else
@@ -118,6 +156,7 @@ void Renderer::CheckState()
 		{
 			RenderSystem& rs = RenderSystem::GetInstance();
 			rs.SubRenderer(m_TargetShaderType, this);
+			m_IsAssigned = false;
 		}
 		else
 		{

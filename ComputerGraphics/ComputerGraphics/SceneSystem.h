@@ -23,17 +23,24 @@ private:
 
 	//--- 현재 씬 정보, 플레그
 	std::shared_ptr<Scene> m_PresentScene;
+	std::shared_ptr<Scene> m_TobeChangeScene;
 	bool m_LoopEnd;
-
 public:
 	/// <summary>
 	/// 해당 씬을 로드 하고 씬을 시작합니다.
 	/// </summary>
 	/// <param name="targetScene"></param>
 	void StartScene(std::shared_ptr<Scene> targetScene);
+
+	/// <summary>
+	/// 현재씬이 있다면 멈추고 새로운 씬을 시작합니다.
+	/// </summary>
+	/// <param name="targetScene"></param>
+	void ChangeScene();
 private:	
 	SceneSystem();
 
+	void SubObjectsOfPresentScene();
 public:
 	//--- Getter
 	std::shared_ptr<Scene> GetPresentScene() { return m_PresentScene; }
@@ -50,7 +57,6 @@ public:
 	/// 즉, 루프를 멈춥니다.
 	/// </summary>
 	void StopLoop();
-
 public:
 	static Object* GetObjectByName(std::string name);
 };
