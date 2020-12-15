@@ -5,7 +5,7 @@
 #define TILENUMPERDDISC 8
 #define DISCNUMPERTOWER 8
 
-#define TOWERHEIGHT 85
+#define TOWERHEIGHT 89
 
 class Object;
 
@@ -23,7 +23,7 @@ class TermProject :
 {
 public:
     //--- Seting
-    int towerInstantiateOffset = 60;
+    int towerInstantiateOffset = 70;
     int towerDeleteOffset = 15;
 
 private:
