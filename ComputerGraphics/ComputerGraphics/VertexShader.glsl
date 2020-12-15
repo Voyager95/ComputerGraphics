@@ -14,6 +14,8 @@ uniform mat4 proj;
 out vec3 ex_Color; // 프래그먼트 세이더에게 전달
 out vec3 ex_Normal;
 out vec2 ex_UV;
+out vec3 ex_FragPos;
+out vec3 ex_ViewPos;
 
 void main(void)
 {
@@ -21,4 +23,6 @@ void main(void)
 	ex_Color = in_Color;
 	ex_Normal = in_Normal;
 	ex_UV = in_UV;
+	ex_FragPos = vec3(transform*vec4(in_Position,1.0));
+	ex_ViewPos = vec3(view*vec4(0,0,0,1));
 }
