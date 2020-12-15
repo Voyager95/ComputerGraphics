@@ -59,7 +59,13 @@ ShaderInstance::ShaderInstance(ShaderType type)
 	m_UniformViewMat = glGetUniformLocation(GetProgram(), "view");
 	m_UniformProjMat = glGetUniformLocation(GetProgram(), "proj");
 	m_UniformTexture = glGetUniformLocation(GetProgram(), "tex");
+	m_UniformAmbientLightColor = glGetUniformLocation(GetProgram(), "ambientLightColor");
+	m_UniformAmbientLightStrength = glGetUniformLocation(GetProgram(), "ambientLightStrength");
 	glUniform1i(m_UniformTexture, 0);
+
+	//--- public 변수 초기화
+	ambientColor = glm::vec3(0.9, 0.9, 0.8);
+	ambientStrength = 0.8f;
 }
 
 void ShaderInstance::Render()
@@ -76,6 +82,10 @@ void ShaderInstance::Render()
 		//--- 투영 Uniform변수 전달
 		auto projMat = Camera::main->GetProjMatrix();
 		glUniformMatrix4fv(m_UniformProjMat, 1, GL_FALSE, glm::value_ptr(projMat));
+
+		//--- 주변광 Uniform변수 전달
+		glUniform3f(m_UniformAmbientLightColor, ambientColor.x, ambientColor.y, ambientColor.z);
+		glUniform1f(m_UniformAmbientLightStrength, ambientStrength);
 
 		//---이 쉐이더프로그램으로 그려야할 모든 렌더러들의 vao를 가지고와 그린다.
 		for (auto rendererPtr = GetRenderer().begin(); rendererPtr != GetRenderer().end(); ++rendererPtr)

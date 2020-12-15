@@ -14,6 +14,9 @@ class Renderer;
 /// </summary>
 class ShaderInstance
 {
+public:
+	glm::vec3 ambientColor;
+	GLfloat ambientStrength;
 private:
 	ShaderType m_Type;
 
@@ -22,6 +25,8 @@ private:
 	GLuint m_UniformProjMat;
 	GLuint m_UniformViewMat;										// Uniform 변수
 	GLuint m_UniformTexture;
+	GLuint m_UniformAmbientLightColor;
+	GLuint m_UniformAmbientLightStrength;
 	std::list<Renderer*> m_TargetRenderer;			// 이 쉐이더를 사용하는 렌더러 입니다.
 
 public:
