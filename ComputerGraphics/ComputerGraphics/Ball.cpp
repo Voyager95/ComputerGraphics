@@ -23,15 +23,19 @@ Ball::Ball(Object* object) : Component(object)
 	defaultColor = glm::vec3(1, 1, 1);
 	slowSpeedColor = glm::vec3(0.2, 0.2, 0.8);
 	fastSpeedColor = glm::vec3(0.9, 0.7, 0.2);
-	maxSpeedColor = glm::vec3(1, 0.2, 0.2);
+	maxSpeedColor = glm::vec3(1, 0.0, 0.0);
 
 	maxSlowSpeed = 18;
-	maxFastSpeed = -25;
+	maxFastSpeed = -22;
 
 	m_Lighter = false;
 	m_Bigger = false;
 
+	m_MaxSpeedTimer = 0;
+
 	m_Model = nullptr;
+
+	invincibilityDuration = 1.0;
 }
 
 Ball::~Ball()
@@ -178,6 +182,7 @@ void Ball::OnUpdate()
 	if (direction.y > maxFastSpeed)
 	{
 		m_IsInvincibility = false;
+		m_MaxSpeedTimer = 0;
 
 		if (direction.y > 0)
 		{
@@ -198,9 +203,14 @@ void Ball::OnUpdate()
 	}
 	else
 	{
-		m_IsInvincibility = true;
+		m_MaxSpeedTimer += DELTATIME;
 
-		model->SetColor(maxSpeedColor);
+		if (m_MaxSpeedTimer > invincibilityDuration)
+		{
+			m_IsInvincibility = true;
+			model->SetColor(maxSpeedColor);
+			model->UpdateBuffer();
+		}
 	}
 }
 

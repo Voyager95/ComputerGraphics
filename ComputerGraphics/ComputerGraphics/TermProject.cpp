@@ -351,7 +351,7 @@ Object* TermProject::InstantiateBall()
 	ball->AddComponent<Ball>();
 	//Rigidbody
 	auto ballRigidbody = ball->AddComponent<Rigidbody>();
-	ballRigidbody->gravitylimitSpeed = 20.0f;
+	ballRigidbody->gravitylimitSpeed = 22.0f;
 	ballRigidbody->gravityMultiples = 2.0f;
 	//Renderer
 	auto ballRenderer = ball->AddComponent<Renderer>();	

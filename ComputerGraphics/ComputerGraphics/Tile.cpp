@@ -172,23 +172,23 @@ Object* Tile::InstantiateRedFragTile()
 		{
 		case 0:
 			model = tileInLeftModel;
-			torque = glm::vec3(0, 50, 5);
-			direction = glm::vec3(0, 30, 0);
+			torque = glm::vec3(10, 50, -5);
+			direction = glm::vec3(0, 8, 10);
 			break;
 		case 1:
 			model = tileInRightModel;
-			torque = glm::vec3(0, 50, 50);
-			direction = glm::vec3(0, 30, 0);
+			torque = glm::vec3(0, -50, 50);
+			direction = glm::vec3(0, 10, 0);
 			break;
 		case 2:
 			model = tileOutLeftModel;
-			torque = glm::vec3(50, 50, 5);
-			direction = glm::vec3(0, 30, 0);
+			torque = glm::vec3(50, 50, -5);
+			direction = glm::vec3(0, 5, 0);
 			break;
 		case 3:
 			model = tileOutRightModel;
-			torque = glm::vec3(50, 50, 50);
-			direction = glm::vec3(0, 30, 0);
+			torque = glm::vec3(-50, -50, 50);
+			direction = glm::vec3(10, 10, 0);
 			break;
 		}
 

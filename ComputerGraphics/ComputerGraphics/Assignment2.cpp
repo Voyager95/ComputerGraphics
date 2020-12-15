@@ -79,6 +79,9 @@ Assignment2::Assignment2()
 	auto robot1Robot = robot1->GetComponent<Robot>();
 	robot1Robot->patrolPoint.push_back(glm::vec3(-10, 0, 7));
 	robot1Robot->patrolPoint.push_back(glm::vec3(-10, 0, -7));
+	robot1Robot->patrolPoint.push_back(glm::vec3(0, 0, -7));
+	robot1Robot->patrolPoint.push_back(glm::vec3(0, 0, 30));
+	robot1Robot->patrolPoint.push_back(glm::vec3(15, 0, 0));
 	AddObject(robot1);
 
 	//--- Robot2
@@ -91,6 +94,9 @@ Assignment2::Assignment2()
 	auto robot2Robot = robot2->GetComponent<Robot>();
 	robot2Robot->patrolPoint.push_back(glm::vec3(10, 0, 7));
 	robot2Robot->patrolPoint.push_back(glm::vec3(10, 0, -7));
+	robot2Robot->patrolPoint.push_back(glm::vec3(15, 0, 30));
+	robot2Robot->patrolPoint.push_back(glm::vec3(0, 0, 30));
+	robot2Robot->patrolPoint.push_back(glm::vec3(-10, 0, 30));
 	AddObject(robot2);
 
 	//--- Robot3
@@ -103,6 +109,9 @@ Assignment2::Assignment2()
 	auto robot3Robot = robot3->GetComponent<Robot>();
 	robot3Robot->patrolPoint.push_back(glm::vec3(15, 0, -25));
 	robot3Robot->patrolPoint.push_back(glm::vec3(15, 0, -40));
+	robot3Robot->patrolPoint.push_back(glm::vec3(-27, 0, 2));
+	robot3Robot->patrolPoint.push_back(glm::vec3(0, 0, 20));
+	robot3Robot->patrolPoint.push_back(glm::vec3(0, 0, 10));
 	AddObject(robot3);
 
 	//--- Robot4
@@ -115,6 +124,9 @@ Assignment2::Assignment2()
 	auto robot4Robot = robot4->GetComponent<Robot>();
 	robot4Robot->patrolPoint.push_back(glm::vec3(-15, 0, -25));
 	robot4Robot->patrolPoint.push_back(glm::vec3(-15, 0, -40));
+	robot4Robot->patrolPoint.push_back(glm::vec3(0, 0, 20));
+	robot4Robot->patrolPoint.push_back(glm::vec3(-20, 0, 30));
+	robot4Robot->patrolPoint.push_back(glm::vec3(-17, 0, -10));
 	AddObject(robot4);
 }
 

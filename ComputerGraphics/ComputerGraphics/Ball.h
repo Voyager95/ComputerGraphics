@@ -10,7 +10,7 @@ class Ball :
 {
 public:
     float itemTimer;
-
+    float invincibilityDuration;    // 얼마만큼 최대속도를 유지해야 무적을 얻는지
     float radius;                   // 공의 지름입니다.
     float maxSlowSpeed;             // 최저 속도 양수
     float maxFastSpeed;             // 최고 속도 음수
@@ -26,6 +26,8 @@ private:
     bool m_Bigger;
     float m_LighterTimer;
     bool m_Lighter;
+
+    float m_MaxSpeedTimer;
 
     std::shared_ptr<ModelInstance> m_Model;
 public:

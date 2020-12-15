@@ -4,7 +4,7 @@
 #include "SceneSystem.h"
 #include "InputSystem.h"
 
-#include "Termproject.h"
+#include "TermProject.h"
 
 //--- 전역 변수
 
