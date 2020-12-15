@@ -154,29 +154,29 @@ void TermProject::InitializeDiscSetting()
 
 	//---Index NO.01
 	tmp[0] = TileGenerate::BLACK;
-	tmp[1] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::RED;
 	tmp[2] = TileGenerate::BLACK;
 	tmp[3] = TileGenerate::BLACK;
 	tmp[4] = TileGenerate::NONE;
 	tmp[5] = TileGenerate::BLACK;
-	tmp[6] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::LIGHTER;
 	tmp[7] = TileGenerate::BLACK;
 	discSetting.push_back(tmp);
 
 	//---Index NO.02
 	tmp[0] = TileGenerate::NONE;
 	tmp[1] = TileGenerate::BLACK;
-	tmp[2] = TileGenerate::BLACK;
+	tmp[2] = TileGenerate::RED;
 	tmp[3] = TileGenerate::RED;
 	tmp[4] = TileGenerate::BLACK;
 	tmp[5] = TileGenerate::BLACK;
-	tmp[6] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::BIGGER;
 	tmp[7] = TileGenerate::BLACK;
 	discSetting.push_back(tmp);
 
 	//---Index NO.03
-	tmp[0] = TileGenerate::BLACK;
-	tmp[1] = TileGenerate::BLACK;
+	tmp[0] = TileGenerate::RED;
+	tmp[1] = TileGenerate::RED;
 	tmp[2] = TileGenerate::BLACK;
 	tmp[3] = TileGenerate::BLACK;
 	tmp[4] = TileGenerate::RED;
@@ -197,13 +197,13 @@ void TermProject::InitializeDiscSetting()
 	discSetting.push_back(tmp);
 
 	//---Index NO.05
-	tmp[0] = TileGenerate::BLACK;
-	tmp[1] = TileGenerate::NONE;
+	tmp[0] = TileGenerate::RED;
+	tmp[1] = TileGenerate::BIGGER;
 	tmp[2] = TileGenerate::BLACK;
 	tmp[3] = TileGenerate::BLACK;
-	tmp[4] = TileGenerate::NONE;
+	tmp[4] = TileGenerate::LIGHTER;
 	tmp[5] = TileGenerate::BLACK;
-	tmp[6] = TileGenerate::BLACK;
+	tmp[6] = TileGenerate::NONE;
 	tmp[7] = TileGenerate::RED;
 	discSetting.push_back(tmp);
 
@@ -224,7 +224,7 @@ void TermProject::InitializeDiscSetting()
 	tmp[2] = TileGenerate::NONE;
 	tmp[3] = TileGenerate::BLACK;
 	tmp[4] = TileGenerate::RED;
-	tmp[5] = TileGenerate::BLACK;
+	tmp[5] = TileGenerate::LIGHTER;
 	tmp[6] = TileGenerate::RED;
 	tmp[7] = TileGenerate::BLACK;
 	discSetting.push_back(tmp);
@@ -233,7 +233,7 @@ void TermProject::InitializeDiscSetting()
 	tmp[0] = TileGenerate::BLACK;
 	tmp[1] = TileGenerate::BLACK;
 	tmp[2] = TileGenerate::RED;
-	tmp[3] = TileGenerate::BLACK;
+	tmp[3] = TileGenerate::BIGGER;
 	tmp[4] = TileGenerate::BLACK;
 	tmp[5] = TileGenerate::RED;
 	tmp[6] = TileGenerate::BLACK;
@@ -242,7 +242,7 @@ void TermProject::InitializeDiscSetting()
 
 	//---Index NO.09
 	tmp[0] = TileGenerate::NONE;
-	tmp[1] = TileGenerate::BLACK;
+	tmp[1] = TileGenerate::RED;
 	tmp[2] = TileGenerate::BLACK;
 	tmp[3] = TileGenerate::RED;
 	tmp[4] = TileGenerate::BLACK;
@@ -255,10 +255,10 @@ void TermProject::InitializeDiscSetting()
 	tmp[0] = TileGenerate::NONE;
 	tmp[1] = TileGenerate::BLACK;
 	tmp[2] = TileGenerate::NONE;
-	tmp[3] = TileGenerate::BIGGER;
+	tmp[3] = TileGenerate::RED;
 	tmp[4] = TileGenerate::BLACK;
 	tmp[5] = TileGenerate::NONE;
-	tmp[6] = TileGenerate::LIGHTER;
+	tmp[6] = TileGenerate::RED;
 	tmp[7] = TileGenerate::RED;
 	discSetting.push_back(tmp);
 }
@@ -271,7 +271,7 @@ void TermProject::InitializeDiscCombination()
 	tmp[0] = 1;
 	tmp[1] = 4;
 	tmp[2] = 10;
-	tmp[3] = 2;
+	tmp[3] = 8;
 	tmp[4] = 1;
 	tmp[5] = 10;
 	tmp[6] = 0;
@@ -284,7 +284,7 @@ void TermProject::InitializeDiscCombination()
 	tmp[2] = 6;
 	tmp[3] = 1;
 	tmp[4] = 0;
-	tmp[5] = 5;
+	tmp[5] = 7;
 	tmp[6] = 2;
 	tmp[7] = 4;
 	discList.push_back(tmp);
@@ -294,7 +294,7 @@ void TermProject::InitializeDiscCombination()
 	tmp[1] = 4;
 	tmp[2] = 1;
 	tmp[3] = 5;
-	tmp[4] = 7;
+	tmp[4] = 10;
 	tmp[5] = 6;
 	tmp[6] = 3;
 	tmp[7] = 0;
@@ -307,12 +307,12 @@ void TermProject::InitializeDiscCombination()
 	tmp[3] = 8;
 	tmp[4] = 7;
 	tmp[5] = 4;
-	tmp[6] = 2;
+	tmp[6] = 0;
 	tmp[7] = 5;
 	discList.push_back(tmp);
 
 	//---Index NO.04
-	tmp[0] = 5;
+	tmp[0] = 3;
 	tmp[1] = 2;
 	tmp[2] = 7;
 	tmp[3] = 6;
